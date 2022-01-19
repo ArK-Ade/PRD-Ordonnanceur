@@ -11,6 +11,20 @@ namespace PRD_Ordonnanceur.Data
 
         public string[] step_sequence;
 
+        public DateTime earliest_date;
+
+        public struct Status
+        {
+            public DateTime starting_hour;
+            public string next_step;
+        };
+
+        public DateTime latest_date;
+
+        public string number_product;
+
+        public string[][] consommable_quantity;
+
         public OF() { }
 
     }
