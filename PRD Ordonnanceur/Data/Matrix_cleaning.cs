@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace PRD_Ordonnanceur.Data
 {
-    class Tank
+    class Matrix_cleaning
     {
-
-        public string name;
-
-        public int type_tank;
-
-        public Tank()
+        public Matrix_cleaning()
         {
         }
     }

@@ -21,6 +21,8 @@ namespace PRD_Ordonnanceur.Data
 
         public DateTime latest_date;
 
+        public Tank[] set_tank;
+
         public string number_product;
 
         public string[][] consommable_quantity;

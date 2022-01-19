@@ -8,5 +8,11 @@ namespace PRD_Ordonnanceur.Data
 {
     class Operator
     {
+        public DateTime beginning;
+
+        public DateTime end;
+
+
+        public Operator(){}
     }
 }
