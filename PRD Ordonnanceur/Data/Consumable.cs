@@ -19,5 +19,6 @@ namespace PRD_Ordonnanceur.Data
         public Consumable()
         {
         }
+
     }
 }
