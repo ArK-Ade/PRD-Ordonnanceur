@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PRD_Ordonnanceur.Data
+﻿namespace PRD_Ordonnanceur.Data
 {
     class Tank
     {
+        public int Id { get; set; }
 
-        public string name;
-
-        public int type_tank;
+        public int TypeTank { get; set; }
 
         public Tank()
         {
+
+        }
+
+        public Tank(int id, int typeTank)
+        {
+            Id = id;
+            TypeTank = typeTank;
         }
     }
 }

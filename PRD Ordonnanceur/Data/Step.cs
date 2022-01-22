@@ -1,23 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PRD_Ordonnanceur.Data
 {
     class Step
     {
-        public Machine.type_machine type_machine_needed;
+        private int Id { get; set; }
 
-        public DateTime duration;
+        private Machine.type_machine Type_machine_needed { get; set; }
 
-        public Operator[] set_operator;
+        private struct Duration
+        {
+            DateTime DurationBeforeOp;
+            DateTime DurationAfterOp;
+            DateTime DurationOp;
+        }
 
-        public DateTime duration_max_next_step;
+        private Operator[] Set_operatorAvailable { get; set; }
 
-        public bool next_step_reportable;
+        private DateTime Duration_max_next_step { get; set; }
+
+        private bool Next_step_reportable { get; set; }
 
         public Step() { }
+
+        public Step(int id, Machine.type_machine type_machine_needed, Operator[] set_operatorAvailable, DateTime duration_max_next_step, bool next_step_reportable)
+        {
+            Id = id;
+            this.Type_machine_needed = type_machine_needed;
+            this.Set_operatorAvailable = set_operatorAvailable ?? throw new ArgumentNullException(nameof(set_operatorAvailable));
+            this.Duration_max_next_step = duration_max_next_step;
+            this.Next_step_reportable = next_step_reportable;
+        }
     }
 }

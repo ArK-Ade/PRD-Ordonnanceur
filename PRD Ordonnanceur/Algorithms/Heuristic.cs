@@ -1,9 +1,5 @@
 ﻿using PRD_Ordonnanceur.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
@@ -18,7 +14,7 @@ namespace PRD_Ordonnanceur.Algorithms
         {
 
             int Index = -1;
-            DateTime date = new DateTime(5000,01,01);
+            DateTime date = new DateTime(5000, 01, 01);
             int count = 0;
 
             foreach (OF oF in OFs)
@@ -38,7 +34,7 @@ namespace PRD_Ordonnanceur.Algorithms
         {
 
             OF[] tableau = OFs;
-            Array.Clear(tableau,0,tableau.Length);
+            Array.Clear(tableau, 0, tableau.Length);
 
             OF earliest_OF = new();
 
@@ -70,7 +66,7 @@ namespace PRD_Ordonnanceur.Algorithms
         {
             switch (choice)
             {
-                case 1 :
+                case 1:
                     SortCrescentDtiCrescentDli(Ofs);
                     break;
 
@@ -82,7 +78,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     Sort_random_5_crescent(Ofs);
                     break;
 
-                default :
+                default:
                     SortCrescentDtiCrescentDli(Ofs);
                     break;
             }

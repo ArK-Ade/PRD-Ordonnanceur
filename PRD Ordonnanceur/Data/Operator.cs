@@ -1,18 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PRD_Ordonnanceur.Data
 {
     class Operator
     {
-        public DateTime beginning;
+        private DateTime Beginning { get; set; }
 
-        public DateTime end;
+        private DateTime End { get; set; }
 
+        private Object[] Calendar { get; set; }
 
-        public Operator(){}
+        public Operator() { }
+
+        public Operator(DateTime beginning, DateTime end)
+        {
+            this.Beginning = beginning;
+            this.End = end;
+        }
+
+        public Operator(DateTime beginning, DateTime end, object[] calendar) : this(beginning, end)
+        {
+            Calendar = calendar ?? throw new ArgumentNullException(nameof(calendar));
+        }
     }
 }
