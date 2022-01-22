@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PRD_Ordonnanceur.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,7 @@ namespace PRD_Ordonnanceur.Algorithms
 {
     interface IHeuristic
     {
-        public void sorting_algorithm()
-        {
+        public OF[] SortingAlgorithm(int choice, OF[] Ofs);
 
-        }
     }
 }

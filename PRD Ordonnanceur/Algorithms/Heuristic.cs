@@ -14,11 +14,6 @@ namespace PRD_Ordonnanceur.Algorithms
 
         }
 
-        public bool application()
-        {
-            return true;
-        }
-
         int Smallest_index_DTI(OF[] OFs)
         {
 
@@ -61,21 +56,37 @@ namespace PRD_Ordonnanceur.Algorithms
             return tableau;
         }
 
-        void Sort_crescent_dti_decendant_dli(OF[] OFs)
+        OF[] Sort_crescent_dti_decendant_dli(OF[] OFs)
         {
-            foreach (OF i in OFs)
-            {
-
-            }
+            return OFs;
         }
 
-        void Sort_random_5_crescent(OF[] OFs)
+        OF[] Sort_random_5_crescent(OF[] OFs)
         {
-            foreach (OF i in OFs)
-            {
-
-            }
+            return OFs;
         }
 
+        OF[] IHeuristic.SortingAlgorithm(int choice, OF[] Ofs)
+        {
+            switch (choice)
+            {
+                case 1 :
+                    SortCrescentDtiCrescentDli(Ofs);
+                    break;
+
+                case 2:
+                    Sort_crescent_dti_decendant_dli(Ofs);
+                    break;
+
+                case 3:
+                    Sort_random_5_crescent(Ofs);
+                    break;
+
+                default :
+                    SortCrescentDtiCrescentDli(Ofs);
+                    break;
+            }
+            return Ofs;
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRD_Ordonnanceur.Data
 {
-    class Consumable
+    public class Consumable
     {
         public string name;
 

@@ -28,5 +28,11 @@ namespace PRD_Ordonnanceur.Data
 
 
         public Machine() { }
+
+        public enum SetGetTypeMachine { get, set, }
+
+        public DateTime SetGetduration_cleaning { get; set; }
+
+        public Operator[] SetGetoperator_available_cleaning { get; set; }
     }
 }

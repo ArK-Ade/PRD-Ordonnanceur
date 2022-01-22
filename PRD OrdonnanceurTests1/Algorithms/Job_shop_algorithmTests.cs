@@ -9,22 +9,10 @@ using System.Threading.Tasks;
 namespace PRD_Ordonnanceur.Algorithms.Tests
 {
     [TestFixture()]
-    public class HeuristicTests
+    public class Job_shop_algorithmTests
     {
         [Test()]
-        public void HeuristicTest()
-        {
-            Assert.True(true);
-        }
-
-        [Test()]
-        public void HeuristicTest1()
-        {
-            Assert.Fail();
-        }
-
-        [Test()]
-        public void applicationTest1()
+        public void step_algorithmTest()
         {
             Assert.Fail();
         }

@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
-    public class Job_shop_algorithm
+    class Available
     {
-        public void step_algorithm()
-        {
-
-        }
     }
 }
