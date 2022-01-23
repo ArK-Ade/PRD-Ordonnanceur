@@ -19,9 +19,9 @@ namespace PRD_Ordonnanceur.Algorithms
 
             foreach (OF oF in OFs)
             {
-                if (date > oF.earliest_date)
+                if (date > oF.EarliestDate)
                 {
-                    date = oF.earliest_date;
+                    date = oF.EarliestDate;
                     Index = count;
                 }
                 count++;
@@ -46,7 +46,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 tableau[i] = OFs[index];
 
                 // TODO supprimer l'élément du tableau 
-                OFs[index].earliest_date = DateTime.MaxValue;
+                OFs[index].EarliestDate = DateTime.MaxValue;
             }
 
             return tableau;

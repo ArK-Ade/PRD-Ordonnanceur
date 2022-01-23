@@ -2,13 +2,14 @@
 
 namespace PRD_Ordonnanceur.Data
 {
+    // TODO Changer les accesseurs get et set de toutes les classes
     class OF
     {
         private int Id { get; set; }
 
         public string[] StepSequence { get; set; }
 
-        public DateTime EarliestDate { get; set; }
+        private DateTime _earliestDate;
 
         public struct Status
         {
@@ -20,7 +21,7 @@ namespace PRD_Ordonnanceur.Data
 
         public Tank[] set_tank { get; set; }
 
-        public string number_product { get; set; }
+        public string NumberProduct { get; set; }
 
         public string[][] consommable_quantity { get; set; }
 
@@ -30,11 +31,18 @@ namespace PRD_Ordonnanceur.Data
         {
             Id = id;
             StepSequence = stepSequence ?? throw new ArgumentNullException(nameof(stepSequence));
-            EarliestDate = earliestDate;
+            _earliestDate = earliestDate;
             LatestDate = latestDate;
             this.set_tank = set_tank ?? throw new ArgumentNullException(nameof(set_tank));
-            this.number_product = number_product ?? throw new ArgumentNullException(nameof(number_product));
+            this.NumberProduct = number_product ?? throw new ArgumentNullException(nameof(number_product));
             this.consommable_quantity = consommable_quantity ?? throw new ArgumentNullException(nameof(consommable_quantity));
+        }
+
+        public DateTime EarliestDate
+        
+        {   
+            get => _earliestDate; 
+            set => _earliestDate = value; 
         }
     }
 }
