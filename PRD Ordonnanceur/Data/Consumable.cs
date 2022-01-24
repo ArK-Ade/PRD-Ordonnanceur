@@ -2,26 +2,31 @@
 
 namespace PRD_Ordonnanceur.Data
 {
-    class Consumable
+    public class Consumable
     {
-        private int Id { get; set; }
+        private int id;
 
-        private int QuantityAvailable { get; set; }
+        private int quantityAvailable;
 
-        private Object[] Calendar { get; set; }
+        private Object[] calendar;
 
-        private DateTime DelaySupply { get; set; }
+        private DateTime delaySupply;
 
         public Consumable()
         {
         }
 
-        public Consumable(int id, int quantityAvailable, object[] calendar, DateTime delaySupply)
+        public Consumable(int _id, int _quantityAvailable, object[] _calendar, DateTime _delaySupply)
         {
-            Id = id;
-            QuantityAvailable = quantityAvailable;
-            Calendar = calendar ?? throw new ArgumentNullException(nameof(calendar));
-            DelaySupply = delaySupply;
+            id = _id;
+            QuantityAvailable = _quantityAvailable;
+            Calendar = _calendar ?? throw new ArgumentNullException(nameof(_calendar));
+            DelaySupply = _delaySupply;
         }
+
+        public int Id { get => id; set => id = value; }
+        public int QuantityAvailable { get => quantityAvailable; set => quantityAvailable = value; }
+        public object[] Calendar { get => calendar; set => calendar = value; }
+        public DateTime DelaySupply { get => delaySupply; set => delaySupply = value; }
     }
 }

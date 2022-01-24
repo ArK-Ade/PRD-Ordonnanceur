@@ -1,20 +1,22 @@
 ﻿namespace PRD_Ordonnanceur.Data
 {
-    class Tank
+    public class Tank
     {
-        public int Id { get; set; }
+        private int idTank;
 
-        public int TypeTank { get; set; }
+        private int typeTank;
 
         public Tank()
         {
-
         }
 
-        public Tank(int id, int typeTank)
+        public Tank(int idTank, int typeTank)
         {
-            Id = id;
-            TypeTank = typeTank;
+            this.idTank = idTank;
+            this.typeTank = typeTank;
         }
+
+        public int IdTank { get => idTank; set => idTank = value; }
+        public int TypeTank { get => typeTank; set => typeTank = value; }
     }
 }

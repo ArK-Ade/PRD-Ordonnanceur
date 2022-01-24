@@ -2,47 +2,52 @@
 
 namespace PRD_Ordonnanceur.Data
 {
-    // TODO Changer les accesseurs get et set de toutes les classes
-    class OF
+    public struct Status
     {
-        private int Id { get; set; }
+        public DateTime starting_hour { get; set; }
+        public string next_step { get; set; }
+    };
 
-        public string[] StepSequence { get; set; }
+    // TODO Changer les accesseurs get et set de toutes les classes
+    public class OF
+    {
+        private int idOF;
 
-        private DateTime _earliestDate;
+        private Status status;
 
-        public struct Status
-        {
-            public DateTime starting_hour { get; set; }
-            public string next_step { get; set; }
-        };
+        private string[] stepSequence; 
 
-        public DateTime LatestDate { get; set; }
+        private DateTime earliestDate;
 
-        public Tank[] set_tank { get; set; }
+        private DateTime latestDate; 
 
-        public string NumberProduct { get; set; }
+        private Tank[] setTank; 
 
-        public string[][] consommable_quantity { get; set; }
+        private string numberProduct; 
+
+        private string[][] consommableQuantity;
 
         public OF() { }
 
-        public OF(int id, string[] stepSequence, DateTime earliestDate, DateTime latestDate, Tank[] set_tank, string number_product, string[][] consommable_quantity)
+        public OF(int idOF, Status status, string[] stepSequence, DateTime earliestDate, DateTime latestDate, Tank[] setTank, string numberProduct, string[][] consommableQuantity)
         {
-            Id = id;
-            StepSequence = stepSequence ?? throw new ArgumentNullException(nameof(stepSequence));
-            _earliestDate = earliestDate;
-            LatestDate = latestDate;
-            this.set_tank = set_tank ?? throw new ArgumentNullException(nameof(set_tank));
-            this.NumberProduct = number_product ?? throw new ArgumentNullException(nameof(number_product));
-            this.consommable_quantity = consommable_quantity ?? throw new ArgumentNullException(nameof(consommable_quantity));
+            this.idOF = idOF;
+            this.status = status;
+            this.StepSequence = stepSequence;
+            this.EarliestDate = earliestDate;
+            this.LatestDate = latestDate;
+            this.SetTank = setTank;
+            this.NumberProduct = numberProduct;
+            this.ConsommableQuantity = consommableQuantity;
         }
 
-        public DateTime EarliestDate
-        
-        {   
-            get => _earliestDate; 
-            set => _earliestDate = value; 
-        }
+        public int IdOF { get => idOF; set => idOF = value; }
+        public Status Status { get => status; set => status = value; }
+        public string[] StepSequence { get => stepSequence; set => stepSequence = value; }
+        public DateTime EarliestDate { get => earliestDate; set => earliestDate = value; }
+        public DateTime LatestDate { get => latestDate; set => latestDate = value; }
+        public string NumberProduct { get => numberProduct; set => numberProduct = value; }
+        public string[][] ConsommableQuantity { get => consommableQuantity; set => consommableQuantity = value; }
+        internal Tank[] SetTank { get => setTank; set => setTank = value; }
     }
 }

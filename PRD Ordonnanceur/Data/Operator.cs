@@ -4,23 +4,23 @@ namespace PRD_Ordonnanceur.Data
 {
     class Operator
     {
-        private DateTime Beginning { get; set; }
+        private DateTime beginning;
 
-        private DateTime End { get; set; }
+        private DateTime end;
 
-        private Object[] Calendar { get; set; }
+        private Object[] calendar;
 
         public Operator() { }
 
-        public Operator(DateTime beginning, DateTime end)
+        public Operator(DateTime beginning, DateTime end, object[] calendar)
         {
-            this.Beginning = beginning;
-            this.End = end;
+            this.beginning = beginning;
+            this.end = end;
+            this.calendar = calendar;
         }
 
-        public Operator(DateTime beginning, DateTime end, object[] calendar) : this(beginning, end)
-        {
-            Calendar = calendar ?? throw new ArgumentNullException(nameof(calendar));
-        }
+        public DateTime Beginning { get => beginning; set => beginning = value; }
+        public DateTime End { get => end; set => end = value; }
+        public object[] Calendar { get => calendar; set => calendar = value; }
     }
 }

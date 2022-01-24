@@ -2,34 +2,44 @@
 
 namespace PRD_Ordonnanceur.Data
 {
+    public struct Duration
+    {
+        DateTime DurationBeforeOp;
+        DateTime DurationAfterOp;
+        DateTime DurationOp;
+    }
+
     class Step
     {
-        private int Id { get; set; }
+        private int idStep;
 
-        private Machine.type_machine Type_machine_needed { get; set; }
+        private TypeMachine typeMachineNeeded;
 
-        private struct Duration
-        {
-            DateTime DurationBeforeOp;
-            DateTime DurationAfterOp;
-            DateTime DurationOp;
-        }
+        private Duration duration;
 
-        private Operator[] Set_operatorAvailable { get; set; }
+        private Operator[] setOperatorAvailable;
 
-        private DateTime Duration_max_next_step { get; set; }
+        private DateTime durationMaxNextStep;
 
-        private bool Next_step_reportable { get; set; }
+        private bool nextStepReportable;
 
         public Step() { }
 
-        public Step(int id, Machine.type_machine type_machine_needed, Operator[] set_operatorAvailable, DateTime duration_max_next_step, bool next_step_reportable)
+        public Step(int idStep, TypeMachine typeMachineNeeded, Duration duration, Operator[] setOperatorAvailable, DateTime durationMaxNextStep, bool nextStepReportable)
         {
-            Id = id;
-            this.Type_machine_needed = type_machine_needed;
-            this.Set_operatorAvailable = set_operatorAvailable ?? throw new ArgumentNullException(nameof(set_operatorAvailable));
-            this.Duration_max_next_step = duration_max_next_step;
-            this.Next_step_reportable = next_step_reportable;
+            this.idStep = idStep;
+            this.typeMachineNeeded = typeMachineNeeded;
+            this.duration = duration;
+            this.setOperatorAvailable = setOperatorAvailable;
+            this.durationMaxNextStep = durationMaxNextStep;
+            this.nextStepReportable = nextStepReportable;
         }
+
+        public int IdStep { get => idStep; set => idStep = value; }
+        public TypeMachine TypeMachineNeeded { get => typeMachineNeeded; set => typeMachineNeeded = value; }
+        public Duration Duration { get => duration; set => duration = value; }
+        public DateTime DurationMaxNextStep { get => durationMaxNextStep; set => durationMaxNextStep = value; }
+        public bool NextStepReportable { get => nextStepReportable; set => nextStepReportable = value; }
+        public Operator[] SetOperatorAvailable { get => setOperatorAvailable; set => setOperatorAvailable = value; }
     }
 }
