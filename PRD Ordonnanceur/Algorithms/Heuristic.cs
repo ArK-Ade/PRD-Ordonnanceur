@@ -10,27 +10,26 @@ namespace PRD_Ordonnanceur.Algorithms
 
         }
 
-        int Smallest_index_DTI(OF[] OFs)
+        public int Smallest_index_DTI(OF[] OFs)
         {
-
-            int Index = -1;
-            DateTime date = new DateTime(5000, 01, 01);
-            int count = 0;
+            int index = -1;
+            DateTime date = new(5000, 01, 01);
+            int count = -1;
 
             foreach (OF oF in OFs)
             {
                 if (date > oF.EarliestDate)
                 {
                     date = oF.EarliestDate;
-                    Index = count;
+                    index = count;
                 }
                 count++;
             }
 
-            return Index;
+            return index;
         }
 
-        OF[] SortCrescentDtiCrescentDli(OF[] OFs)
+        public OF[] SortCrescentDtiCrescentDli(OF[] OFs)
         {
 
             OF[] tableau = OFs;
@@ -52,12 +51,12 @@ namespace PRD_Ordonnanceur.Algorithms
             return tableau;
         }
 
-        OF[] Sort_crescent_dti_decendant_dli(OF[] OFs)
+        public OF[] Sort_crescent_dti_decendant_dli(OF[] OFs)
         {
             return OFs;
         }
 
-        OF[] Sort_random_5_crescent(OF[] OFs)
+        public OF[] Sort_random_5_crescent(OF[] OFs)
         {
             return OFs;
         }

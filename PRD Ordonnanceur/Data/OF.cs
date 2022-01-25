@@ -2,18 +2,13 @@
 
 namespace PRD_Ordonnanceur.Data
 {
-    public struct Status
-    {
-        public DateTime starting_hour { get; set; }
-        public string next_step { get; set; }
-    };
-
-    // TODO Changer les accesseurs get et set de toutes les classes
     public class OF
     {
         private int idOF;
 
-        private Status status;
+        private DateTime starting_hour;
+
+        private string next_step;
 
         private string[] stepSequence; 
 
@@ -29,10 +24,11 @@ namespace PRD_Ordonnanceur.Data
 
         public OF() { }
 
-        public OF(int idOF, Status status, string[] stepSequence, DateTime earliestDate, DateTime latestDate, Tank[] setTank, string numberProduct, string[][] consommableQuantity)
+        public OF(int idOF, DateTime starting_hour, string next_step, string[] stepSequence, DateTime earliestDate, DateTime latestDate, Tank[] setTank, string numberProduct, string[][] consommableQuantity)
         {
-            this.idOF = idOF;
-            this.status = status;
+            this.IdOF = idOF;
+            this.Starting_hour = starting_hour;
+            this.Next_step = next_step;
             this.StepSequence = stepSequence;
             this.EarliestDate = earliestDate;
             this.LatestDate = latestDate;
@@ -42,12 +38,13 @@ namespace PRD_Ordonnanceur.Data
         }
 
         public int IdOF { get => idOF; set => idOF = value; }
-        public Status Status { get => status; set => status = value; }
+        public DateTime Starting_hour { get => starting_hour; set => starting_hour = value; }
+        public string Next_step { get => next_step; set => next_step = value; }
         public string[] StepSequence { get => stepSequence; set => stepSequence = value; }
         public DateTime EarliestDate { get => earliestDate; set => earliestDate = value; }
         public DateTime LatestDate { get => latestDate; set => latestDate = value; }
+        public Tank[] SetTank { get => setTank; set => setTank = value; }
         public string NumberProduct { get => numberProduct; set => numberProduct = value; }
         public string[][] ConsommableQuantity { get => consommableQuantity; set => consommableQuantity = value; }
-        internal Tank[] SetTank { get => setTank; set => setTank = value; }
     }
 }
