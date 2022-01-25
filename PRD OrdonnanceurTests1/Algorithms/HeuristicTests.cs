@@ -13,8 +13,8 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         {
             string[] stepSequence = { "1", "2" };
 
-            DateTime earliestDate1 = DateTime.Now;
-            DateTime earliestDate2 = DateTime.MinValue;
+            DateTime earliestDate1 = DateTime.MinValue;
+            DateTime earliestDate2 = DateTime.Now;
             DateTime earliestDate3 = DateTime.MaxValue;
 
 

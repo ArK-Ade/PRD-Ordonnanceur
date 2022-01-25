@@ -12,18 +12,23 @@ namespace PRD_Ordonnanceur.Algorithms
 
         public int Smallest_index_DTI(OF[] OFs)
         {
-            int index = -1;
-            DateTime date = new(5000, 01, 01);
+            int index = 0;
+            DateTime date = DateTime.MaxValue;
             int count = -1;
 
             foreach (OF oF in OFs)
             {
+                count++;
+
                 if (date > oF.EarliestDate)
                 {
+                    if (date == oF.EarliestDate)
+                    {
+
+                    }
                     date = oF.EarliestDate;
                     index = count;
                 }
-                count++;
             }
 
             return index;
@@ -31,7 +36,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
         public OF[] SortCrescentDtiCrescentDli(OF[] OFs)
         {
-
+            OF[] tmp = OFs;
             OF[] tableau = OFs;
             Array.Clear(tableau, 0, tableau.Length);
 
@@ -41,8 +46,8 @@ namespace PRD_Ordonnanceur.Algorithms
 
             for (int i = 0; i < OFs.Length; i++)
             {
-                index = Smallest_index_DTI(OFs);
-                tableau[i] = OFs[index];
+                index = Smallest_index_DTI(tmp);
+                tableau[i] = tmp[index];
 
                 // TODO supprimer l'élément du tableau 
                 OFs[index].EarliestDate = DateTime.MaxValue;
