@@ -9,7 +9,7 @@ namespace PRD_Ordonnanceur.Data
         DateTime DurationOp;
     }
 
-    class Step
+    public class Step
     {
         private int idStep;
 
@@ -40,6 +40,6 @@ namespace PRD_Ordonnanceur.Data
         public Duration Duration { get => duration; set => duration = value; }
         public DateTime DurationMaxNextStep { get => durationMaxNextStep; set => durationMaxNextStep = value; }
         public bool NextStepReportable { get => nextStepReportable; set => nextStepReportable = value; }
-        public Operator[] SetOperatorAvailable { get => setOperatorAvailable; set => setOperatorAvailable = value; }
+        public Operator[] OperatorAvailable { get => setOperatorAvailable; set => setOperatorAvailable = value; }
     }
 }

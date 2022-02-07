@@ -10,7 +10,7 @@ namespace PRD_Ordonnanceur.Data
 
         private string next_step;
 
-        private string[] stepSequence; 
+        private Step[] stepSequence; 
 
         private DateTime earliestDate;
 
@@ -24,7 +24,7 @@ namespace PRD_Ordonnanceur.Data
 
         public OF() { }
 
-        public OF(int idOF, DateTime starting_hour, string next_step, string[] stepSequence, DateTime earliestDate, DateTime latestDate, Tank[] setTank, string numberProduct, string[][] consommableQuantity)
+        public OF(int idOF, DateTime starting_hour, string next_step, Step[] stepSequence, DateTime earliestDate, DateTime latestDate, Tank[] setTank, string numberProduct, string[][] consommableQuantity)
         {
             this.IdOF = idOF;
             this.Starting_hour = starting_hour;
@@ -40,7 +40,7 @@ namespace PRD_Ordonnanceur.Data
         public int IdOF { get => idOF; set => idOF = value; }
         public DateTime Starting_hour { get => starting_hour; set => starting_hour = value; }
         public string Next_step { get => next_step; set => next_step = value; }
-        public string[] StepSequence { get => stepSequence; set => stepSequence = value; }
+        public Step[] StepSequence { get => stepSequence; set => stepSequence = value; }
         public DateTime EarliestDate { get => earliestDate; set => earliestDate = value; }
         public DateTime LatestDate { get => latestDate; set => latestDate = value; }
         public Tank[] SetTank { get => setTank; set => setTank = value; }

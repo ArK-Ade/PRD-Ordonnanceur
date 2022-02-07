@@ -16,7 +16,7 @@ namespace PRD_Ordonnanceur.Data
         public DateTime finishing_hour;
     }
 
-    class Machine
+    public class Machine
     {
         private int id;
 

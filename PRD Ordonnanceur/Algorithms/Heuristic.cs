@@ -34,7 +34,7 @@ namespace PRD_Ordonnanceur.Algorithms
             return index;
         }
 
-        public OF[] SortCrescentDtiCrescentDli(OF[] OFs) // TODO A debug
+        public OF[] SortCrescentDtiCrescentDli(OF[] OFs)
         {
             OF[] tmp = OFs;
             OF[] tableau = new OF[OFs.Length];
@@ -46,9 +46,8 @@ namespace PRD_Ordonnanceur.Algorithms
                 index = Smallest_index_DTI(tmp);
                 tableau[i] = tmp[index];
 
-                // TODO supprimer l'élément du tableau 
                 tmp[index].EarliestDate = DateTime.MaxValue;
-                
+
             }
 
             return tableau;

@@ -34,7 +34,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             string[][] consommableQuantity = { tableau1, tableau2 };
 
 
-            DateTime starting_hour = DateTime.Now; //TODO bug il faut retirer ou corriger les structs
+            DateTime starting_hour = DateTime.Now;
             string next_step = "2";
 
             OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, setTank, numberProduct1, consommableQuantity);
@@ -90,7 +90,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             string[][] consommableQuantity = { tableau1, tableau2 };
 
 
-            DateTime starting_hour = DateTime.Now; //TODO bug il faut retirer ou corriger les structs
+            DateTime starting_hour = DateTime.Now;
             string next_step = "2";
 
             OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, setTank, numberProduct1, consommableQuantity);
@@ -104,7 +104,6 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
             Heuristic heuristic = new();
 
-            // TODO A terminer 
             OFs1 = heuristic.SortCrescentDtiCrescentDli(OFs1);
 
             Assert.AreEqual(OFs1[0].EarliestDate, OF1.EarliestDate);
@@ -123,7 +122,6 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             Assert.AreEqual(OFs3[0].EarliestDate, OF1.EarliestDate);
             Assert.AreEqual(OFs3[1].EarliestDate, OF2.EarliestDate);
             Assert.AreEqual(OFs3[2].EarliestDate, OF3.EarliestDate);
-
         }
     }
 }

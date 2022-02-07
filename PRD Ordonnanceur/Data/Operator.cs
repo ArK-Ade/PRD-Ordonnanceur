@@ -2,7 +2,7 @@
 
 namespace PRD_Ordonnanceur.Data
 {
-    class Operator
+    public class Operator
     {
         private DateTime beginning;
 
