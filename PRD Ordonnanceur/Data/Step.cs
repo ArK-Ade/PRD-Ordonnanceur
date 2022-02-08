@@ -12,15 +12,10 @@ namespace PRD_Ordonnanceur.Data
     public class Step
     {
         private int idStep;
-
         private TypeMachine typeMachineNeeded;
-
         private Duration duration;
-
         private Operator[] setOperatorAvailable;
-
         private DateTime durationMaxNextStep;
-
         private bool nextStepReportable;
 
         public Step() { }

@@ -3,7 +3,6 @@
     public class Tank
     {
         private int idTank;
-
         private int typeTank;
 
         public Tank()

@@ -5,21 +5,13 @@ namespace PRD_Ordonnanceur.Data
     public class OF
     {
         private int idOF;
-
         private DateTime starting_hour;
-
         private string next_step;
-
         private Step[] stepSequence; 
-
         private DateTime earliestDate;
-
         private DateTime latestDate; 
-
         private Tank[] setTank; 
-
         private string numberProduct; 
-
         private string[][] consommableQuantity;
 
         public OF() { }

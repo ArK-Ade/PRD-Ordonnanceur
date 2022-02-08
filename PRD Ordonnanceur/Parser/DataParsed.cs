@@ -1,14 +1,15 @@
 ﻿using PRD_Ordonnanceur.Data;
+using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Parser
 {
     public class DataParsed
     {
-        private OF[] oFs;
-        private Consumable[] consummables;
-        private Machine[] machine;
-        private Tank[] tanks;
-        private Operator[] operators;
+        private List<OF> oFs;
+        private List<Consumable> consummables;
+        private List<Machine> machine;
+        private List<Tank> tanks;
+        private List<Operator> operators;
 
         public DataParsed() 
         { 
@@ -17,7 +18,7 @@ namespace PRD_Ordonnanceur.Parser
 
         }
 
-        public DataParsed(OF[] oFs, Consumable[] consummables, Machine[] machine, Tank[] tanks, Operator[] operators)
+        public DataParsed(List<OF> oFs, List<Consumable> consummables, List<Machine> machine, List<Tank> tanks, List<Operator> operators)
         {
             this.OFs = oFs;
             this.Consummables = consummables;
@@ -26,10 +27,10 @@ namespace PRD_Ordonnanceur.Parser
             this.Operators = operators;
         }
 
-        public OF[] OFs { get => oFs; set => oFs = value; }
-        public Consumable[] Consummables { get => consummables; set => consummables = value; }
-        public Tank[] Tanks { get => tanks; set => tanks = value; }
-        public Operator[] Operators { get => operators; set => operators = value; }
-        internal Machine[] Machine { get => machine; set => machine = value; }
+        public List<OF> OFs { get => oFs; set => oFs = value; }
+        public List<Consumable> Consummables { get => consummables; set => consummables = value; }
+        public List<Machine> Machine { get => machine; set => machine = value; }
+        public List<Tank> Tanks { get => tanks; set => tanks = value; }
+        public List<Operator> Operators { get => operators; set => operators = value; }
     }
 }

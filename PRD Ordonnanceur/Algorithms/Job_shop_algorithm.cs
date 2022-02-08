@@ -1,25 +1,31 @@
 ﻿using PRD_Ordonnanceur.Data;
+using PRD_Ordonnanceur.Parser;
 using PRD_Ordonnanceur.Solution;
 using System;
+using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
     public class Job_shop_algorithm
     {
-
+        private DataParsed data;
         private Available available;
+        private List<SolutionPlanning> plannings = new();
         private SolutionPlanning solutionPlanning;
 
         public Job_shop_algorithm()
         {
-            solutionPlanning.InitPlanning();
         }
 
         public Job_shop_algorithm(Available available, SolutionPlanning solutionPlanning)
         {
             this.available = available;
-            this.solutionPlanning = solutionPlanning;
+            this.SolutionPlanning = solutionPlanning;
         }
+
+        public DataParsed DataParsed { get => data; set => data = value; }
+        public List<SolutionPlanning> Plannings { get => plannings; set => plannings = value; }
+        public SolutionPlanning SolutionPlanning { get => solutionPlanning; set => solutionPlanning = value; }
 
         // TODO Initialisation des plannings
 
@@ -30,18 +36,18 @@ namespace PRD_Ordonnanceur.Algorithms
             Tank[] tankAvailable = null;
 
             // Recherche des opérateurs disponibles
-            Operator[] operatorAvailableStep = available.findOperatorForTank(solutionPlanning.PlanningOperator);
+            List<Operator> operatorAvailableStep = available.findOperatorForStep(SolutionPlanning.PlanningOperator, DataParsed.Operators, time, step.TypeMachineNeeded);
 
-            Machine[] machineAvailable = available.findMachineForStep(solutionPlanning.PlanningMachine);
+            Machine[] machineAvailable = available.findMachineForStep(SolutionPlanning.PlanningMachine);
 
             if (firstime)
             {
-                tankAvailable = available.findTankForStep(solutionPlanning.PlanningTank);
+                tankAvailable = available.findTankForStep(SolutionPlanning.PlanningTank);
             }
 
-            Operator[] operatorAvailableTank = available.findOperatorForTank(solutionPlanning.PlanningOperator);
+            Operator[] operatorAvailableTank = available.findOperatorForTank(SolutionPlanning.PlanningOperator);
 
-            Consumable[] consomableAvailable = available.findConsoForStep(solutionPlanning.PlanningCons);
+            Consumable[] consomableAvailable = available.findConsoForStep(SolutionPlanning.PlanningCons);
 
             // Determiner comment noter que des operateurs sont en train de travailler
             // Il faut regarder dans le planning si les opérateurs sont disponibles
@@ -81,6 +87,8 @@ namespace PRD_Ordonnanceur.Algorithms
         {
             int nbCteMaxViole = 0;
             bool firstime = false;
+            
+            SolutionPlanning planningAujourd = new();
 
             foreach (OF oF in oFs)
             {
@@ -116,7 +124,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 // Changer l'heure
 
                 // Nettoyage de la cuve
-                Operator[] operatorAvailable = available.findOperatorForTank(solutionPlanning.PlanningOperator);
+                Operator[] operatorAvailable = available.findOperatorForTank(SolutionPlanning.PlanningOperator);
             }
         }
     }

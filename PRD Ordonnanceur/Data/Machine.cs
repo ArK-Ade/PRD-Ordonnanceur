@@ -19,13 +19,9 @@ namespace PRD_Ordonnanceur.Data
     public class Machine
     {
         private int id;
-
         private TypeMachine _TypeMachine;
-
         private Calendar calendar;
-
         private DateTime duration_cleaning;
-
         private Operator[] operator_available_cleaning;
 
         public Machine() { }
