@@ -28,7 +28,7 @@ namespace PRD_Ordonnanceur.Data
 
         public Machine(TypeMachine typeMachine, Calendar calendar, DateTime duration_cleaning, Operator[] operator_available_cleaning, int id)
         {
-            _TypeMachine = typeMachine;
+            TypeMachine1 = typeMachine;
             this.calendar = calendar;
             this.duration_cleaning = duration_cleaning;
             this.operator_available_cleaning = operator_available_cleaning;
@@ -37,12 +37,13 @@ namespace PRD_Ordonnanceur.Data
 
         public TypeMachine TypeMachine
         {
-            get => _TypeMachine;
-            set => _TypeMachine = value;
+            get => TypeMachine1;
+            set => TypeMachine1 = value;
         }
         public Calendar Calendar { get => calendar; set => calendar = value; }
         public DateTime Duration_cleaning { get => duration_cleaning; set => duration_cleaning = value; }
         public Operator[] Operator_available_cleaning { get => operator_available_cleaning; set => operator_available_cleaning = value; }
         public int Id { get => id; set => id = value; }
+        public TypeMachine TypeMachine1 { get => _TypeMachine; set => _TypeMachine = value; }
     }
 }
