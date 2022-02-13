@@ -9,9 +9,9 @@ namespace PRD_Ordonnanceur.Algorithms
     public class Job_shop_algorithm
     {
         private DataParsed data;
-        private Available available;
+        private Available availableAlgorithm;
         private List<SolutionPlanning> plannings = new();
-        private SolutionPlanning solutionPlanning;
+        private SolutionPlanning solutionPlanning = new();
 
         public Job_shop_algorithm()
         {
@@ -19,78 +19,97 @@ namespace PRD_Ordonnanceur.Algorithms
 
         public Job_shop_algorithm(Available available, SolutionPlanning solutionPlanning)
         {
-            this.available = available;
+            this.AvailableAlgorithm = available;
             this.SolutionPlanning = solutionPlanning;
         }
 
         public DataParsed DataParsed { get => data; set => data = value; }
         public List<SolutionPlanning> Plannings { get => plannings; set => plannings = value; }
         public SolutionPlanning SolutionPlanning { get => solutionPlanning; set => solutionPlanning = value; }
+        public Available AvailableAlgorithm { get => availableAlgorithm; set => availableAlgorithm = value; }
 
         // TODO Initialisation des plannings
 
 
-        // TODO A finir
-        public Object[,] Search_Ressources(DateTime time, Step step, bool firstime)
+        /// <summary>
+        /// It searchs the ressources necessery for the algorythm
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="step"></param>
+        /// <param name="firstStep"></param>
+        /// <returns></returns>
+        public List<Object> Search_Ressources(DateTime time, Step step, bool firstStep)
         {
-            Tank[] tankAvailable = null;
+            List<Tank> tankAvailable = null;
 
-            // Recherche des opérateurs disponibles
-            List<Operator> operatorAvailableStep = available.findOperatorForStep(SolutionPlanning.PlanningOperator, DataParsed.Operators, time, step.TypeMachineNeeded);
+            // Recherche des ressouces disponibles
+            List<Operator> operatorAvailableStep = AvailableAlgorithm.FindOperatorForStep(SolutionPlanning.PlanningOperator, DataParsed.Operators, time, step.TypeMachineNeeded);
 
-            Machine[] machineAvailable = available.findMachineForStep(SolutionPlanning.PlanningMachine);
+            List<Machine> machineAvailable = AvailableAlgorithm.FindMachineForStep(SolutionPlanning.PlanningMachine,DataParsed.Machine,time,step.TypeMachineNeeded);
 
-            if (firstime)
+            if (firstStep)
             {
-                tankAvailable = available.findTankForStep(SolutionPlanning.PlanningTank);
+                tankAvailable = AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank,DataParsed.Tanks,time);
             }
 
-            Operator[] operatorAvailableTank = available.findOperatorForTank(SolutionPlanning.PlanningOperator);
+            List<Operator> operatorAvailableTank = AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator,DataParsed.Operators,time);
 
-            Consumable[] consomableAvailable = available.findConsoForStep(SolutionPlanning.PlanningCons);
+            List<Consumable> consomableAvailable = AvailableAlgorithm.FindConsoForStep(SolutionPlanning.PlanningCons,DataParsed.Consummables,time,step.ConsumableUsed,step.QuantityConsumable);
 
-            // Determiner comment noter que des operateurs sont en train de travailler
-            // Il faut regarder dans le planning si les opérateurs sont disponibles
 
-            foreach (Operator op in operatorAvailableStep)
+            // Si une des ressources est indisponible on passe 5 minutes plus tard
+            if (operatorAvailableStep == null ||
+                machineAvailable == null ||
+                operatorAvailableTank == null ||
+                consomableAvailable == null)
             {
-
+                return Search_Ressources(time.AddMinutes(5.0), step, firstStep);
             }
 
-            foreach (Operator op in operatorAvailableTank)
+            List<Object> listRessourcesAvailable = new();
+
+            // On choisit la premiere ressource de chaque liste
+            listRessourcesAvailable.Add(operatorAvailableStep[0]);
+            listRessourcesAvailable.Add(operatorAvailableTank[0]);
+            listRessourcesAvailable.Add(machineAvailable[0]);
+            listRessourcesAvailable.Add(consomableAvailable[0]);
+
+            if (firstStep)
             {
-
+                listRessourcesAvailable.Add(tankAvailable[0]);
             }
-
-            foreach (Machine machine in machineAvailable)
-            {
-
-            }
-
-            foreach (Consumable conso in consomableAvailable)
-            {
-
-            }
-
             
-            foreach (Tank tank in tankAvailable)
-            {
-
-            }
-
-
-
-            return ojet;
+            // On renvoie une liste d'objet contenant toutes les ressources
+            return listRessourcesAvailable;
         }
 
-        public void Step_algorithm(OF[] oFs, DateTime time, Operator[] operators)
+        public void ScheduleStep(List<Object> ressourceList)
+        {
+            // Planification Operateur
+
+            // Planification OperateurTank
+
+            // Planification Machine
+
+            // Planification Consommable
+
+            // Planification Tank
+        }
+
+        /// <summary>
+        /// Algorithm who planify the ressources
+        /// </summary>
+        /// <param name="oFs"></param>
+        /// <param name="BeginningDate"></param>
+        /// <param name="operators"></param>
+        public void Step_algorithm(DateTime BeginningDate, DateTime timeNow)
         {
             int nbCteMaxViole = 0;
-            bool firstime = false;
+            bool firstStep = false;
             
             SolutionPlanning planningAujourd = new();
 
-            foreach (OF oF in oFs)
+            foreach (OF oF in DataParsed.OFs)
             {
                 DateTime dti;
 
@@ -103,28 +122,25 @@ namespace PRD_Ordonnanceur.Algorithms
                     dti = oF.Starting_hour;
                 }
 
-
                 foreach (Step step in oF.StepSequence)
                 {
 
                     if (step == oF.StepSequence[0])
                     {
-                        firstime = true;
+                        firstStep = true;
                     }
 
-                    Object[,] resultat = Search_Ressources(time, step, firstime);
+                    List<Object> resultat = Search_Ressources(BeginningDate, step, firstStep);
 
-                    if ((DateTime)resultat[1, 1] > time)
+                    if ((DateTime)resultat[0] > BeginningDate)
                         nbCteMaxViole++;
 
                     // Panifier l'étape courante a t'
-
+                    ScheduleStep(resultat);
                 }
 
-                // Changer l'heure
-
                 // Nettoyage de la cuve
-                Operator[] operatorAvailable = available.findOperatorForTank(SolutionPlanning.PlanningOperator);
+                List<Operator> operatorAvailable = AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator,DataParsed.Operators,timeNow);
             }
         }
     }

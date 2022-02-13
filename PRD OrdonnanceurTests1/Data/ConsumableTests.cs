@@ -1,6 +1,7 @@
 ﻿using PRD_Ordonnanceur.Data;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data.Tests
 {
@@ -14,7 +15,7 @@ namespace PRD_Ordonnanceur.Data.Tests
             int expectedQuantity = 5;
             DateTime expectedDelaySupply = DateTime.Now.Date;
 
-            Object[] calendar = { "hello" };
+            List<Object> calendar = new();
             Consumable _consumable = new Consumable(1, 5, calendar, DateTime.Now.Date);
 
             Assert.AreEqual(expectedId, _consumable.Id);

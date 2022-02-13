@@ -7,8 +7,7 @@ namespace PRD_Ordonnanceur.Algorithms
 {
     public class Available
     {
-        // TODO terminer cette fonction
-        public List<Operator> findOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
+        public List<Operator> FindOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
         {
             if(planningOperator.Count == 0)
                 return listOperator;
@@ -58,7 +57,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
         }
 
-        public List<Operator> findOperatorForStep(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow, TypeMachine Competence)
+        public List<Operator> FindOperatorForStep(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow, TypeMachine Competence)
         {
             int count = 0;
 
@@ -118,7 +117,7 @@ namespace PRD_Ordonnanceur.Algorithms
             return listOperatorAvailable;
         }
 
-        public List<Machine> findMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime timeNow, TypeMachine typeMachine)
+        public List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime timeNow, TypeMachine typeMachine)
         {
             int count = 0;
 
@@ -171,16 +170,53 @@ namespace PRD_Ordonnanceur.Algorithms
             return listMachineAvailable;
         }
 
-        public Tank[] findTankForStep(object[,] tanks)
+        public List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime timeNow)
         {
-            Tank[] operatorss = new Tank[2];
+            int count = 0;
 
-            return operatorss;
+            foreach (List<Object> list in planningTank)
+            {
+                count += list.Count;
+            }
+
+            if (count == 0)
+                return listTank;
+            else if (planningTank.Count == 0)
+                return null;
+
+            List<Tank> listTankAvailable = listTank;
+
+            foreach (List<Object> list in planningTank)
+            {
+                // On retire tous les opérateurs indisponibles sur le temps
+                if (list[2] is DateTime)
+                {
+                    if (timeNow <= (DateTime)list[2])
+                    {
+
+                        // On supprime l'operateur de la liste available
+                        int id = (int)list[0];
+                        int count2 = 0;
+                        int index = -1;
+                        foreach (Tank op in listTankAvailable)
+                        {
+                            if (op.IdTank == id)
+                            {
+                                index = count2;
+                            }
+                            count2++;
+                        }
+                        listTankAvailable.RemoveAt(index);
+                    }
+                }
+            }
+
+            return listTankAvailable;
         }
 
-        public Consumable[] findConsoForStep(object[,] consomables)
+        public List<Consumable> FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, Consumable consumable,int quantity)
         {
-            Consumable[] operatorss = new Consumable[2];
+            List<Consumable> operatorss = new();
 
             return operatorss;
         }
