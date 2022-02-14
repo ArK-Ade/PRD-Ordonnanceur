@@ -4,9 +4,20 @@ namespace PRD_Ordonnanceur.Data
 {
     public struct Duration
     {
-        DateTime DurationBeforeOp;
-        DateTime DurationAfterOp;
-        DateTime DurationOp;
+        TimeSpan durationBeforeOp;
+        TimeSpan durationAfterOp;
+        TimeSpan durationOp;
+
+        public Duration(TimeSpan durationBeforeOp, TimeSpan durationAfterOp, TimeSpan durationOp)
+        {
+            this.durationBeforeOp = durationBeforeOp;
+            this.durationAfterOp = durationAfterOp;
+            this.durationOp = durationOp;
+        }
+
+        public TimeSpan DurationBeforeOp { get => durationBeforeOp; set => durationBeforeOp = value; }
+        public TimeSpan DurationAfterOp { get => durationAfterOp; set => durationAfterOp = value; }
+        public TimeSpan DurationOp { get => durationOp; set => durationOp = value; }
     }
 
     public class Step

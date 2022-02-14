@@ -220,5 +220,11 @@ namespace PRD_Ordonnanceur.Algorithms
 
             return operatorss;
         }
+
+        public TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)
+        {
+
+            return TimeSpan.MinValue;
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace PRD_Ordonnanceur.Data
         private DateTime latestDate;
         private List<Tank> setTank;
         private string numberProduct;
-        private List<List<string>> consommableQuantity;
+        private List<List<string>> consommableQuantity; // TODO surement supprimer cette fonction
 
         public OF() { }
 
