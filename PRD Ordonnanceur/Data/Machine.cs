@@ -11,9 +11,22 @@ namespace PRD_Ordonnanceur.Data
 
     public struct Calendar
     {
-        public DateTime day;
-        public DateTime beginning_hour;
-        public DateTime finishing_hour;
+        private DateTime day;
+        private DateTime beginning_hour;
+        private DateTime finishing_hour;
+
+        public Calendar(DateTime day, DateTime beginning_hour, DateTime finishing_hour)
+        {
+            this.day = day;
+            this.beginning_hour = beginning_hour;
+            this.finishing_hour = finishing_hour;
+        }
+
+        public DateTime Day { get => day; set => day = value; }
+        public DateTime Beginning_hour { get => beginning_hour; set => beginning_hour = value; }
+        public DateTime Finishing_hour { get => finishing_hour; set => finishing_hour = value; }
+
+ 
     }
 
     public class Machine
@@ -22,16 +35,14 @@ namespace PRD_Ordonnanceur.Data
         private TypeMachine _TypeMachine;
         private Calendar calendar;
         private TimeSpan duration_cleaning;
-        private Operator[] operator_available_cleaning;
 
         public Machine() { }
 
-        public Machine(TypeMachine typeMachine, Calendar calendar, TimeSpan duration_cleaning, Operator[] operator_available_cleaning, int id)
+        public Machine(TypeMachine typeMachine, Calendar calendar, TimeSpan duration_cleaning, int id)
         {
             TypeMachine1 = typeMachine;
             this.calendar = calendar;
             this.Duration_cleaning = duration_cleaning;
-            this.operator_available_cleaning = operator_available_cleaning;
             this.Id = id;
         }
 
@@ -42,7 +53,6 @@ namespace PRD_Ordonnanceur.Data
         }
         public Calendar Calendar { get => calendar; set => calendar = value; }
 
-        public Operator[] Operator_available_cleaning { get => operator_available_cleaning; set => operator_available_cleaning = value; }
         public int Id { get => id; set => id = value; }
         public TypeMachine TypeMachine1 { get => _TypeMachine; set => _TypeMachine = value; }
         public TimeSpan Duration_cleaning { get => duration_cleaning; set => duration_cleaning = value; }

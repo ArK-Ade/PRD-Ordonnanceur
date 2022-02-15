@@ -3,18 +3,19 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
+
+    // TODO Prendre en compte le calendrier cad les ouvriers ne travaille surement pas le weekend
     public class Operator
     {
         private uint id;
         List<TypeMachine> machineSkill;
-        //List<string> machineUsable;
         private DateTime beginning;
         private DateTime end;
-        private Object[] calendar;
+        private List<Object> calendar;
 
         public Operator() { }
 
-        public Operator(DateTime beginning, DateTime end, object[] calendar, uint id, List<TypeMachine> machineSkill)
+        public Operator(DateTime beginning, DateTime end, List<Object> calendar, uint id, List<TypeMachine> machineSkill)
         {
             this.beginning = beginning;
             this.end = end;
@@ -25,7 +26,7 @@ namespace PRD_Ordonnanceur.Data
 
         public DateTime Beginning { get => beginning; set => beginning = value; }
         public DateTime End { get => end; set => end = value; }
-        public object[] Calendar { get => calendar; set => calendar = value; }
+        public List<Object> Calendar { get => calendar; set => calendar = value; }
         public uint Id { get => id; set => id = value; }
         public List<TypeMachine> MachineSkill { get => machineSkill; set => machineSkill = value; }
     }

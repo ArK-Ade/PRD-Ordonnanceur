@@ -7,6 +7,7 @@ namespace PRD_Ordonnanceur.Algorithms
 {
     public class Available
     {
+        // TODO Vérifier qu'il ne faut pas de compétences pour nettoyer une cuve
         public List<Operator> FindOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
         {
             if(planningOperator.Count == 0)
@@ -57,6 +58,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
         }
 
+        // TODO Faire en sorte de prendre en compte la durée de travail a faire TimeSpan
         public List<Operator> FindOperatorForStep(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow, TypeMachine Competence)
         {
             int count = 0;
@@ -116,7 +118,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             return listOperatorAvailable;
         }
-
+        
         public List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime timeNow, TypeMachine typeMachine)
         {
             int count = 0;
@@ -214,6 +216,7 @@ namespace PRD_Ordonnanceur.Algorithms
             return listTankAvailable;
         }
 
+        // TODO Terminer la fonction
         public List<Consumable> FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, Consumable consumable,int quantity)
         {
             List<Consumable> operatorss = new();
@@ -226,5 +229,6 @@ namespace PRD_Ordonnanceur.Algorithms
 
             return TimeSpan.MinValue;
         }
+
     }
 }

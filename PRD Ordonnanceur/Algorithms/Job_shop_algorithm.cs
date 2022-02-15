@@ -41,16 +41,16 @@ namespace PRD_Ordonnanceur.Algorithms
         /// </summary>
         /// <param name="time"></param>
         /// <param name="step"></param>
-        /// <param name="firstStep"></param>
+        /// <param name="lastStep"></param>
         /// <returns></returns>
-        public List<Object> Search_Ressources(DateTime time, Step step, bool firstStep)
+        public List<Object> Search_Ressources(DateTime time, Step step, bool lastStep)
         {
             // Recherche des ressouces disponibles
 
             // S'il s'agit de la premiere étape, on recherche une cuve pour l'OF
             List<Tank> tankAvailable = null;
 
-            if (firstStep)
+            if (lastStep)
                 tankAvailable = AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, time);
 
             // TODO Rechercher les opérateurs pour durée avant et après étape + nettoyage machine
@@ -65,7 +65,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 operatorAvailableTank == null ||
                 consomableAvailable == null)
             {
-                return Search_Ressources(time.AddMinutes(5.0), step, firstStep);
+                return Search_Ressources(time.AddMinutes(5.0), step, lastStep);
             }
 
             List<Object> listRessourcesAvailable = new();
@@ -76,7 +76,7 @@ namespace PRD_Ordonnanceur.Algorithms
             listRessourcesAvailable.Add(machineAvailable[0]);
             listRessourcesAvailable.Add(consomableAvailable[0]);
 
-            if (firstStep)
+            if (lastStep)
             {
                 listRessourcesAvailable.Add(tankAvailable[0]);
             }
@@ -183,7 +183,7 @@ namespace PRD_Ordonnanceur.Algorithms
             listConsumable.Add(dayTime);
             listMachine.Add(step.ConsumableUsed);
 
-            solutionPlanning.PlanningCons.Add(listConsumable);
+            solutionPlanning.PlanningCons.Add(listConsumable); // TODO Attention contrainte quantité negatif
 
             return solutionPlanning;
         }
