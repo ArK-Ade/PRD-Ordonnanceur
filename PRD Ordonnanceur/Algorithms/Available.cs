@@ -217,11 +217,23 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         // TODO Terminer la fonction
-        public List<Consumable> FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, Consumable consumable,int quantity)
+        public bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, Consumable consumable,int quantity)
         {
-            List<Consumable> operatorss = new();
+            // On recherche dans le planning la quantité restante de consommable restant
+            bool enoughRessources = false;
 
-            return operatorss;
+            // On retourne 
+            List<Consumable> consumables = new();
+
+            foreach(List<Object> list in planningConso)
+            {
+                if((int) list[0] == consumable.Id && (int) list[1] >= quantity)
+                {
+                    enoughRessources = true;
+                }
+            }
+
+            return enoughRessources;
         }
 
         public TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)

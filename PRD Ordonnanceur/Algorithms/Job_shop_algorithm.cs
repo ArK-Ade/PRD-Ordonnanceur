@@ -57,15 +57,15 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Operator> operatorAvailableStep = AvailableAlgorithm.FindOperatorForStep(SolutionPlanning.PlanningOperator, DataParsed.Operators, time, step.TypeMachineNeeded);
             List<Machine> machineAvailable = AvailableAlgorithm.FindMachineForStep(SolutionPlanning.PlanningMachine,DataParsed.Machine,time,step.TypeMachineNeeded);
             List<Operator> operatorAvailableTank = AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator,DataParsed.Operators,time);
-            List<Consumable> consomableAvailable = AvailableAlgorithm.FindConsoForStep(SolutionPlanning.PlanningCons,DataParsed.Consummables,time,step.ConsumableUsed,step.QuantityConsumable);
+            bool consomableAvailable = AvailableAlgorithm.FindConsoForStep(SolutionPlanning.PlanningCons,DataParsed.Consummables,time,step.ConsumableUsed,step.QuantityConsumable);
 
             // Si une des ressources est indisponible on passe 5 minutes plus tard
             if (operatorAvailableStep == null ||
                 machineAvailable == null ||
                 operatorAvailableTank == null ||
-                consomableAvailable == null)
+                consomableAvailable == false)
             {
-                return Search_Ressources(time.AddMinutes(5.0), step, lastStep);
+                return Search_Ressources(time.AddMinutes(5.0), step, lastStep); // TODO Dans le cas des consommables repoussez au jour suivant
             }
 
             List<Object> listRessourcesAvailable = new();
@@ -74,7 +74,7 @@ namespace PRD_Ordonnanceur.Algorithms
             listRessourcesAvailable.Add(operatorAvailableStep[0]);
             listRessourcesAvailable.Add(operatorAvailableTank[0]);
             listRessourcesAvailable.Add(machineAvailable[0]);
-            listRessourcesAvailable.Add(consomableAvailable[0]);
+            listRessourcesAvailable.Add(consomableAvailable);
 
             if (lastStep)
             {
