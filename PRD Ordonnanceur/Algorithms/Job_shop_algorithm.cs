@@ -45,9 +45,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <returns></returns>
         public List<Object> Search_Ressources(DateTime time, Step step, bool lastStep)
         {
-            // Recherche des ressouces disponibles
-
-            // S'il s'agit de la premiere étape, on recherche une cuve pour l'OF
+            // S'il s'agit de la dernière étape, on recherche une cuve pour l'OF
             List<Tank> tankAvailable = null;
 
             if (lastStep)
@@ -65,7 +63,15 @@ namespace PRD_Ordonnanceur.Algorithms
                 operatorAvailableTank == null ||
                 consomableAvailable == false)
             {
-                return Search_Ressources(time.AddMinutes(5.0), step, lastStep); // TODO Dans le cas des consommables repoussez au jour suivant
+                return Search_Ressources(time.AddMinutes(5.0), step, lastStep);
+            }
+            if(consomableAvailable == false){
+
+                while(time.Hour != data.Operators[0].Beginning.Hour)
+                {
+                    time.AddMinutes(5.0);
+                }
+                return Search_Ressources(time, step, lastStep);
             }
 
             List<Object> listRessourcesAvailable = new();
@@ -190,26 +196,33 @@ namespace PRD_Ordonnanceur.Algorithms
 
         /// <summary>
         /// Algorithm who planify the ressources
+        /// $
+        /// 
+        /// 
+        /// 
         /// </summary>
         /// <param name="oFs"></param>
         /// <param name="BeginningDate"></param>
         /// <param name="operators"></param>
-        public void Step_algorithm(DateTime BeginningDate, DateTime timeNow)
+        public void Step_algorithm(DateTime BeginningDate, DateTime time)
         {
             int nbCteMaxViole = 0;
-            bool firstStep = false;
+            bool lastStep = false;
 
             int countOF = -1;
+            int countStep = 0;
             OF ofBefore = null;
-            
+            DateTime currentTime = time;
+            List<Object> resultRessources;
+
             SolutionPlanning planningAujourd = new();
 
             foreach (OF oF in DataParsed.OFs)
             {
                 if(countOF <= 0)
                     ofBefore = DataParsed.OFs[countOF];
-                DateTime dti;
 
+                DateTime dti;
 
                 if (oF.Starting_hour == DateTime.MinValue)
                 {
@@ -222,24 +235,23 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 foreach (Step step in oF.StepSequence)
                 {
-
-                    if (step == oF.StepSequence[0])
+                    if (oF.StepSequence[countStep+1] == null)
                     {
-                        firstStep = true;
+                        lastStep = true;
                     }
 
-                    List<Object> resultat = Search_Ressources(BeginningDate, step, firstStep);
+                    resultRessources = Search_Ressources(currentTime, step, lastStep);
 
-                    if ((DateTime)resultat[0] > BeginningDate)
+                    if ((DateTime)resultRessources[0] > oF.LatestDate)
                         nbCteMaxViole++;
 
                     // Panifier l'étape courante a t'
-                    planningAujourd = ScheduleStep(resultat,planningAujourd,timeNow,oF,step,false,ofBefore);
+                    planningAujourd = ScheduleStep(resultRessources,planningAujourd,time,oF,step,false,ofBefore);
+
+                    currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp);
+                    countStep++;
                 }
-
-                // Nettoyage de la cuve
-                List<Operator> operatorAvailable = AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator,DataParsed.Operators,timeNow);
-
+                countStep = 0;
                 countOF++;
             }
         }
