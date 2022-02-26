@@ -6,7 +6,8 @@ namespace PRD_Ordonnanceur.Data
     {
         blender,
         Mixer,
-        disperser
+        disperser,
+        cleaning
     };
 
     public struct Calendar

@@ -7,7 +7,6 @@ namespace PRD_Ordonnanceur.Algorithms
 {
     public class Available
     {
-        // TODO Vérifier qu'il ne faut pas de compétences pour nettoyer une cuve
         public List<Operator> FindOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
         {
             if(planningOperator.Count == 0)
@@ -58,8 +57,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
         }
 
-        // TODO Faire en sorte de prendre en compte la durée de travail a faire TimeSpan
-        public List<Operator> FindOperatorForStep(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow, TypeMachine Competence)
+        public List<Operator> FindOperator(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime beginningTimeOfOperation, TypeMachine Competence)
         {
             int count = 0;
 
@@ -70,7 +68,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             if (count == 0)
                 return listOperator;
-            else if (listOperator.Count == 0)
+            else if (listOperator.Count == 0) // TODO Retourne une erreur try catch a faire
                 return null;
 
             List<Operator> listOperatorAvailable = listOperator;
@@ -80,7 +78,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 // On retire tous les opérateurs indisponibles sur le temps
                 if (list[2] is DateTime)
                 {
-                    if(timeNow <= (DateTime)list[2])
+                    if(beginningTimeOfOperation <= (DateTime)list[2])
                     {
 
                         // On supprime l'operateur de la liste available
@@ -216,7 +214,7 @@ namespace PRD_Ordonnanceur.Algorithms
             return listTankAvailable;
         }
 
-        // TODO Terminer la fonction
+        // TODO changer les consommables pour plusieurs consommables
         public bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, Consumable consumable,int quantity)
         {
             // On recherche dans le planning la quantité restante de consommable restant
