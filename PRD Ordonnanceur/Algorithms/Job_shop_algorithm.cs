@@ -86,6 +86,7 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Object> listRessourcesAvailable = new();
 
             // On choisit la premiere ressource de chaque liste
+            listRessourcesAvailable.Add(time + step.Duration.DurationBeforeOp + step.Duration.DurationOp + step.Duration.DurationAfterOp);
             listRessourcesAvailable.Add(operatorAvailableBeforeOp[0]);
             listRessourcesAvailable.Add(operatorAvailableAfterOp[0]);
             listRessourcesAvailable.Add(operatorAvailableCleaning[0]);
@@ -215,15 +216,10 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="oFs"></param>
         /// <param name="BeginningDate"></param>
         /// <param name="operators"></param>
-        public void Step_algorithm(DateTime time)
+        public int Step_algorithm(DateTime time)
         {
             int nbCteMaxViole = 0; // Il s'agit d'une constante qui va nous permettre de savoir le nombre de contraintes violés et permettra de comparer des heuristics
             bool lastStep = false;
-
-            // TODO faire en sorte de faire solution1 et solutionbis
-            // il faut effacer l'un des deux lorsqu'il faut tout replanifier
-
-            // Prendre en compte les OFs en Cours
 
             // S'il on trouve dans un weekend on passe un jour
             while (time.DayOfWeek == DayOfWeek.Saturday || time.DayOfWeek == DayOfWeek.Sunday)
@@ -234,6 +230,7 @@ namespace PRD_Ordonnanceur.Algorithms
             OF ofBefore = null;
             DateTime currentTime = time;
             List<Object> resultRessources;
+            bool OFinProgress = false;
 
             SolutionPlanning planningAujourd = new();
 
@@ -248,6 +245,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 DateTime dti = DateTime.MaxValue;
 
+                // On regarde si l'OF est en cours
                 if (oF.Starting_hour == DateTime.MinValue)
                 {
                     dti = oF.EarliestDate;
@@ -255,17 +253,33 @@ namespace PRD_Ordonnanceur.Algorithms
                 else
                 {
                     dti = oF.Starting_hour;
+                    OFinProgress = true;
                 }
 
                 // Prend en compte les jours au plus tot
-                while(dti.Day > currentTime.Day)
+                while(dti.Day > currentTime.Day || dti.Month > currentTime.Month)
                 {
-                    currentTime.AddDays(1);
+                    while (currentTime.Hour != data.Operators[0].Beginning.Hour)
+                        currentTime.AddMinutes(5); // TODO Changer a passer le jour d'apres a l'heure des employés
                 }
 
+                // Permet le reset de la loop
+                restart:
                 foreach (Step step in oF.StepSequence)
                 {
+                    // Si l'OF est en cours
+                    if(oF.StepSequence[countStep] == oF.StepSequence[oF.Next_step])
+                    {
+                        OFinProgress = false;
+                    }
 
+                    // Etape déja faite, on passe à l'étape suivante
+                    if(OFinProgress == true)
+                    {
+                        continue;
+                    }
+
+                    // On regarde s'il s'agit de la derniere etape
                     if (oF.StepSequence[countStep+1] == null)
                     {
                         lastStep = true;
@@ -274,26 +288,58 @@ namespace PRD_Ordonnanceur.Algorithms
                     // TODO gerer le cas ou on ne peux pas reserver les ressources aka Step non reportable
                     resultRessources = Search_Ressources(currentTime, step, lastStep);
 
-                    // Si on ne peux pas reserver des ressources, changer de jour et annuler la reservation de l'OF
-                    if(resultRessources == null)
+                    DateTime timeNeeded = (DateTime)resultRessources[0];
+
+                    // On arrive a la fin de la journée et l'étape est reportable
+                    if ((timeNeeded.Hour > data.Operators[0].End.Hour || timeNeeded.Minute > data.Operators[0].End.Minute) && step.NextStepReportable == true)
                     {
-                        planningAujourd = null;
-                        break;
+                        while (currentTime.Hour != data.Operators[0].Beginning.Hour)
+                            currentTime.AddMinutes(5);
+
+                        resultRessources = Search_Ressources(currentTime, step, lastStep);
                     }
 
-                    if ((DateTime)resultRessources[0] > oF.LatestDate)
+                    // on arrive a la fin de la journée et l'étape n'est pas reportable, on change de jour et on annuler la reservation de l'OF
+                    if ((timeNeeded.Hour > data.Operators[0].End.Hour || timeNeeded.Minute > data.Operators[0].End.Minute) && step.NextStepReportable == false)
+                    {
+                        planningAujourd = new();
+
+                        // Si on est au debut du jour on passe au jour suivant
+                        if (currentTime.Hour != data.Operators[0].Beginning.Hour)
+                        {
+                            currentTime.AddDays(1);
+                            goto restart;
+                        }
+
+                        // Sinon on passe au jour suivant a l'heure de debut d'un employé
+                        while (currentTime.Hour != data.Operators[0].Beginning.Hour)
+                            currentTime.AddMinutes(5);
+
+                        // On va au reset
+                        goto restart;
+                    }
+
+                    // Si on respecte pas la contrainte de jour au plus tard, on incrémente nbCteMaxViole
+                    if (timeNeeded.Day > oF.LatestDate.Day || timeNeeded.Month > oF.LatestDate.Month)
                         nbCteMaxViole++;
 
                     // Panifier l'étape courante a t'
                     planningAujourd = ScheduleStep(resultRessources,planningAujourd,currentTime,oF,step,false,ofBefore);
 
+                    // On ajoute le temps passé 
                     currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp);
                     countStep++;
                 }
+                // Mise a jour des compteurs
                 countStep = 0;
                 countOF++;
+
+                // Ajout de l'OF dans le planning
                 plannings.Add(planningAujourd);
+                planningAujourd = new();
             }
+
+            return nbCteMaxViole;
         }
     }
 }

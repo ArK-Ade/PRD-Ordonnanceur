@@ -239,6 +239,5 @@ namespace PRD_Ordonnanceur.Algorithms
 
             return TimeSpan.MinValue;
         }
-
     }
 }

@@ -28,7 +28,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             List<List<String>> consommableQuantity = new();
 
             DateTime starting_hour = DateTime.Now;
-            string next_step = "2";
+            int next_step = 2;
 
             OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, setTank, numberProduct1, consommableQuantity);
             OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, setTank, numberProduct2, consommableQuantity);
@@ -81,7 +81,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             List<List<String>> consommableQuantity = new();
 
             DateTime starting_hour = DateTime.Now;
-            string next_step = "2";
+            int next_step = 2;
 
             OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, setTank, numberProduct1, consommableQuantity);
             OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, setTank, numberProduct2, consommableQuantity);
