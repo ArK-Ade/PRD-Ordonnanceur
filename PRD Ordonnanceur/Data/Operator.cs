@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
-
-    // TODO Prendre en compte le calendrier cad les ouvriers ne travaille surement pas le weekend
     public class Operator
     {
         private uint id;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
@@ -29,12 +30,12 @@ namespace PRD_Ordonnanceur.Data
         private DateTime durationMaxNextStep;
         private bool nextStepReportable;
 
-        private Consumable consumableUsed;
-        private int quantityConsumable;
+        private List<Consumable> consumableUsed;
+        private List<int> quantityConsumable;
 
         public Step() { }
 
-        public Step(int idStep, TypeMachine typeMachineNeeded, Duration duration, Operator[] setOperatorAvailable, DateTime durationMaxNextStep, bool nextStepReportable, Consumable consumableUsed, int quantityConsumable)
+        public Step(int idStep, TypeMachine typeMachineNeeded, Duration duration, Operator[] setOperatorAvailable, DateTime durationMaxNextStep, bool nextStepReportable, List<Consumable> consumableUsed, List<int> quantityConsumable)
         {
             this.idStep = idStep;
             this.typeMachineNeeded = typeMachineNeeded;
@@ -52,7 +53,7 @@ namespace PRD_Ordonnanceur.Data
         public DateTime DurationMaxNextStep { get => durationMaxNextStep; set => durationMaxNextStep = value; }
         public bool NextStepReportable { get => nextStepReportable; set => nextStepReportable = value; }
         public Operator[] OperatorAvailable { get => setOperatorAvailable; set => setOperatorAvailable = value; }
-        public Consumable ConsumableUsed { get => consumableUsed; set => consumableUsed = value; }
-        public int QuantityConsumable { get => quantityConsumable; set => quantityConsumable = value; }
+        public List<Consumable> ConsumableUsed { get => consumableUsed; set => consumableUsed = value; }
+        public List<int> QuantityConsumable { get => quantityConsumable; set => quantityConsumable = value; }
     }
 }

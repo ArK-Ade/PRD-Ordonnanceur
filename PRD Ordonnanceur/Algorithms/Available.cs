@@ -73,14 +73,15 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Operator> listOperatorAvailable = listOperator;
 
+            // TODO Enlever les opérateurs indisponibles par leur heure de travail
+
             foreach (List<Object> list in planningOperator)
             {
-                // On retire tous les opérateurs indisponibles sur le temps
+                // On retire tous les opérateurs indisponibles sur le temps (planning)
                 if (list[2] is DateTime)
                 {
                     if(beginningTimeOfOperation <= (DateTime)list[2])
                     {
-
                         // On supprime l'operateur de la liste available
                         int id = (int)list[0];
                         int count2 = 0;
@@ -214,29 +215,60 @@ namespace PRD_Ordonnanceur.Algorithms
             return listTankAvailable;
         }
 
-        // TODO changer les consommables pour plusieurs consommables
-        public bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, Consumable consumable,int quantity)
+        public bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, List<Consumable> listConsumableNeeded, List<int> quantity)
         {
             // On recherche dans le planning la quantité restante de consommable restant
-            bool enoughRessources = false;
+            bool consumubleIsAvailable = true;
 
-            // On retourne 
-            List<Consumable> consumables = new();
-
-            foreach(List<Object> list in planningConso)
+            // Cas ou les list ne sont pas egaux
+            if(listConsumableNeeded.Count != quantity.Count)
             {
-                if((int) list[0] == consumable.Id && (int) list[1] >= quantity)
-                {
-                    enoughRessources = true;
-                }
+                return false; //  TODO  doit retourner une erreur 
             }
 
-            return enoughRessources;
+            List<int> quantityRemaining = new(listConsumableNeeded.Count);
+            int count = 0;
+
+            // Remplissable de quantityRemaining
+            foreach (Consumable consumable in listConsumableNeeded)
+            {
+                quantityRemaining[count] = consumable.QuantityAvailable;
+                count++;
+            }
+
+            count = 0;
+            
+            // Pour chaque jour du planning on enleve les consommables utilisés
+            foreach (List<Object> list in planningConso)
+            {
+                DateTime day = (DateTime) list[0];
+                int quantityUsed = (int) list[1];
+                int idConsumable = (int) list[2];
+                
+                foreach (Consumable consumable in listConsumableNeeded)
+                {
+                    if(consumable.Id == idConsumable)
+                    {
+                        quantityRemaining[count] -= quantityUsed;
+                    }
+                    count++;
+                }
+                count = 0;
+            }
+
+            // On verifie que les contraintes de quantités sont respectés
+            foreach(int quantityUsed in quantityRemaining)
+            {
+                if(quantityUsed < 0)
+                    consumubleIsAvailable = false;
+            }
+
+            return consumubleIsAvailable;
         }
 
+        // TODO Terminer la fonction si utiliser
         public TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)
         {
-
             return TimeSpan.MinValue;
         }
     }

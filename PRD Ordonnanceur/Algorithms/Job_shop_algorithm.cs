@@ -109,10 +109,10 @@ namespace PRD_Ordonnanceur.Algorithms
             String code = "";
 
             Operator operatorBefore = (Operator) ressourceList[0];
-            Operator operatorAfter = (Operator) ressourceList[0];
-            Operator operatorNetMachine = (Operator)ressourceList[0];
-            Consumable consumable = (Consumable)ressourceList[0];
-            Machine machine = (Machine)ressourceList[0];
+            Operator operatorAfter = (Operator) ressourceList[1];
+            Operator operatorNetMachine = (Operator)ressourceList[2];
+            bool consumable = (bool)ressourceList[3];
+            Machine machine = (Machine)ressourceList[4];
 
             Operator operatorTank = null;
             
@@ -198,10 +198,17 @@ namespace PRD_Ordonnanceur.Algorithms
 
             // Planification Consommable
             List<Object> listConsumable = new();
-            listConsumable.Add(dayTime);
-            listMachine.Add(step.ConsumableUsed);
 
-            solutionPlanning.PlanningCons.Add(listConsumable); // TODO Attention contrainte quantité negatif
+            int count = 0;
+            foreach(Consumable consumables in step.ConsumableUsed)
+            {
+                listConsumable.Add(dayTime);
+                listConsumable.Add(step.QuantityConsumable[count]);
+                listMachine.Add(step.ConsumableUsed[count].Id);
+                count++;
+            }
+
+            solutionPlanning.PlanningCons.Add(listConsumable);
 
             return solutionPlanning;
         }
@@ -259,8 +266,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 // Prend en compte les jours au plus tot
                 while(dti.Day > currentTime.Day || dti.Month > currentTime.Month)
                 {
-                    while (currentTime.Hour != data.Operators[0].Beginning.Hour)
-                        currentTime.AddMinutes(5); // TODO Changer a passer le jour d'apres a l'heure des employés
+                    currentTime.AddMinutes(5);
                 }
 
                 // Permet le reset de la loop
@@ -285,7 +291,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         lastStep = true;
                     }
 
-                    // TODO gerer le cas ou on ne peux pas reserver les ressources aka Step non reportable
+                    // On recherche si les ressources sont disponibles
                     resultRessources = Search_Ressources(currentTime, step, lastStep);
 
                     DateTime timeNeeded = (DateTime)resultRessources[0];
