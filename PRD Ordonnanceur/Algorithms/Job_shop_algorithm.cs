@@ -45,14 +45,19 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <returns></returns>
         public List<Object> Search_Ressources(DateTime time, Step step, bool lastStep)
         {
+            DateTime beginningOpBeforeTime = time;
+            DateTime endOpBeforeTime = time + step.Duration.DurationBeforeOp;
+            DateTime beginningOpAfterTime = endOpBeforeTime + step.Duration.DurationOp;
+            DateTime endOpAfterTime = beginningOpAfterTime + step.Duration.DurationAfterOp;
+
             // S'il s'agit de la dernière étape, on recherche une cuve pour l'OF
             List<Tank> tankAvailable = null;
 
             if (lastStep)
                 tankAvailable = AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, time);
 
-            List<Operator> operatorAvailableBeforeOp = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, time + step.Duration.DurationBeforeOp, step.TypeMachineNeeded);
-            List<Operator> operatorAvailableAfterOp = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, time + step.Duration.DurationOp + step.Duration.DurationAfterOp, step.TypeMachineNeeded);
+            List<Operator> operatorAvailableBeforeOp = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded);
+            List<Operator> operatorAvailableAfterOp = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded);
 
             List<Machine> machineAvailable = AvailableAlgorithm.FindMachineForStep(SolutionPlanning.PlanningMachine,DataParsed.Machine,time,step.TypeMachineNeeded);
             List<Operator> operatorAvailableTank = AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator,DataParsed.Operators,time);
@@ -81,7 +86,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             // On cherche un operateur pour nettoyer la machine choisie
             // TODO Simplifier les fonctions et attributs
-            List<Operator> operatorAvailableCleaning = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, time + step.Duration.DurationOp + step.Duration.DurationAfterOp + machineAvailable[0].Duration_cleaning, TypeMachine.cleaning);
+            List<Operator> operatorAvailableCleaning = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOpAfterTime + machineAvailable[0].Duration_cleaning, TypeMachine.cleaning);
 
             List<Object> listRessourcesAvailable = new();
 

@@ -13,7 +13,11 @@ namespace PRD_Ordonnanceur.Solution
 
         public SolutionPlanning()
         {
-
+            planningOF = new();
+            planningCons = new();
+            planningMachine = new();
+            planningTank = new();
+            planningOperator = new();
         }
 
         public SolutionPlanning(List<List<Object>> planningOF, List<List<Object>> planningCons, List<List<Object>> planningMachine, List<List<Object>> planningTank, List<List<Object>> planningOperator)

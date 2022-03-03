@@ -57,7 +57,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
         }
 
-        public List<Operator> FindOperator(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime beginningTimeOfOperation, TypeMachine Competence)
+        public List<Operator> FindOperator(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine Competence)
         {
             int count = 0;
 
@@ -78,25 +78,23 @@ namespace PRD_Ordonnanceur.Algorithms
             foreach (List<Object> list in planningOperator)
             {
                 // On retire tous les opérateurs indisponibles sur le temps (planning)
-                if (list[2] is DateTime)
+                if(beginningTimeOfOperation >= (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[2])
                 {
-                    if(beginningTimeOfOperation <= (DateTime)list[2])
+                    // On supprime l'operateur de la liste available
+                    uint id = (uint)list[5];
+                    int count2 = 0;
+                    int index = -1;
+                    foreach (Operator op in listOperatorAvailable)
                     {
-                        // On supprime l'operateur de la liste available
-                        int id = (int)list[0];
-                        int count2 = 0;
-                        int index = -1;
-                        foreach (Operator op in listOperatorAvailable)
+                        if(op.Id == id)
                         {
-                            if(op.Id == id)
-                            {
-                                index = count2;
-                            }
-                            count2++;
+                            index = count2;
                         }
-                        listOperatorAvailable.RemoveAt(index);
+                        count2++;
                     }
-                }           
+                    listOperatorAvailable.RemoveAt(index);
+                }
+                          
             }
 
             // On retire tous les opérateurs indisponibles par leur compétences
