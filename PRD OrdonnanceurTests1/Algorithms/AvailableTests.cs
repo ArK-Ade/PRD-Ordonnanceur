@@ -33,11 +33,11 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             DateTime end = new DateTime(2020, 01, 01, 18, 00, 00);
 
             TypeMachine competence = TypeMachine.blender;
-            List<TypeMachine> competences = new();
-            competences.Add(competence);
+            List<TypeMachine> competenceOperator1 = new();
+            competenceOperator1.Add(competence);
 
             uint idOperator1 = 1;
-            Operator operator1 = new Operator(beginning,end,null, idOperator1, competences);
+            Operator operator1 = new Operator(beginning,end,null, idOperator1, competenceOperator1);
 
             List<Operator> operatorsResult = available.FindOperator(plannings.PlanningOperator,operators, DateTime.Now, DateTime.Now.AddMinutes(10.0), competence);
 
@@ -83,24 +83,93 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             plannings.PlanningOperator.Add(planningDay1);
 
             operatorsResult = available.FindOperator(plannings.PlanningOperator, operators, jobForOperatorBeginning, jobForOperatorEnd, competence);
-            operatorsExpected = new();
+            operatorsExpected.Clear();
 
             Assert.AreEqual(operatorsExpected, operatorsResult, "FindOperatorTest");
 
             Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count, "FindOperatorTest : nombre d'élement incorrecte");
 
-            //operatorsResult = available.FindOperator(plannings.PlanningOperator, operators, jobtoDoEnd, competence);
-            //operatorsExpected.Add(operator1);
-
-            //Assert.AreEqual(operatorsExpected, operatorsResult, "FindOperatorTest"); 
-
-            //Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count, "FindOperatorTest : nombre d'élement incorrecte");
-
             // Test avec deux Operators sans plannings avec les mêmes competences
+
+            planningDay1.Clear();
+            plannings.PlanningOperator.Clear();
+
+            uint idOperator2 = 2;
+            Operator operator2 = new(beginning, end, null, idOperator2, competenceOperator1);
+
+            operators.Add(operator1);
+            operators.Add(operator2);
+
+            operatorsResult = available.FindOperator(plannings.PlanningOperator, operators, jobForOperatorBeginning, jobForOperatorEnd, competence);
+            operatorsExpected.Clear();
+
+            operatorsExpected.Add(operator1);
+            operatorsExpected.Add(operator2);
+
+            Assert.AreEqual(operatorsExpected, operatorsResult, "FindOperatorTest");
+
+            Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count, "FindOperatorTest : nombre d'élement incorrecte");
 
             // Test avec deux Operators sans planning avec des competences différentes
 
+            List<TypeMachine> competenceOperator2 = new();
+
+            operator1 = new Operator(beginning, end, null, idOperator1, competenceOperator1);
+            operator2 = new(beginning, end, null, idOperator2, competenceOperator2);
+
+            competenceOperator1.Clear();
+
+            competence = TypeMachine.blender;
+            TypeMachine competence2 = TypeMachine.cleaning;
+            operator1.CleanSkill();
+            operator1.AddSkill(competence);
+           
+            operator2.CleanSkill();
+            operator2.AddSkill(competence2);
+
+            operators.Clear();
+            operators.Add(operator1);
+            operators.Add(operator2);
+
+            operatorsExpected.Clear();
+            operatorsExpected.Add(operator1);
+
+            operatorsResult = available.FindOperator(plannings.PlanningOperator, operators, jobForOperatorBeginning, jobForOperatorEnd, TypeMachine.blender);
+
+            Assert.AreEqual(operatorsExpected, operatorsResult, "FindOperatorTest");
+
+            Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count, "FindOperatorTest : nombre d'élement incorrecte");
+
             // Test avec deux Operators avec planning avec des competences différentes
+
+            planningDay1 = new();
+
+            jobtoDoBeginning = new(2020, 01, 01, 07, 05, 0); // JobTODO 1
+            jobtoDoEnd = new(2020, 01, 01, 7, 10, 0);
+
+            jobForOperatorBeginning = new(2020, 01, 01, 07, 05, 0);
+            jobForOperatorEnd = new(2020, 01, 01, 07, 10, 0);
+
+            dateTime = new DateTime(2020, 01, 01);
+
+            numberIdOF = 1;
+
+            planningDay1.Add(dateTime);
+            planningDay1.Add(jobtoDoBeginning);
+            planningDay1.Add(jobtoDoEnd);
+            planningDay1.Add("OPBefore");
+            planningDay1.Add(numberIdOF);
+            planningDay1.Add(idOperator1);
+
+            plannings.PlanningOperator.Add(planningDay1);
+
+            operatorsResult = available.FindOperator(plannings.PlanningOperator, operators, jobForOperatorBeginning, jobForOperatorEnd, TypeMachine.blender);
+
+            operatorsExpected.Clear();
+
+            Assert.AreEqual(operatorsExpected, operatorsResult, "FindOperatorTest");
+
+            Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count, "FindOperatorTest : nombre d'élement incorrecte");
         }
 
         [Test()]

@@ -66,15 +66,33 @@ namespace PRD_Ordonnanceur.Algorithms
                 count += list.Count;
             }
 
+            List<Operator> listOperatorAvailable = listOperator;
+
+            reset:
+            // On retire tous les opérateurs indisponibles par leur compétences
+            foreach (Operator operat in listOperatorAvailable)
+            {
+                bool haveSkill = false;
+                foreach (TypeMachine skill in operat.MachineSkill)
+                {
+                    if (skill.CompareTo(Competence) == 0) // TODO Erreur ici fin de test unitaire
+                        haveSkill = true;
+                }
+
+                if (haveSkill == false)
+                {
+                    
+                    listOperatorAvailable.Remove(operat);
+                    goto reset;
+                }
+            }
+
             if (count == 0)
                 return listOperator;
             else if (listOperator.Count == 0) // TODO Retourne une erreur try catch a faire
                 return null;
 
-            List<Operator> listOperatorAvailable = listOperator;
-
             // TODO Enlever les opérateurs indisponibles par leur heure de travail
-
             foreach (List<Object> list in planningOperator)
             {
                 // On retire tous les opérateurs indisponibles sur le temps (planning)
@@ -95,22 +113,6 @@ namespace PRD_Ordonnanceur.Algorithms
                     listOperatorAvailable.RemoveAt(index);
                 }
                           
-            }
-
-            // On retire tous les opérateurs indisponibles par leur compétences
-            foreach(Operator operat in listOperatorAvailable)
-            {
-                bool haveSkill = false;
-                foreach(TypeMachine skill in operat.MachineSkill)
-                {
-                    if (skill == Competence)
-                        haveSkill = true;
-                }
-                
-                if(haveSkill == false)
-                {
-                    listOperatorAvailable.Remove(operat);
-                }
             }
 
             return listOperatorAvailable;
