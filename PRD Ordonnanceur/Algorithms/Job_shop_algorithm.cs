@@ -54,12 +54,12 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Tank> tankAvailable = null;
 
             if (lastStep)
-                tankAvailable = AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, time);
+                tankAvailable = AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime);
 
             List<Operator> operatorAvailableBeforeOp = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded);
             List<Operator> operatorAvailableAfterOp = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded);
 
-            List<Machine> machineAvailable = AvailableAlgorithm.FindMachineForStep(SolutionPlanning.PlanningMachine,DataParsed.Machine,time,step.TypeMachineNeeded);
+            List<Machine> machineAvailable = AvailableAlgorithm.FindMachineForStep(SolutionPlanning.PlanningMachine,DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime,step.TypeMachineNeeded);
             List<Operator> operatorAvailableTank = AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator,DataParsed.Operators,time);
             bool consomableAvailable = AvailableAlgorithm.FindConsoForStep(SolutionPlanning.PlanningCons,DataParsed.Consummables,time,step.ConsumableUsed,step.QuantityConsumable);
 

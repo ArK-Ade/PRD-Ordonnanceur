@@ -81,7 +81,6 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 if (haveSkill == false)
                 {
-                    
                     listOperatorAvailable.Remove(operat);
                     goto reset;
                 }
@@ -118,7 +117,7 @@ namespace PRD_Ordonnanceur.Algorithms
             return listOperatorAvailable;
         }
         
-        public List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime timeNow, TypeMachine typeMachine)
+        public List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
         {
             int count = 0;
 
@@ -127,51 +126,44 @@ namespace PRD_Ordonnanceur.Algorithms
                 count += list.Count;
             }
 
+            List<Machine> listMachineAvailable = listMachine;
+
+            reset:
+            // On retire toutes les machines indisponibles par leur compétences
+            foreach (Machine operat in listMachineAvailable)
+            {
+                if (operat.TypeMachine.CompareTo(typeMachine) != 0)
+                {
+                    listMachineAvailable.Remove(operat);
+                    goto reset;
+                }
+            }
+
             if (count == 0)
                 return listMachine;
             else if (listMachine.Count == 0)
                 return null;
 
-            List<Machine> listMachineAvailable = listMachine;
-
+            reset2:
             foreach (List<Object> list in planningMachine)
             {
-                // On retire tous les opérateurs indisponibles sur le temps
-                if (list[2] is DateTime)
+                // On retire toutes les machines indisponibles sur le temps
+                if (beginningTimeOfOperation >= (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[2])
                 {
-                    if (timeNow <= (DateTime)list[2])
+                    // On supprime la machine de la liste available
+                    int id = (int)list[5]; //TODO Changer le format du planning des machines
+                    foreach (Machine op in listMachineAvailable)
                     {
-
-                        // On supprime l'operateur de la liste available
-                        int id = (int)list[0];
-                        int count2 = 0;
-                        int index = -1;
-                        foreach (Machine op in listMachineAvailable)
-                        {
-                            if (op.Id == id)
-                            {
-                                index = count2;
-                            }
-                            count2++;
-                        }
-                        listMachineAvailable.RemoveAt(index);
-                    }
+                        listMachine.Remove(op);
+                        goto reset2;
+                    }                   
                 }
-            }
-
-            // On retire toutes les machines indisponibles par leur compétences
-            foreach (Machine operat in listMachineAvailable)
-            {
-                count = 0;
-                if (operat.TypeMachine == typeMachine)
-                    listMachineAvailable.Remove(operat);
-                count++;
             }
 
             return listMachineAvailable;
         }
 
-        public List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime timeNow)
+        public List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime beginningTimeOfOperation)
         {
             int count = 0;
 
@@ -187,28 +179,21 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Tank> listTankAvailable = listTank;
 
+            reset:
+
             foreach (List<Object> list in planningTank)
             {
-                // On retire tous les opérateurs indisponibles sur le temps
-                if (list[2] is DateTime)
+                if (beginningTimeOfOperation >= (DateTime)list[2]) // TODO Changer cette condition
                 {
-                    if (timeNow <= (DateTime)list[2])
+                    // On supprime l'operateur de la liste available
+                    int id = (int)list[0];
+                    int count2 = 0;
+                    int index = -1;
+                    foreach (Tank op in listTankAvailable)
                     {
-
-                        // On supprime l'operateur de la liste available
-                        int id = (int)list[0];
-                        int count2 = 0;
-                        int index = -1;
-                        foreach (Tank op in listTankAvailable)
-                        {
-                            if (op.IdTank == id)
-                            {
-                                index = count2;
-                            }
-                            count2++;
-                        }
-                        listTankAvailable.RemoveAt(index);
-                    }
+                        listTankAvailable.Remove(op);
+                        goto reset;
+                    }          
                 }
             }
 
@@ -223,7 +208,7 @@ namespace PRD_Ordonnanceur.Algorithms
             // Cas ou les list ne sont pas egaux
             if(listConsumableNeeded.Count != quantity.Count)
             {
-                return false; //  TODO  doit retourner une erreur 
+                return false; //  TODO doit retourner une erreur 
             }
 
             List<int> quantityRemaining = new(listConsumableNeeded.Count);

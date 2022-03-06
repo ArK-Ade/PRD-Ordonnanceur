@@ -14,8 +14,13 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
     public class AvailableTests
     {
         private Available available = new Available();
-        private Job_shop_algorithm job_Shop_Algorithm = new Job_shop_algorithm();
         private SolutionPlanning plannings = new SolutionPlanning();
+
+        private Operator operator1, operator2;
+        private int idOperator1, id2Operator;
+        private List<TypeMachine> listSkillOperator1, listSkillOperator2;
+        private DateTime jobBeginningTime, jobEndTime;
+
 
         [Test()]
         public void FindOperatorForTankTest()
@@ -175,7 +180,59 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         [Test()]
         public void FindMachineForStepTest()
         {
-            Assert.True(true);
+            
+            int idMachine1 = 1, idMachine2 = 2;
+            Calendar calendarMachine1 = new(), calendarMachine2 = new();
+            TimeSpan timeCleaningMachine1 = new(0,10,0), timeCleaningMachine2 = new(0, 15, 0);
+            TypeMachine typeMachine1 = TypeMachine.blender, typeMachine2 = TypeMachine.cleaning;
+
+            Machine machine1 = new(typeMachine1,calendarMachine1,timeCleaningMachine1,idMachine1), machine2 = new(typeMachine2, calendarMachine2, timeCleaningMachine2, idMachine2);
+
+            List<Machine> listMachineExpected = new(), listMachineResult, machines = new();
+            
+            // Case One : Pas de planning, pas de machines
+            listMachineResult = available.FindMachineForStep(plannings.PlanningMachine, machines, DateTime.Now, DateTime.Now, typeMachine1);
+
+            Assert.AreEqual(listMachineExpected.Count, listMachineResult.Count,"qqch");
+
+            // Case two : Une machine sans planning
+
+            machines.Add(machine1);
+            listMachineResult = available.FindMachineForStep(plannings.PlanningMachine, machines, DateTime.Now, DateTime.Now, typeMachine1);
+
+            listMachineExpected.Add(machine1);
+
+            Assert.AreEqual(listMachineExpected, listMachineResult, "qqch");
+
+            // Case Three : Une machine avec un planning
+
+            List<Object> planningDay1 = new();
+
+            DateTime jobtoDoBeginning = new(2020, 01, 01, 07, 05, 0); // JobTODO 1
+            DateTime jobtoDoEnd = new(2020, 01, 01, 7, 10, 0);
+            DateTime dateTime = new DateTime(2020, 01, 01);
+
+            int numberIdOF = 1, numberIdOperator = 1, numberIdMachine = 1;
+
+            planningDay1.Add(dateTime);
+            planningDay1.Add(jobtoDoBeginning);
+            planningDay1.Add(jobtoDoEnd);
+            planningDay1.Add(numberIdOF);
+            planningDay1.Add(numberIdOperator);
+            planningDay1.Add(numberIdMachine);
+
+            plannings.PlanningMachine.Add(planningDay1);
+
+            listMachineResult = available.FindMachineForStep(plannings.PlanningMachine, machines, jobtoDoBeginning, jobtoDoEnd, typeMachine1);
+            listMachineExpected.Clear();
+
+            Assert.AreEqual(listMachineExpected.Count, listMachineResult.Count, "qqch");
+
+            // Case Four : Une machine avec un planning et un calendrier
+
+            // Case Five : deux machines avec un planning avec des types differents
+
+
         }
 
         [Test()]
