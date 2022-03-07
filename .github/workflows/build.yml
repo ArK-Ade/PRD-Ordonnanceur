@@ -68,5 +68,5 @@ jobs:
       shell: powershell
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"ArK-Ade_PRD-Ordonnanceur" /o:"ark-ade" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-        msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+        dotnet build
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
