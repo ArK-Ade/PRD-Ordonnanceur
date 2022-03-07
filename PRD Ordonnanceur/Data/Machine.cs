@@ -43,21 +43,16 @@ namespace PRD_Ordonnanceur.Data
 
         public Machine(TypeMachine typeMachine, Calendar calendar, TimeSpan duration_cleaning, int id)
         {
-            TypeMachine1 = typeMachine;
+            TypeMachine = typeMachine;
             this.calendar = calendar;
             this.Duration_cleaning = duration_cleaning;
             this.Id = id;
         }
 
-        public TypeMachine TypeMachine
-        {
-            get => TypeMachine1;
-            set => TypeMachine1 = value;
-        }
         public Calendar Calendar { get => calendar; set => calendar = value; }
 
         public int Id { get => id; set => id = value; }
-        public TypeMachine TypeMachine1 { get => _TypeMachine; set => _TypeMachine = value; }
+        public TypeMachine TypeMachine { get => _TypeMachine; set => _TypeMachine = value; }
         public TimeSpan Duration_cleaning { get => duration_cleaning; set => duration_cleaning = value; }
     }
 }
