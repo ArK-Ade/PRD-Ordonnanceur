@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
-using PRD_Ordonnanceur.Algorithms;
 using PRD_Ordonnanceur.Data;
 using PRD_Ordonnanceur.Solution;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PRD_Ordonnanceur.Algorithms.Tests
 {
@@ -32,9 +28,9 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         public void FindOperatorTest()
         {
             List<Operator> operators = new();
-            List<Operator> operatorsExpected = new ();
+            List<Operator> operatorsExpected = new();
 
-            DateTime beginning = new DateTime(2020, 01, 01, 07 ,00 ,00);
+            DateTime beginning = new DateTime(2020, 01, 01, 07, 00, 00);
             DateTime end = new DateTime(2020, 01, 01, 18, 00, 00);
 
             TypeMachine competence = TypeMachine.blender;
@@ -42,13 +38,13 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             competenceOperator1.Add(competence);
 
             uint idOperator1 = 1;
-            Operator operator1 = new Operator(beginning,end,null, idOperator1, competenceOperator1);
+            Operator operator1 = new Operator(beginning, end, null, idOperator1, competenceOperator1);
 
-            List<Operator> operatorsResult = available.FindOperator(plannings.PlanningOperator,operators, DateTime.Now, DateTime.Now.AddMinutes(10.0), competence);
+            List<Operator> operatorsResult = available.FindOperator(plannings.PlanningOperator, operators, DateTime.Now, DateTime.Now.AddMinutes(10.0), competence);
 
             // Test sans Operator
 
-            Assert.AreEqual(operatorsExpected,operatorsResult);
+            Assert.AreEqual(operatorsExpected, operatorsResult);
 
             Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count, "FindOperatorTest : nombre d'élement incorrecte");
 
@@ -128,7 +124,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             TypeMachine competence2 = TypeMachine.cleaning;
             operator1.CleanSkill();
             operator1.AddSkill(competence);
-           
+
             operator2.CleanSkill();
             operator2.AddSkill(competence2);
 
@@ -180,20 +176,20 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         [Test()]
         public void FindMachineForStepTest()
         {
-            
+
             int idMachine1 = 1, idMachine2 = 2;
             Calendar calendarMachine1 = new(), calendarMachine2 = new();
-            TimeSpan timeCleaningMachine1 = new(0,10,0), timeCleaningMachine2 = new(0, 15, 0);
+            TimeSpan timeCleaningMachine1 = new(0, 10, 0), timeCleaningMachine2 = new(0, 15, 0);
             TypeMachine typeMachine1 = TypeMachine.blender, typeMachine2 = TypeMachine.cleaning;
 
-            Machine machine1 = new(typeMachine1,calendarMachine1,timeCleaningMachine1,idMachine1), machine2 = new(typeMachine2, calendarMachine2, timeCleaningMachine2, idMachine2);
+            Machine machine1 = new(typeMachine1, calendarMachine1, timeCleaningMachine1, idMachine1), machine2 = new(typeMachine2, calendarMachine2, timeCleaningMachine2, idMachine2);
 
             List<Machine> listMachineExpected = new(), listMachineResult, machines = new();
-            
+
             // Case One : Pas de planning, pas de machines
             listMachineResult = available.FindMachineForStep(plannings.PlanningMachine, machines, DateTime.Now, DateTime.Now, typeMachine1);
 
-            Assert.AreEqual(listMachineExpected.Count, listMachineResult.Count,"qqch");
+            Assert.AreEqual(listMachineExpected.Count, listMachineResult.Count, "qqch");
 
             // Case two : Une machine sans planning
 
