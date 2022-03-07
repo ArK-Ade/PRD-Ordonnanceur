@@ -1,16 +1,12 @@
 name: Build
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
   pull_request:
-    types: [opened, synchronize, reopened]
-    
-env:
-  Solution_Name: PRD Ordonnanceur.sln                         
-  Test_Project_Path: PRD OrdonnanceurTests1.csproj               
-    
+    branches: [ master ]
+
 jobs:
+
   build:
 
     strategy:
@@ -29,7 +25,12 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-
+        
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.11
+      
     # Install the .NET Core workload
     - name: Install .NET Core
       uses: actions/setup-dotnet@v1
@@ -38,15 +39,8 @@ jobs:
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2     
-    
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.11
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      uses: microsoft/setup-msbuild@v1.0.2
+        
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
@@ -76,4 +70,3 @@ jobs:
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"ArK-Ade_PRD-Ordonnanceur" /o:"ark-ade" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
         msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-        
