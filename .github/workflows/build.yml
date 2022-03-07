@@ -5,6 +5,11 @@ on:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+    
+env:
+  Solution_Name: PRD Ordonnanceur.sln                         
+  Test_Project_Path: PRD OrdonnanceurTests1.csproj               
+    
 jobs:
   build:
     name: Build
