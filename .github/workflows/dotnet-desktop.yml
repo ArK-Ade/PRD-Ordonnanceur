@@ -57,7 +57,7 @@ jobs:
 
     env:
       Solution_Name: PRD Ordonnanceur.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: PRD OrdonnanceurTests1.csproj               # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Test_Project_Path: PRD OrdonnanceurTests.csproj               # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
 
     steps:
     - name: Checkout
