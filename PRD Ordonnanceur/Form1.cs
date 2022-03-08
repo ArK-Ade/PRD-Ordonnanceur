@@ -12,7 +12,6 @@ namespace PRD_Ordonnanceur
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

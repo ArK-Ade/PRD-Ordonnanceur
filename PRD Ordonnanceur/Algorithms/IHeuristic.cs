@@ -2,9 +2,8 @@
 
 namespace PRD_Ordonnanceur.Algorithms
 {
-    interface IHeuristic
+    internal interface IHeuristic
     {
         public OF[] SortingAlgorithm(int choice, OF[] Ofs);
-
     }
 }

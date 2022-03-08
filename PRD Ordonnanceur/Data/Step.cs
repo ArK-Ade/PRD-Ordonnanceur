@@ -5,9 +5,9 @@ namespace PRD_Ordonnanceur.Data
 {
     public struct Duration
     {
-        TimeSpan durationBeforeOp;
-        TimeSpan durationAfterOp;
-        TimeSpan durationOp;
+        private TimeSpan durationBeforeOp;
+        private TimeSpan durationAfterOp;
+        private TimeSpan durationOp;
 
         public Duration(TimeSpan durationBeforeOp, TimeSpan durationAfterOp, TimeSpan durationOp)
         {
@@ -33,7 +33,8 @@ namespace PRD_Ordonnanceur.Data
         private List<Consumable> consumableUsed;
         private List<int> quantityConsumable;
 
-        public Step() { }
+        public Step()
+        { }
 
         public Step(int idStep, TypeMachine typeMachineNeeded, Duration duration, Operator[] setOperatorAvailable, DateTime durationMaxNextStep, bool nextStepReportable, List<Consumable> consumableUsed, List<int> quantityConsumable)
         {

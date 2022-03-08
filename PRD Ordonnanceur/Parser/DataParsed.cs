@@ -12,11 +12,9 @@ namespace PRD_Ordonnanceur.Parser
         private List<Operator> operators;
         private Matrix_cleaning matrix_Cleaning;
 
-        public DataParsed() 
-        { 
+        public DataParsed()
+        {
             // Initialisation des données parsées
-
-
         }
 
         public DataParsed(List<OF> oFs, List<Consumable> consummables, List<Machine> machine, List<Tank> tanks, List<Operator> operators, Matrix_cleaning matrix_Cleaning)

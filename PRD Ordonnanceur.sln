@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRD Ordonnanceur", "PRD Ordonnanceur\PRD Ordonnanceur.csproj", "{5185248C-22F4-49D8-931F-089DCDE70890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRD OrdonnanceurTests1", "PRD OrdonnanceurTests1\PRD OrdonnanceurTests1.csproj", "{3C77348A-D89A-457C-8E4A-2D813A5326F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRD OrdonnanceurTest", "PRD OrdonnanceurTests\PRD OrdonnanceurTest.csproj", "{3C77348A-D89A-457C-8E4A-2D813A5326F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,6 @@ namespace PRD_Ordonnanceur.Algorithms
     {
         public Heuristic()
         {
-
         }
 
         public int Smallest_index_DTI(OF[] OFs)
@@ -24,7 +23,6 @@ namespace PRD_Ordonnanceur.Algorithms
                 {
                     if (date == oF.EarliestDate)
                     {
-
                     }
                     date = oF.EarliestDate;
                     index = count;
@@ -47,7 +45,6 @@ namespace PRD_Ordonnanceur.Algorithms
                 tableau[i] = tmp[index];
 
                 tmp[index].EarliestDate = DateTime.MaxValue;
-
             }
 
             return tableau;

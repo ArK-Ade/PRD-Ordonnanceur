@@ -15,7 +15,8 @@ namespace PRD_Ordonnanceur.Data
         private string numberProduct;
         private List<List<string>> consommableQuantity; // TODO surement supprimer cette fonction
 
-        public OF() { }
+        public OF()
+        { }
 
         public OF(int idOF, DateTime starting_hour, int next_step, List<Step> stepSequence, DateTime earliestDate, DateTime latestDate, List<Tank> setTank, string numberProduct, List<List<string>> consommableQuantity)
         {

@@ -1,15 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
-   public enum TypeMachine
+    public enum TypeMachine
     {
         blender,
         Mixer,
         disperser,
         cleaning
-
-
     };
 
     public struct Calendar
@@ -28,20 +27,19 @@ namespace PRD_Ordonnanceur.Data
         public DateTime Day { get => day; set => day = value; }
         public DateTime Beginning_hour { get => beginning_hour; set => beginning_hour = value; }
         public DateTime Finishing_hour { get => finishing_hour; set => finishing_hour = value; }
-
- 
     }
 
     public class Machine
     {
         private int id;
         private TypeMachine _TypeMachine;
-        private Calendar calendar;
+        private List<Calendar> calendar;
         private TimeSpan duration_cleaning;
 
-        public Machine() { }
+        public Machine()
+        { }
 
-        public Machine(TypeMachine typeMachine, Calendar calendar, TimeSpan duration_cleaning, int id)
+        public Machine(TypeMachine typeMachine, List<Calendar> calendar, TimeSpan duration_cleaning, int id)
         {
             TypeMachine = typeMachine;
             this.calendar = calendar;
@@ -49,7 +47,7 @@ namespace PRD_Ordonnanceur.Data
             this.Id = id;
         }
 
-        public Calendar Calendar { get => calendar; set => calendar = value; }
+        public List<Calendar> Calendar { get => calendar; set => calendar = value; }
 
         public int Id { get => id; set => id = value; }
         public TypeMachine TypeMachine { get => _TypeMachine; set => _TypeMachine = value; }

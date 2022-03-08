@@ -12,6 +12,5 @@ namespace PRD_Ordonnanceur.Solution
         private Object[] ensemble;
 
         private string truc;
-
     }
 }

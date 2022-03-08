@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
-    class Context
+    internal class Context
     {
         // The Context maintains a reference to one of the Strategy objects. The
         // Context does not know the concrete class of a strategy. It should
@@ -56,7 +56,7 @@ namespace PRD_Ordonnanceur.Algorithms
     // Concrete Strategies implement the algorithm while following the base
     // Strategy interface. The interface makes them interchangeable in the
     // Context.
-    class ConcreteStrategyA : IStrategy
+    internal class ConcreteStrategyA : IStrategy
     {
         public object DoAlgorithm(object data)
         {
@@ -67,7 +67,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
     }
 
-    class ConcreteStrategyB : IStrategy
+    internal class ConcreteStrategyB : IStrategy
     {
         public object DoAlgorithm(object data)
         {
