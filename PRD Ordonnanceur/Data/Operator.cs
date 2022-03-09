@@ -27,7 +27,7 @@ namespace PRD_Ordonnanceur.Data
         public DateTime End { get => end; set => end = value; }
         public List<Object> Calendar { get => calendar; set => calendar = value; }
         public uint Id { get => id; set => id = value; }
-        public List<TypeMachine> MachineSkill { get => machineSkill; set => machineSkill = value; } // TODO Erreur ici
+        public List<TypeMachine> MachineSkill { get => machineSkill; set => machineSkill = value; }
 
         public void CleanSkill()
         {

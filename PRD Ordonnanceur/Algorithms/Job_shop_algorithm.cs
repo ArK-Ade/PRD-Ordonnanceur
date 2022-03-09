@@ -83,7 +83,6 @@ namespace PRD_Ordonnanceur.Algorithms
             }
 
             // On cherche un operateur pour nettoyer la machine choisie
-            // TODO Simplifier les fonctions et attributs
             List<Operator> operatorAvailableCleaning = AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOpAfterTime + machineAvailable[0].Duration_cleaning, TypeMachine.cleaning);
 
             List<Object> listRessourcesAvailable = new();

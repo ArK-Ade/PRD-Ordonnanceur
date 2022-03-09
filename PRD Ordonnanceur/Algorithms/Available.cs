@@ -23,7 +23,7 @@ namespace PRD_Ordonnanceur.Algorithms
             if (count == 0)
                 return listOperator;
             else if (listOperator.Count == 0)
-                return null;
+                return new();
 
             List<Operator> listOperatorAvailable = listOperator;
 
@@ -72,7 +72,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 bool haveSkill = false;
                 foreach (TypeMachine skill in operat.MachineSkill)
                 {
-                    if (skill.CompareTo(Competence) == 0) // TODO Erreur ici fin de test unitaire
+                    if (skill.CompareTo(Competence) == 0)
                         haveSkill = true;
                 }
 
@@ -86,7 +86,7 @@ namespace PRD_Ordonnanceur.Algorithms
             if (count == 0)
                 return listOperator;
             else if (listOperator.Count == 0) // TODO Retourne une erreur try catch a faire
-                return null;
+                return new();
 
             // TODO Enlever les opérateurs indisponibles par leur heure de travail
             foreach (List<Object> list in planningOperator)
@@ -138,7 +138,7 @@ namespace PRD_Ordonnanceur.Algorithms
             if (count == 0)
                 return listMachine;
             else if (listMachine.Count == 0)
-                return null;
+                return new();
 
             reset2:
             foreach (List<Object> list in planningMachine)
@@ -171,7 +171,7 @@ namespace PRD_Ordonnanceur.Algorithms
             if (count == 0)
                 return listTank;
             else if (planningTank.Count == 0)
-                return null;
+                return new();
 
             List<Tank> listTankAvailable = listTank;
 
@@ -183,8 +183,6 @@ namespace PRD_Ordonnanceur.Algorithms
                 {
                     // On supprime l'operateur de la liste available
                     int id = (int)list[0];
-                    int count2 = 0;
-                    int index = -1;
                     foreach (Tank op in listTankAvailable)
                     {
                         listTankAvailable.Remove(op);
