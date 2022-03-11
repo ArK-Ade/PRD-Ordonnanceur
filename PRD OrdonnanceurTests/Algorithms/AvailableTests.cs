@@ -118,7 +118,6 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             Assert.AreEqual(machineExpected.Count, machineResult.Count);
 
             machines.Clear();
-
         }
 
         [Test()]

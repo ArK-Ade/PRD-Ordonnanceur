@@ -18,7 +18,7 @@ namespace PRD_Ordonnanceur.Data
         {
             id = _id;
             QuantityAvailable = _quantityAvailable;
-            Calendar = _calendar ?? throw new ArgumentNullException(nameof(_calendar));
+            Calendar = _calendar;
             DelaySupply = _delaySupply;
         }
 

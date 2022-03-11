@@ -63,9 +63,9 @@ namespace PRD_Ordonnanceur.Algorithms
                 count += list.Count;
             }
 
-            List<Operator> listOperatorAvailable = listOperator;
+            List<Operator> listOperatorAvailable = new(listOperator);
 
-        reset:
+            reset:
             // On retire tous les opérateurs indisponibles par leur compétences
             foreach (Operator operat in listOperatorAvailable)
             {
@@ -78,17 +78,17 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 if (haveSkill == false)
                 {
-                    listOperatorAvailable.Remove(operat);
+                    listOperatorAvailable.Remove(operat); // TODO Changer la gestion de suppression des tableaux list
                     goto reset;
                 }
             }
 
             if (count == 0)
                 return listOperator;
-            else if (listOperator.Count == 0) // TODO Retourne une erreur try catch a faire
+            else if (listOperator.Count == 0)
                 return new();
 
-            // TODO Enlever les opérateurs indisponibles par leur heure de travail
+            // Enlever les opérateurs indisponibles par leur heure de travail
             foreach (List<Object> list in planningOperator)
             {
                 // On retire tous les opérateurs indisponibles sur le temps (planning)
@@ -101,9 +101,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     foreach (Operator op in listOperatorAvailable)
                     {
                         if (op.Id == id)
-                        {
                             index = count2;
-                        }
                         count2++;
                     }
                     listOperatorAvailable.RemoveAt(index);
@@ -122,9 +120,9 @@ namespace PRD_Ordonnanceur.Algorithms
                 count += list.Count;
             }
 
-            List<Machine> listMachineAvailable = listMachine;
+            List<Machine> listMachineAvailable = new(listMachine);
 
-        reset:
+            reset:
             // On retire toutes les machines indisponibles par leur compétences
             foreach (Machine operat in listMachineAvailable)
             {
@@ -140,7 +138,6 @@ namespace PRD_Ordonnanceur.Algorithms
             else if (listMachine.Count == 0)
                 return new();
 
-            reset2:
             foreach (List<Object> list in planningMachine)
             {
                 // On retire toutes les machines indisponibles sur le temps
@@ -148,14 +145,19 @@ namespace PRD_Ordonnanceur.Algorithms
                 {
                     // On supprime la machine de la liste available
                     int id = (int)list[5]; //TODO Changer le format du planning des machines
+                    int count2 = 0;
+                    int index = -1;
                     foreach (Machine op in listMachineAvailable)
                     {
-                        listMachine.Remove(op);
-                        goto reset2;
+                        if (op.Id == id)
+                        {
+                            index = count2;
+                        }
+                        count2++;
                     }
+                    listMachineAvailable.RemoveAt(index);
                 }
             }
-
             return listMachineAvailable;
         }
 
@@ -173,7 +175,7 @@ namespace PRD_Ordonnanceur.Algorithms
             else if (planningTank.Count == 0)
                 return new();
 
-            List<Tank> listTankAvailable = listTank;
+            List<Tank> listTankAvailable = new(listTank);
 
         reset:
 
@@ -211,7 +213,7 @@ namespace PRD_Ordonnanceur.Algorithms
             // Remplissable de quantityRemaining
             foreach (Consumable consumable in listConsumableNeeded)
             {
-                quantityRemaining[count] = consumable.QuantityAvailable;
+                quantityRemaining.Add(consumable.QuantityAvailable); // TODO A corriger
                 count++;
             }
 

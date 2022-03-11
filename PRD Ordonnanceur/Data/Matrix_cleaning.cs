@@ -6,6 +6,10 @@ namespace PRD_Ordonnanceur.Data
     {
         private List<List<object>> matrix;
 
+        public Matrix_cleaning()
+        {
+        }
+
         public Matrix_cleaning(List<List<object>> matrix)
         {
             this.Matrix = matrix;
