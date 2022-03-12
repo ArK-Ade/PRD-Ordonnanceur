@@ -52,7 +52,7 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Tank> tankAvailable = null;
 
             if (lastStep)
-                tankAvailable = new(AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime)); // TODO Faire ce changement sur les autres copies de tableau
+                tankAvailable = new(AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
 
             List<Operator> operatorAvailableBeforeOp = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
             List<Operator> operatorAvailableAfterOp = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
@@ -168,7 +168,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 listOpTank = new();
                 listOpTank.Add(dayTime);
-                listOpTank.Add(time.Add(step.Duration.DurationOp));
+                listOpTank.Add(time + step.Duration.DurationOp);
                 listOpTank.Add(time.Add(step.Duration.DurationOp).Add(timeSpan));
                 code = "OPNetTank";
                 listOpTank.Add(code);
@@ -178,15 +178,31 @@ namespace PRD_Ordonnanceur.Algorithms
                 // Planification Tank
                 listTank = new();
                 listTank.Add(dayTime);
-                listTank.Add(time.Add(step.Duration.DurationOp));
-                listTank.Add(time.Add(step.Duration.DurationOp).Add(timeSpan));
+                listTank.Add(time + step.Duration.DurationOp);
+                listTank.Add(time + step.Duration.DurationOp + timeSpan);
                 listTank.Add(timeSpan);
                 listTank.Add(oF.IdOF);
                 listTank.Add(operatorTank.Id);
-            }
 
-            solutionPlanning.PlanningOperator.Add(listOpTank);
-            solutionPlanning.PlanningTank.Add(listTank);
+                // Planification OF
+                List<Object> listOF = new();
+                listOF.Add(dayTime);
+                listOF.Add(tank.IdTank);
+                listOF.Add(step);
+                listOF.Add(machine.Id);
+                listOF.Add(operatorBefore);
+                listOF.Add(operatorAfter);
+                listOF.Add(oF.Next_step);
+
+                if (oF.Next_step > 0)
+                {
+                    listOF.Add(step.IdStep);
+                }
+
+                solutionPlanning.PlanningOF.Add(listOF);
+                solutionPlanning.PlanningOperator.Add(listOpTank);
+                solutionPlanning.PlanningTank.Add(listTank);
+            }
 
             // Planification Machine
             List<Object> listMachine = new();
@@ -284,11 +300,11 @@ namespace PRD_Ordonnanceur.Algorithms
                         continue;
 
                     // On regarde s'il s'agit de la derniere etape
-                    if (countStep == oF.StepSequence.Capacity)
+                    if (countStep + 1 == oF.StepSequence.Count)
                         lastStep = true;
 
                     // On recherche si les ressources sont disponibles
-                    resultRessources = SearchRessources(currentTime, step, lastStep);
+                    resultRessources = new(SearchRessources(currentTime, step, lastStep));
 
                     DateTime timeNeeded = (DateTime)resultRessources[0];
 
@@ -319,7 +335,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         nbCteMaxViole++;
 
                     // Panifier l'étape courante a t'
-                    planningAujourd = ScheduleStep(resultRessources, planningAujourd, currentTime, oF, step, false, ofBefore);
+                    planningAujourd = ScheduleStep(resultRessources, planningAujourd, currentTime, oF, step, lastStep, ofBefore);
 
                     // On ajoute le temps passé
                     currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp);

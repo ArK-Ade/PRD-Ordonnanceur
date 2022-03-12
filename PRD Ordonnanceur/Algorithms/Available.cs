@@ -65,7 +65,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Operator> listOperatorAvailable = new(listOperator);
 
-            reset:
+        reset:
             // On retire tous les opérateurs indisponibles par leur compétences
             foreach (Operator operat in listOperatorAvailable)
             {
@@ -78,7 +78,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 if (haveSkill == false)
                 {
-                    listOperatorAvailable.Remove(operat); // TODO Changer la gestion de suppression des tableaux list
+                    listOperatorAvailable.Remove(operat);
                     goto reset;
                 }
             }
@@ -122,7 +122,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Machine> listMachineAvailable = new(listMachine);
 
-            reset:
+        reset:
             // On retire toutes les machines indisponibles par leur compétences
             foreach (Machine operat in listMachineAvailable)
             {
@@ -161,7 +161,7 @@ namespace PRD_Ordonnanceur.Algorithms
             return listMachineAvailable;
         }
 
-        public List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime beginningTimeOfOperation)
+        public List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
         {
             int count = 0;
 
@@ -181,7 +181,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             foreach (List<Object> list in planningTank)
             {
-                if (beginningTimeOfOperation >= (DateTime)list[2]) // TODO Changer cette condition
+                if (beginningTimeOfOperation >= (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[2])
                 {
                     // On supprime l'operateur de la liste available
                     int id = (int)list[0];
@@ -204,7 +204,9 @@ namespace PRD_Ordonnanceur.Algorithms
             // Cas ou les list ne sont pas egaux
             if (listConsumableNeeded.Count != quantity.Count)
             {
-                return false; //  TODO doit retourner une erreur
+                string msg = "Il y a une erreur dans le parseur";
+                Exception exception = new Exception(msg);
+                throw exception;
             }
 
             List<int> quantityRemaining = new(listConsumableNeeded.Count);
@@ -250,7 +252,7 @@ namespace PRD_Ordonnanceur.Algorithms
         // TODO Terminer la fonction si utiliser
         public TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)
         {
-            return TimeSpan.MinValue;
+            return new(0, 10, 0);
         }
     }
 }

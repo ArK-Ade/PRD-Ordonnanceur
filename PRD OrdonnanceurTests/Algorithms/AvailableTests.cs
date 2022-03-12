@@ -16,7 +16,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         private List<Operator> operators = new();
         private uint idOperator1 = 1, id2Operator = 2;
         private List<TypeMachine> listSkillOperator1 = new(), listSkillOperator2 = new();
-        
+
         private DateTime jobBeginningTime1 = new(2020, 01, 01, 07, 00, 00), jobEndTime1 = new DateTime(2020, 01, 01, 18, 00, 00);
         private DateTime jobBeginningTime2, jobEndTime2;
 
@@ -42,7 +42,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
         [Test()]
         public void FindOperatorIfNoOperatorGiven()
-        { 
+        {
             TypeMachine competence = TypeMachine.blender;
             List<Operator> operatorsResult = available.FindOperator(plannings.PlanningOperator, operators, DateTime.Now, DateTime.Now.AddMinutes(10.0), competence);
             Assert.IsEmpty(operatorsResult);

@@ -96,7 +96,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
             Console.WriteLine(constraint);
 
-            Assert.AreEqual(0, constraint);
+            Assert.AreEqual(0, constraint); 
         }
     }
 }

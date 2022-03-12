@@ -18,7 +18,7 @@ namespace PRD_Ordonnanceur.Checker
 
             List<Object> list;
 
-            for (int i=0; i < planning.PlanningOperator.Count; i++)
+            for (int i = 0; i < planning.PlanningOperator.Count; i++)
             {
                 list = planning.PlanningOperator[i];
 
@@ -26,7 +26,7 @@ namespace PRD_Ordonnanceur.Checker
                 jobBeginning1 = (DateTime)list[2];
                 jobEnd1 = (DateTime)list[3];
 
-                foreach(Operator operat in operators)
+                foreach (Operator operat in operators)
                 {
                     if ((uint)list[5] == operat.Id)
                     {
@@ -36,7 +36,7 @@ namespace PRD_Ordonnanceur.Checker
                 }
 
                 // Vérification heure de travail
-                if(jobBeginning1 < currentOperator.Beginning || jobEnd1 > currentOperator.End)
+                if (jobBeginning1 < currentOperator.Beginning || jobEnd1 > currentOperator.End)
                 {
                     return false;
                 }
@@ -44,13 +44,14 @@ namespace PRD_Ordonnanceur.Checker
                 // Vérification planning
                 foreach (List<Object> planningOperator in planning.PlanningOperator)
                 {
-                    jobBeginning2 = (DateTime) planningOperator[2];
+                    jobBeginning2 = (DateTime)planningOperator[2];
                     jobEnd2 = (DateTime)planningOperator[3];
 
                     if (jobBeginning1 >= jobBeginning2 && jobBeginning1 <= jobEnd2)
                     {
                         return false;
-                    }else if(jobBeginning1 <= jobBeginning2 && jobEnd1 >= jobEnd2)
+                    }
+                    else if (jobBeginning1 <= jobBeginning2 && jobEnd1 >= jobEnd2)
                     {
                         return false;
                     }
