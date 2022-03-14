@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using PRD_Ordonnanceur.Checker;
 using PRD_Ordonnanceur.Data;
 using PRD_Ordonnanceur.Parser;
 using PRD_Ordonnanceur.Solution;
@@ -19,7 +20,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             List<TypeMachine> listSkillOperator1 = new(), listSkillOperator2 = new();
             TypeMachine typeMachine = TypeMachine.blender;
             listSkillOperator1.Add(typeMachine);
-            DateTime jobBeginningTime1 = new(2020, 01, 01, 07, 00, 00), jobEndTime1 = new DateTime(2020, 01, 01, 18, 00, 00);
+            DateTime jobBeginningTime1 = new(2022, 01, 01, 07, 00, 00), jobEndTime1 = new DateTime(2022, 01, 01, 18, 00, 00);
 
             operator1 = new(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
 
@@ -96,7 +97,28 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
             Console.WriteLine(constraint);
 
-            Assert.AreEqual(0, constraint); 
+            Assert.AreEqual(0, constraint);
+
+            bool checkResult = CheckerOF.CheckConstrainOperator(algorithm.Plannings[0],data.Operators);
+
+            Assert.IsTrue(checkResult);
+
+            checkResult = CheckerOF.CheckConstrainMachine(algorithm.Plannings[0]);
+
+            Assert.IsTrue(checkResult);
+
+            checkResult = CheckerOF.CheckConstrainTank(algorithm.Plannings[0]);
+
+            Assert.IsTrue(checkResult);
+
+            checkResult = CheckerOF.CheckConstrainOF(algorithm.Plannings[0]);
+
+            Assert.IsTrue(checkResult);
+
+            checkResult = CheckerOF.CheckConstrainConsommable(algorithm.Plannings[0], data.Consummables);
+
+            Assert.IsTrue(checkResult);
+
         }
     }
 }

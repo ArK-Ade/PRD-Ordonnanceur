@@ -44,29 +44,34 @@ namespace PRD_Ordonnanceur.Algorithms
         public List<Object> SearchRessources(DateTime time, Step step, bool lastStep)
         {
             DateTime beginningOpBeforeTime = time;
-            DateTime endOpBeforeTime = time + step.Duration.DurationBeforeOp;
-            DateTime beginningOpAfterTime = endOpBeforeTime + step.Duration.DurationOp;
-            DateTime endOpAfterTime = beginningOpAfterTime + step.Duration.DurationAfterOp;
+            DateTime endOpBeforeTime = time.Add(step.Duration.DurationBeforeOp);
+            DateTime beginningOpAfterTime = endOpBeforeTime.Add(step.Duration.DurationOp);
+            DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
+
+            
+            List<Tank> tankAvailable = null;
+            List<Operator> operatorAvailableTank = null;
 
             // S'il s'agit de la dernière étape, on recherche une cuve pour l'OF
-            List<Tank> tankAvailable = null;
-
             if (lastStep)
+            {
                 tankAvailable = new(AvailableAlgorithm.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
+                operatorAvailableTank = new(AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime));
+            }
 
             List<Operator> operatorAvailableBeforeOp = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
             List<Operator> operatorAvailableAfterOp = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
-
             List<Machine> machineAvailable = new(AvailableAlgorithm.FindMachineForStep(SolutionPlanning.PlanningMachine, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
-            List<Operator> operatorAvailableTank = new(AvailableAlgorithm.FindOperatorForTank(SolutionPlanning.PlanningOperator, DataParsed.Operators, time));
+            
             bool consomableAvailable = AvailableAlgorithm.FindConsoForStep(SolutionPlanning.PlanningCons, DataParsed.Consummables, time, step.ConsumableUsed, step.QuantityConsumable);
 
-            // Changer cette condition pour operatorAvailabletank
             // Si une des ressources est indisponible on passe 5 minutes plus tard
+            if(lastStep && (operatorAvailableTank.Count == 0 || tankAvailable.Count == 0))
+                return SearchRessources(time.AddMinutes(5.0), step, lastStep);
+
             if (operatorAvailableBeforeOp.Count == 0 ||
                 operatorAvailableAfterOp.Count == 0 ||
-                machineAvailable.Count == 0 ||
-                operatorAvailableTank.Count == 0)
+                machineAvailable.Count == 0)
             {
                 return SearchRessources(time.AddMinutes(5.0), step, lastStep);
             }
@@ -82,7 +87,10 @@ namespace PRD_Ordonnanceur.Algorithms
             }
 
             // On cherche un operateur pour nettoyer la machine choisie 
-            List<Operator> operatorAvailableCleaning = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOpAfterTime + machineAvailable[0].Duration_cleaning, TypeMachine.cleaning));
+            List<Operator> operatorAvailableCleaning = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOpAfterTime.Add(machineAvailable[0].Duration_cleaning), TypeMachine.cleaning));
+
+            if(operatorAvailableCleaning.Count == 0)
+                return SearchRessources(time.AddMinutes(5.0), step, lastStep);
 
             List<Object> listRessourcesAvailable = new();
 
@@ -109,6 +117,11 @@ namespace PRD_Ordonnanceur.Algorithms
             DateTime dayTime = time.Date;
             string code;
 
+            DateTime beginningOpBeforeTime = time;
+            DateTime endOpBeforeTime = time.Add(step.Duration.DurationBeforeOp);
+            DateTime beginningOpAfterTime = endOpBeforeTime.Add(step.Duration.DurationOp);
+            DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
+
             Operator operatorBefore = (Operator)ressourceList[1];
             Operator operatorAfter = (Operator)ressourceList[2];
             Operator operatorNetMachine = (Operator)ressourceList[3];
@@ -120,8 +133,8 @@ namespace PRD_Ordonnanceur.Algorithms
             // Planification OperateurAvant
             List<Object> listOpBefore = new();
             listOpBefore.Add(dayTime);
-            listOpBefore.Add(time);
-            listOpBefore.Add(time.Add(step.Duration.DurationBeforeOp));
+            listOpBefore.Add(beginningOpBeforeTime);
+            listOpBefore.Add(endOpBeforeTime);
             code = "OPBefore";
             listOpBefore.Add(code);
             listOpBefore.Add(oF.IdOF);
@@ -133,8 +146,8 @@ namespace PRD_Ordonnanceur.Algorithms
             // Planification OperateurApres
             List<Object> listOpAfter = new();
             listOpAfter.Add(dayTime);
-            listOpAfter.Add(time.Subtract(step.Duration.DurationAfterOp));
-            listOpAfter.Add(time.Add(step.Duration.DurationOp));
+            listOpAfter.Add(beginningOpAfterTime);
+            listOpAfter.Add(endOpAfterTime);
             code = "OPAfter";
             listOpAfter.Add(code);
             listOpAfter.Add(oF.IdOF);
@@ -146,8 +159,8 @@ namespace PRD_Ordonnanceur.Algorithms
             // Planification OperateurNettoyage Machine
             List<Object> listOpCleaning = new();
             listOpCleaning.Add(dayTime);
-            listOpCleaning.Add(time.Add(step.Duration.DurationOp));
-            listOpCleaning.Add(time.Add(step.Duration.DurationOp).Add(machine.Duration_cleaning));
+            listOpCleaning.Add(endOpAfterTime);
+            listOpCleaning.Add(endOpAfterTime.Add(machine.Duration_cleaning));
             code = "OPNetMachine";
             listOpCleaning.Add(code);
             listOpCleaning.Add(machine.Id);
@@ -168,8 +181,8 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 listOpTank = new();
                 listOpTank.Add(dayTime);
-                listOpTank.Add(time + step.Duration.DurationOp);
-                listOpTank.Add(time.Add(step.Duration.DurationOp).Add(timeSpan));
+                listOpTank.Add(endOpAfterTime.Add(machine.Duration_cleaning));
+                listOpTank.Add(endOpAfterTime.Add(machine.Duration_cleaning).Add(timeSpan));
                 code = "OPNetTank";
                 listOpTank.Add(code);
                 listOpTank.Add(tank.IdTank);
@@ -178,8 +191,8 @@ namespace PRD_Ordonnanceur.Algorithms
                 // Planification Tank
                 listTank = new();
                 listTank.Add(dayTime);
-                listTank.Add(time + step.Duration.DurationOp);
-                listTank.Add(time + step.Duration.DurationOp + timeSpan);
+                listTank.Add(endOpAfterTime.Add(machine.Duration_cleaning));
+                listTank.Add(endOpAfterTime.Add(machine.Duration_cleaning).Add(timeSpan));
                 listTank.Add(timeSpan);
                 listTank.Add(oF.IdOF);
                 listTank.Add(operatorTank.Id);
@@ -222,10 +235,10 @@ namespace PRD_Ordonnanceur.Algorithms
                 listConsumable.Add(dayTime);
                 listConsumable.Add(step.QuantityConsumable[count]);
                 listMachine.Add(step.ConsumableUsed[count].Id);
+                solutionPlanning.PlanningCons.Add(new(listConsumable));
+                listConsumable.Clear();
                 count++;
             }
-
-            solutionPlanning.PlanningCons.Add(listConsumable);
 
             return solutionPlanning;
         }

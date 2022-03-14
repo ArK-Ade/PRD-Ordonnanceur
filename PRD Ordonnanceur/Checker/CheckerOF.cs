@@ -17,18 +17,20 @@ namespace PRD_Ordonnanceur.Checker
             DateTime jobEnd2;
 
             List<Object> list;
+            
 
             for (int i = 0; i < planning.PlanningOperator.Count; i++)
             {
                 list = planning.PlanningOperator[i];
 
                 Operator currentOperator = new();
-                jobBeginning1 = (DateTime)list[2];
-                jobEnd1 = (DateTime)list[3];
+                jobBeginning1 = (DateTime)list[1];
+                jobEnd1 = (DateTime)list[2];
+                uint idOp1 = (uint)list[5];
 
                 foreach (Operator operat in operators)
                 {
-                    if ((uint)list[5] == operat.Id)
+                    if (idOp1 == operat.Id)
                     {
                         currentOperator = operat;
                         break;
@@ -36,25 +38,34 @@ namespace PRD_Ordonnanceur.Checker
                 }
 
                 // Vérification heure de travail
-                if (jobBeginning1 < currentOperator.Beginning || jobEnd1 > currentOperator.End)
-                {
+                if (jobBeginning1.Hour < currentOperator.Beginning.Hour || (jobBeginning1.Hour == currentOperator.Beginning.Hour && jobBeginning1.Minute < currentOperator.Beginning.Minute))
                     return false;
-                }
+                    
+                if(jobEnd1.Hour > currentOperator.End.Hour || (jobEnd1.Hour == currentOperator.End.Hour && jobEnd1.Minute > currentOperator.End.Minute))
+                    return false;
+
+                int count = 0;
 
                 // Vérification planning
                 foreach (List<Object> planningOperator in planning.PlanningOperator)
                 {
-                    jobBeginning2 = (DateTime)planningOperator[2];
-                    jobEnd2 = (DateTime)planningOperator[3];
+                    jobBeginning2 = (DateTime)planningOperator[1];
+                    jobEnd2 = (DateTime)planningOperator[2];
 
-                    if (jobBeginning1 >= jobBeginning2 && jobBeginning1 <= jobEnd2)
+                    bool check = false;
+
+                    if (idOp1 == (uint)planningOperator[5] && i != count)
                     {
-                        return false;
+                        if(jobBeginning1 < jobBeginning2 && jobEnd1 <= jobBeginning2)
+                            check = true;
+
+                        if(jobBeginning2 < jobBeginning1 && jobEnd2 <= jobEnd1)
+                            check = true;
+
+                        if (!check)
+                            return false;
                     }
-                    else if (jobBeginning1 <= jobBeginning2 && jobEnd1 >= jobEnd2)
-                    {
-                        return false;
-                    }
+                    count++;
                 }
             }
 
@@ -77,10 +88,10 @@ namespace PRD_Ordonnanceur.Checker
                 {
                     list = planning.PlanningOperator[i];
 
-                    jobBeginning1 = (DateTime)list[2];
-                    jobEnd1 = (DateTime)list[3];
-                    jobBeginning2 = (DateTime)planningMachine[2];
-                    jobEnd2 = (DateTime)planningMachine[3];
+                    jobBeginning1 = (DateTime)list[1];
+                    jobEnd1 = (DateTime)list[2];
+                    jobBeginning2 = (DateTime)planningMachine[1];
+                    jobEnd2 = (DateTime)planningMachine[2];
 
                     if (jobBeginning1 >= jobBeginning2 && jobBeginning1 <= jobEnd2)
                     {
@@ -112,10 +123,10 @@ namespace PRD_Ordonnanceur.Checker
                 {
                     list = planning.PlanningTank[i];
 
-                    jobBeginning1 = (DateTime)list[2];
-                    jobEnd1 = (DateTime)list[3];
-                    jobBeginning2 = (DateTime)planningTank[2];
-                    jobEnd2 = (DateTime)planningTank[3];
+                    jobBeginning1 = (DateTime)list[1];
+                    jobEnd1 = (DateTime)list[2];
+                    jobBeginning2 = (DateTime)planningTank[1];
+                    jobEnd2 = (DateTime)planningTank[2];
 
                     if (jobBeginning1 >= jobBeginning2 && jobBeginning1 <= jobEnd2)
                     {
@@ -131,13 +142,33 @@ namespace PRD_Ordonnanceur.Checker
             return true;
         }
 
-        // TODO Terminer cette fonction
-        public static bool CheckConstrainConsommable(SolutionPlanning planning)
+        public static bool CheckConstrainConsommable(SolutionPlanning planning, List<Consumable> consumables)
         {
+            // Verification consommable negatif
+            int countConsomable;
+            int numberConso;
+            Consumable currentConso;
+
+            for (countConsomable = 0; countConsomable>planning.PlanningCons.Count; countConsomable++)
+            {
+                currentConso = consumables[countConsomable];
+                numberConso = currentConso.QuantityAvailable;
+
+                foreach (List<Object> listConsomable in planning.PlanningCons)
+                {
+                    if((int) listConsomable[2] == currentConso.Id)
+                    {
+                        numberConso -= (int) listConsomable[1];
+                    }
+                }
+
+                if (numberConso <= 0)
+                    return false;
+            }
             return true;
         }
 
-        public static bool CheckConstrainOF()
+        public static bool CheckConstrainOF(SolutionPlanning planning)
         {
             return true;
         }
