@@ -196,6 +196,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 listTank.Add(timeSpan);
                 listTank.Add(oF.IdOF);
                 listTank.Add(operatorTank.Id);
+                listTank.Add(tank.IdTank);
 
                 // Planification OF
                 List<Object> listOF = new();
@@ -220,9 +221,12 @@ namespace PRD_Ordonnanceur.Algorithms
             // Planification Machine
             List<Object> listMachine = new();
             listMachine.Add(dayTime);
+            listMachine.Add(endOpBeforeTime);
+            listMachine.Add(beginningOpAfterTime);
             listMachine.Add(oF.IdOF);
             listMachine.Add(operatorBefore.Id);
             listMachine.Add(operatorAfter.Id);
+            listMachine.Add(machine.Id);
 
             solutionPlanning.PlanningMachine.Add(listMachine);
 

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Checker
 {
-    // TODO Faire le checker qui va vérifier si la solution est correcte
     // Il doit rregarde sur chaque jour si toutes les contraintes sont respectées.
     public static class CheckerOF
     {
@@ -18,7 +17,6 @@ namespace PRD_Ordonnanceur.Checker
 
             List<Object> list;
             
-
             for (int i = 0; i < planning.PlanningOperator.Count; i++)
             {
                 list = planning.PlanningOperator[i];
@@ -81,26 +79,36 @@ namespace PRD_Ordonnanceur.Checker
 
             List<Object> list;
 
-            // Verification planning
             for (int i = 0; i < planning.PlanningMachine.Count; i++)
             {
+                list = planning.PlanningMachine[i];
+
+                jobBeginning1 = (DateTime)list[1];
+                jobEnd1 = (DateTime)list[2];
+                int idmachine = (int)list[6];
+
+                int count = 0;
+
+                // Vérification planning
                 foreach (List<Object> planningMachine in planning.PlanningMachine)
                 {
-                    list = planning.PlanningOperator[i];
-
-                    jobBeginning1 = (DateTime)list[1];
-                    jobEnd1 = (DateTime)list[2];
                     jobBeginning2 = (DateTime)planningMachine[1];
                     jobEnd2 = (DateTime)planningMachine[2];
 
-                    if (jobBeginning1 >= jobBeginning2 && jobBeginning1 <= jobEnd2)
+                    bool check = false;
+
+                    if (idmachine == (int)planningMachine[6] && i != count)
                     {
-                        return false;
+                        if (jobBeginning1 < jobBeginning2 && jobEnd1 <= jobBeginning2)
+                            check = true;
+
+                        if (jobBeginning2 < jobBeginning1 && jobEnd2 <= jobEnd1)
+                            check = true;
+
+                        if (!check)
+                            return false;
                     }
-                    else if (jobBeginning1 <= jobBeginning2 && jobEnd1 >= jobEnd2)
-                    {
-                        return false;
-                    }
+                    count++;
                 }
             }
 
@@ -116,26 +124,36 @@ namespace PRD_Ordonnanceur.Checker
 
             List<Object> list;
 
-            // Vérification planning
             for (int i = 0; i < planning.PlanningTank.Count; i++)
             {
-                foreach (List<Object> planningTank in planning.PlanningTank)
-                {
-                    list = planning.PlanningTank[i];
+                list = planning.PlanningTank[i];
 
-                    jobBeginning1 = (DateTime)list[1];
-                    jobEnd1 = (DateTime)list[2];
+                jobBeginning1 = (DateTime)list[1];
+                jobEnd1 = (DateTime)list[2];
+                int idTank = (int)list[6];
+
+                int count = 0;
+
+                // Vérification planning
+                foreach (List<Object> planningTank in planning.PlanningMachine)
+                {
                     jobBeginning2 = (DateTime)planningTank[1];
                     jobEnd2 = (DateTime)planningTank[2];
 
-                    if (jobBeginning1 >= jobBeginning2 && jobBeginning1 <= jobEnd2)
+                    bool check = false;
+
+                    if (idTank == (int)planningTank[6] && i != count)
                     {
-                        return false;
+                        if (jobBeginning1 < jobBeginning2 && jobEnd1 <= jobBeginning2)
+                            check = true;
+
+                        if (jobBeginning2 < jobBeginning1 && jobEnd2 <= jobEnd1)
+                            check = true;
+
+                        if (!check)
+                            return false;
                     }
-                    else if (jobBeginning1 <= jobBeginning2 && jobEnd1 >= jobEnd2)
-                    {
-                        return false;
-                    }
+                    count++;
                 }
             }
 

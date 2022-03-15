@@ -144,7 +144,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 if (beginningTimeOfOperation >= (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[2])
                 {
                     // On supprime la machine de la liste available
-                    int id = (int)list[5]; //TODO Changer le format du planning des machines
+                    int id = (int)list[5];
                     int count2 = 0;
                     int index = -1;
                     foreach (Machine op in listMachineAvailable)
