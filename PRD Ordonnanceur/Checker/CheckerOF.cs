@@ -167,7 +167,7 @@ namespace PRD_Ordonnanceur.Checker
             int numberConso;
             Consumable currentConso;
 
-            for (countConsomable = 0; countConsomable>planning.PlanningCons.Count; countConsomable++)
+            for (countConsomable = 0; countConsomable < consumables.Count ; countConsomable++)
             {
                 currentConso = consumables[countConsomable];
                 numberConso = currentConso.QuantityAvailable;
@@ -180,7 +180,7 @@ namespace PRD_Ordonnanceur.Checker
                     }
                 }
 
-                if (numberConso <= 0)
+                if (numberConso < 0)
                     return false;
             }
             return true;

@@ -238,7 +238,7 @@ namespace PRD_Ordonnanceur.Algorithms
             {
                 listConsumable.Add(dayTime);
                 listConsumable.Add(step.QuantityConsumable[count]);
-                listMachine.Add(step.ConsumableUsed[count].Id);
+                listConsumable.Add(step.ConsumableUsed[count].Id);
                 solutionPlanning.PlanningCons.Add(new(listConsumable));
                 listConsumable.Clear();
                 count++;
