@@ -11,9 +11,7 @@ namespace PRD_OrdonnanceurTests.Parser
         [Test()]
         public void ParsingTest()
         {
-            string path = "C:\\Travail\\DI5\\PR&D\\Data Formated\\";
-
-            //dataParsed = parser.ParsingData(path);
+            string path = "../../../Data Formated/";
 
             List<Consumable> consumables = ParserData.ParsingDataConsommable(path);
 
