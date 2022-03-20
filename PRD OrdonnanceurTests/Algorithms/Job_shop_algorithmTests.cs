@@ -58,7 +58,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             Duration duration = new(new(00, 10, 00), new(00, 10, 00), new(00, 10, 00));
             DateTime durationMax = DateTime.MaxValue;
             bool reportable = false;
-            List<int> quantityNeeded = new();
+            List<double> quantityNeeded = new();
             quantityNeeded.Add(5);
 
 

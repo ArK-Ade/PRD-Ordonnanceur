@@ -196,7 +196,7 @@ namespace PRD_Ordonnanceur.Algorithms
             return listTankAvailable;
         }
 
-        public bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, List<Consumable> listConsumableNeeded, List<int> quantity)
+        public bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, List<Consumable> listConsumableNeeded, List<double> quantity)
         {
             // On recherche dans le planning la quantité restante de consommable restant
             bool consumubleIsAvailable = true;
@@ -209,7 +209,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 throw exception;
             }
 
-            List<int> quantityRemaining = new(listConsumableNeeded.Count);
+            List<double> quantityRemaining = new(listConsumableNeeded.Count);
             int count = 0;
 
             // Remplissable de quantityRemaining
@@ -225,7 +225,7 @@ namespace PRD_Ordonnanceur.Algorithms
             foreach (List<Object> list in planningConso)
             {
                 DateTime day = (DateTime)list[0];
-                int quantityUsed = (int)list[1];
+                double quantityUsed = (double)list[1];
                 int idConsumable = (int)list[2];
 
                 foreach (Consumable consumable in listConsumableNeeded)
@@ -240,7 +240,7 @@ namespace PRD_Ordonnanceur.Algorithms
             }
 
             // On verifie que les contraintes de quantités sont respectés
-            foreach (int quantityUsed in quantityRemaining)
+            foreach (double quantityUsed in quantityRemaining)
             {
                 if (quantityUsed < 0)
                     consumubleIsAvailable = false;

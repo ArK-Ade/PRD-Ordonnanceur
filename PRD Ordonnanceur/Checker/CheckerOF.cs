@@ -164,7 +164,7 @@ namespace PRD_Ordonnanceur.Checker
         {
             // Verification consommable negatif
             int countConsomable;
-            int numberConso;
+            double numberConso;
             Consumable currentConso;
 
             for (countConsomable = 0; countConsomable < consumables.Count ; countConsomable++)
@@ -176,7 +176,7 @@ namespace PRD_Ordonnanceur.Checker
                 {
                     if((int) listConsomable[2] == currentConso.Id)
                     {
-                        numberConso -= (int) listConsomable[1];
+                        numberConso -= (double) listConsomable[1];
                     }
                 }
 

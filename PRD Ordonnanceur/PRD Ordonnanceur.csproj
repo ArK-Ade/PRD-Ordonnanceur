@@ -9,7 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\CustomClic.cs~RF6887809.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\ark-ade_prd-ordonnanceur\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="27.2.1" />
   </ItemGroup>
 
 </Project>

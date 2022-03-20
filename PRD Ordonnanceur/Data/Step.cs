@@ -23,18 +23,19 @@ namespace PRD_Ordonnanceur.Data
 
     public class Step
     {
-        private int idStep;
+        private double idStep;
+        private string name;
         private TypeMachine typeMachineNeeded;
         private Duration duration;
         private DateTime durationMaxNextStep;
         private bool nextStepReportable;
         private List<Consumable> consumableUsed;
-        private List<int> quantityConsumable;
+        private List<double> quantityConsumable;
 
         public Step()
         { }
 
-        public Step(int idStep, TypeMachine typeMachineNeeded, Duration duration, DateTime durationMaxNextStep, bool nextStepReportable, List<Consumable> consumableUsed, List<int> quantityConsumable)
+        public Step(double idStep, TypeMachine typeMachineNeeded, Duration duration, DateTime durationMaxNextStep, bool nextStepReportable, List<Consumable> consumableUsed, List<double> quantityConsumable)
         {
             this.idStep = idStep;
             this.typeMachineNeeded = typeMachineNeeded;
@@ -45,12 +46,13 @@ namespace PRD_Ordonnanceur.Data
             this.QuantityConsumable = quantityConsumable;
         }
 
-        public int IdStep { get => idStep; set => idStep = value; }
+        public double IdStep { get => idStep; set => idStep = value; }
         public TypeMachine TypeMachineNeeded { get => typeMachineNeeded; set => typeMachineNeeded = value; }
         public Duration Duration { get => duration; set => duration = value; }
         public DateTime DurationMaxNextStep { get => durationMaxNextStep; set => durationMaxNextStep = value; }
         public bool NextStepReportable { get => nextStepReportable; set => nextStepReportable = value; }
         public List<Consumable> ConsumableUsed { get => consumableUsed; set => consumableUsed = value; }
-        public List<int> QuantityConsumable { get => quantityConsumable; set => quantityConsumable = value; }
+        public List<double> QuantityConsumable { get => quantityConsumable; set => quantityConsumable = value; }
+        public string Name { get => name; set => name = value; }
     }
 }
