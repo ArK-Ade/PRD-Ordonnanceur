@@ -1,8 +1,4 @@
-using PRD_Ordonnanceur.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PRD_Ordonnanceur
@@ -18,7 +14,7 @@ namespace PRD_Ordonnanceur
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ImportForm());
+            Application.Run(new Form1());
         }
     }
 }
