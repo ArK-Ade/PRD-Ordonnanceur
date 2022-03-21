@@ -71,6 +71,7 @@ namespace PRD_Ordonnanceur.View
 
                     MessageBox.Show("Nombre de contraintes : " + numberConstraint, "Message");
 
+
                     //string[] files = Directory.GetFiles(fbd.SelectedPath);
                 }
                 catch (Exception exp)
