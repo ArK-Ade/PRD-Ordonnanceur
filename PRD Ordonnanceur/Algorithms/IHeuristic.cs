@@ -1,9 +1,10 @@
 ﻿using PRD_Ordonnanceur.Data;
+using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
     internal interface IHeuristic
     {
-        public OF[] SortingAlgorithm(int choice, OF[] Ofs);
+        public List<OF> SortingAlgorithm(int choice, List<OF> Ofs);
     }
 }

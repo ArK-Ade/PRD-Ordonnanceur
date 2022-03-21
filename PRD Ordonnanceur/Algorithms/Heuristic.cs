@@ -1,5 +1,6 @@
 ﻿using PRD_Ordonnanceur.Data;
 using System;
+using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
@@ -9,7 +10,7 @@ namespace PRD_Ordonnanceur.Algorithms
         {
         }
 
-        public int Smallest_index_DTI(OF[] OFs)
+        public int Smallest_index_DTI(List<OF> OFs)
         {
             int index = 0;
             DateTime date = DateTime.MaxValue;
@@ -32,14 +33,14 @@ namespace PRD_Ordonnanceur.Algorithms
             return index;
         }
 
-        public OF[] SortCrescentDtiCrescentDli(OF[] OFs)
+        public List<OF> SortCrescentDtiCrescentDli(List<OF> OFs)
         {
-            OF[] tmp = OFs;
-            OF[] tableau = new OF[OFs.Length];
+            List<OF> tmp = new(OFs);
+            List<OF> tableau = new (OFs);
 
             int index;
 
-            for (int i = 0; i < OFs.Length; i++)
+            for (int i = 0; i < OFs.Count; i++)
             {
                 index = Smallest_index_DTI(tmp);
                 tableau[i] = tmp[index];
@@ -50,17 +51,17 @@ namespace PRD_Ordonnanceur.Algorithms
             return tableau;
         }
 
-        public OF[] Sort_crescent_dti_decendant_dli(OF[] OFs)
+        public List<OF> Sort_crescent_dti_decendant_dli(List<OF> OFs)
         {
             return OFs;
         }
 
-        public OF[] Sort_random_5_crescent(OF[] OFs)
+        public List<OF> Sort_random_5_crescent(List<OF> OFs)
         {
             return OFs;
         }
 
-        OF[] IHeuristic.SortingAlgorithm(int choice, OF[] Ofs)
+        List<OF> IHeuristic.SortingAlgorithm(int choice, List<OF> Ofs)
         {
             switch (choice)
             {

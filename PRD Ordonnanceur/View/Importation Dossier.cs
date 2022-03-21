@@ -1,4 +1,7 @@
-﻿using System;
+﻿using PRD_Ordonnanceur.Algorithms;
+using PRD_Ordonnanceur.Data;
+using PRD_Ordonnanceur.Parser;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -51,6 +54,23 @@ namespace PRD_Ordonnanceur.View
                 try
                 {
                     MessageBox.Show("Lancement de l'algorithme", "Message");
+
+                    List<Consumable> consumables = ParserData.ParsingDataConsommable(pathCSV);
+                    List<OF> oFs = ParserData.ParsingDataOF(pathCSV, consumables);
+                    List<Operator> operators = ParserData.ParsingDataOperator(pathCSV);
+                    List<Machine> machines = ParserData.ParsingDataMachine(pathCSV);
+                    List<Tank> tanks = ParserData.ParsingDataTank(pathCSV);
+
+                    Heuristic heuristic = new();
+                    oFs = heuristic.SortCrescentDtiCrescentDli(oFs);
+
+                    DataParsed dataParsed = new(oFs, consumables, machines, tanks, operators, null);
+
+                    Job_shop_algorithm algorithm = new(dataParsed, new(), new(), new());
+                    int numberConstraint = algorithm.StepAlgorithm(DateTime.Now);
+
+                    MessageBox.Show("Nombre de contraintes : " + numberConstraint, "Message");
+
                     //string[] files = Directory.GetFiles(fbd.SelectedPath);
                 }
                 catch (Exception exp)

@@ -32,9 +32,21 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, setTank, numberProduct2, consommableQuantity);
             OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, setTank, numberProduct1, consommableQuantity);
 
-            OF[] OFs1 = { OF1, OF2, OF3 };
-            OF[] OFs2 = { OF2, OF1, OF3 };
-            OF[] OFs3 = { OF2, OF3, OF1 };
+            List<OF> OFs1 = new();
+            OFs1.Add(OF1); 
+            OFs1.Add(OF2);
+            OFs1.Add(OF3);
+
+            List<OF> OFs2 = new();
+            OFs2.Add(OF2);
+            OFs2.Add(OF1);
+            OFs2.Add(OF3);
+
+
+            List<OF> OFs3 = new();
+            OFs3.Add(OF2);
+            OFs3.Add(OF3);
+            OFs3.Add(OF1);
 
             Heuristic heuristic = new();
 
@@ -83,9 +95,22 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, setTank, numberProduct2, consommableQuantity);
             OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, setTank, numberProduct1, consommableQuantity);
 
-            OF[] OFs1 = { OF1, OF2, OF3 };
-            OF[] OFs2 = { OF2, OF1, OF3 };
-            OF[] OFs3 = { OF2, OF3, OF1 };
+
+            List<OF> OFs1 = new();
+            OFs1.Add(OF1);
+            OFs1.Add(OF2);
+            OFs1.Add(OF3);
+
+            List<OF> OFs2 = new();
+            OFs2.Add(OF2);
+            OFs2.Add(OF1);
+            OFs2.Add(OF3);
+
+
+            List<OF> OFs3 = new();
+            OFs3.Add(OF2);
+            OFs3.Add(OF3);
+            OFs3.Add(OF1);
 
             Heuristic heuristic = new();
 
