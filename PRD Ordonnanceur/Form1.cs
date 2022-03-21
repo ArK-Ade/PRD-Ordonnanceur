@@ -1,4 +1,4 @@
-﻿using PRD_Ordonnanceur.View;
+using PRD_Ordonnanceur.View;
 using System;
 using System.Windows.Forms;
 
@@ -36,6 +36,5 @@ namespace PRD_Ordonnanceur
         {
 
         }
-
     }
 }
