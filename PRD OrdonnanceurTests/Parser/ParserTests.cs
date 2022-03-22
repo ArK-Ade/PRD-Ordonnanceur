@@ -20,6 +20,13 @@ namespace PRD_OrdonnanceurTests.Parser
 
             //Assert.AreEqual(1021610, data[0].IdOF);
             //Assert.AreEqual(1021614, data[1].IdOF);
+
+            //List<Operator> operators = ParserData.ParsingDataOperator(path);
+
+            //Assert.AreEqual(1, operators[0].Id);
+
+            //List<Machine> machines = ParserData.ParsingDataMachine(path);
+            //Assert.AreEqual(1, machines[0].Id);
         }
     }
 }

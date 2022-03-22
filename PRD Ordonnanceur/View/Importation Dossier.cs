@@ -71,6 +71,7 @@ namespace PRD_Ordonnanceur.View
 
                     MessageBox.Show("Nombre de contraintes : " + numberConstraint, "Message");
 
+                    // TODO Ajouter l'affichage d'une date pour le lancement de l'algorithme
 
                     //string[] files = Directory.GetFiles(fbd.SelectedPath);
                 }
