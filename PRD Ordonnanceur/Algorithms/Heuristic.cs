@@ -43,7 +43,7 @@ namespace PRD_Ordonnanceur.Algorithms
             for (int i = 0; i < OFs.Count; i++)
             {
                 index = Smallest_index_DTI(tmp);
-                tableau[i] = tmp[index];
+                tableau[i] = new(tmp[index]);
 
                 tmp[index].EarliestDate = DateTime.MaxValue;
             }

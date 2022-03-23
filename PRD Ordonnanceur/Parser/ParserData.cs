@@ -27,7 +27,7 @@ namespace PRD_Ordonnanceur.Parser
 
             // Lecture des données Consommables
 
-            string path = rootPath + "Stocks.csv";
+            string path = rootPath + "/Stocks.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Consumable>();
@@ -61,7 +61,7 @@ namespace PRD_Ordonnanceur.Parser
 
             // Lecture des données Consommables
 
-            string path = rootPath + "Operateurs.csv";
+            string path = rootPath + "/Operateurs.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Operator>();
@@ -107,7 +107,7 @@ namespace PRD_Ordonnanceur.Parser
 
             // Lecture des données Consommables
 
-            string path = rootPath + "Machines.csv";
+            string path = rootPath + "/Machines.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Machine>();
@@ -147,7 +147,7 @@ namespace PRD_Ordonnanceur.Parser
 
             // Lecture des données
 
-            string path = rootPath + "OFS.csv";
+            string path = rootPath + "/OFS.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var recordsOF = new List<OF>();
@@ -178,7 +178,15 @@ namespace PRD_Ordonnanceur.Parser
                     IdOF = csv.GetField<int>("ACTIVITE"),
                     Starting_hour = DateTime.MinValue,
                     StepSequence = new(),
+                    EarliestDate = DateTime.MinValue,
+                    Next_step = 0,
                 };
+
+                TimeSpan durationOp = new(csv.GetField<int>("TPS2"),0,0);
+                TimeSpan durationBeforeOp = new(0, 10, 0);
+                TimeSpan durationAfterOp = new(0, 10, 0);
+
+                Duration duration = new(durationBeforeOp, durationOp, durationAfterOp);
 
                 if (!sameOF)
                 {
@@ -188,6 +196,7 @@ namespace PRD_Ordonnanceur.Parser
                         IdStep = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
+                        //Duration = duration,
                     };
 
                     recordsOF.Add(recordOF);
@@ -208,6 +217,8 @@ namespace PRD_Ordonnanceur.Parser
                         IdStep = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
+                        //Duration = duration,
+                      
                     };
 
                     recordsStep.Add(recordStep);
@@ -218,7 +229,7 @@ namespace PRD_Ordonnanceur.Parser
             DataParsed data = new();
 
             // Attribution des consommables aux etapes
-            path = rootPath + "Etapes.csv";
+            path = rootPath + "/Etapes.csv";
             using var reader2 = new StreamReader(path);
             using var csv2 = new CsvReader(reader2, CultureInfo.CurrentCulture);
 
@@ -233,9 +244,14 @@ namespace PRD_Ordonnanceur.Parser
                     {
                         if (step.IdStep == csv2.GetField<double>("ETAPES"))
                         {
-                            Consumable consumable = consumables.Find(x => x.Name == csv2.GetField("COMPOSANT"));
-                            step.ConsumableUsed.Add(consumable);
-                            step.QuantityConsumable.Add(csv2.GetField<float>("QTE_T"));
+                            foreach(Consumable consumable in consumables)
+                            {
+                                if(consumable.Name == csv2.GetField("COMPOSANT"))
+                                {
+                                    step.ConsumableUsed.Add(consumable);
+                                    step.QuantityConsumable.Add(csv2.GetField<float>("QTE_T"));
+                                }
+                            }
                         }
                     }
                 }
@@ -251,7 +267,7 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            string path = rootPath + "Cuves.csv";
+            string path = rootPath + "/Cuves.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Tank>();

@@ -31,6 +31,19 @@ namespace PRD_Ordonnanceur.Data
             this.ConsommableQuantity = consommableQuantity;
         }
 
+        public OF(OF oF)
+        {
+            this.IdOF = oF.idOF;
+            this.Starting_hour = oF.starting_hour;
+            this.Next_step = oF.next_step;
+            this.StepSequence = oF.stepSequence;
+            this.EarliestDate = oF.earliestDate;
+            this.LatestDate = oF.latestDate;
+            this.SetTank = oF.setTank;
+            this.NumberProduct = oF.numberProduct;
+            this.ConsommableQuantity = oF.consommableQuantity;
+        }
+
         public int IdOF { get => idOF; set => idOF = value; }
         public DateTime Starting_hour { get => starting_hour; set => starting_hour = value; }
         public int Next_step { get => next_step; set => next_step = value; }

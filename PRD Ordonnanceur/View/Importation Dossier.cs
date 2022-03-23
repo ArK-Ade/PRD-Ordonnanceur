@@ -51,8 +51,7 @@ namespace PRD_Ordonnanceur.View
         {
             if (pathCSV != "")
             {
-                try
-                {
+                
                     MessageBox.Show("Lancement de l'algorithme", "Message");
 
                     List<Consumable> consumables = ParserData.ParsingDataConsommable(pathCSV);
@@ -62,7 +61,7 @@ namespace PRD_Ordonnanceur.View
                     List<Tank> tanks = ParserData.ParsingDataTank(pathCSV);
 
                     Heuristic heuristic = new();
-                    oFs = heuristic.SortCrescentDtiCrescentDli(oFs);
+                    oFs = new(heuristic.SortCrescentDtiCrescentDli(oFs));
 
                     DataParsed dataParsed = new(oFs, consumables, machines, tanks, operators, null);
 
@@ -72,14 +71,10 @@ namespace PRD_Ordonnanceur.View
                     MessageBox.Show("Nombre de contraintes : " + numberConstraint, "Message");
 
                     // TODO Ajouter l'affichage d'une date pour le lancement de l'algorithme
+                    // TODO Changer les durées d'opérations etc
 
                     //string[] files = Directory.GetFiles(fbd.SelectedPath);
-                }
-                catch (Exception exp)
-                {
-                    MessageBox.Show("L'erreur suivante a été rencontrée :" + exp.Message);
-                    Console.WriteLine("L'erreur suivante a été rencontrée :" + exp.Message);
-                }
+                
             }
             else
             {

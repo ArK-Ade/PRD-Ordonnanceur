@@ -99,14 +99,15 @@ namespace PRD_Ordonnanceur.Algorithms
             listRessourcesAvailable.Add(operatorAvailableBeforeOp[0]);
             listRessourcesAvailable.Add(operatorAvailableAfterOp[0]);
             listRessourcesAvailable.Add(operatorAvailableCleaning[0]);
-            listRessourcesAvailable.Add(operatorAvailableTank[0]);
             listRessourcesAvailable.Add(machineAvailable[0]);
             listRessourcesAvailable.Add(consomableAvailable);
 
             if (lastStep)
             {
+                listRessourcesAvailable.Add(operatorAvailableTank[0]);
                 listRessourcesAvailable.Add(tankAvailable[0]);
             }
+                
 
             // On renvoie une liste d'objet contenant toutes les ressources
             return listRessourcesAvailable;
@@ -121,15 +122,15 @@ namespace PRD_Ordonnanceur.Algorithms
             DateTime endOpBeforeTime = time.Add(step.Duration.DurationBeforeOp);
             DateTime beginningOpAfterTime = endOpBeforeTime.Add(step.Duration.DurationOp);
             DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
-
+            
             Operator operatorBefore = (Operator)ressourceList[1];
             Operator operatorAfter = (Operator)ressourceList[2];
             Operator operatorNetMachine = (Operator)ressourceList[3];
-            bool consumable = (bool)ressourceList[6];
-            Machine machine = (Machine)ressourceList[5];
+            Machine machine = (Machine)ressourceList[4];
+            bool consumable = (bool)ressourceList[5];
 
             Operator operatorTank = null;
-
+            
             // Planification OperateurAvant
             List<Object> listOpBefore = new();
             listOpBefore.Add(dayTime);
@@ -174,7 +175,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             if (lastStep)
             {
-                operatorTank = (Operator)ressourceList[4];
+                operatorTank = (Operator)ressourceList[6];
                 Tank tank = (Tank)ressourceList[7];
 
                 TimeSpan timeSpan = availableAlgorithm.FindTimeCleaningTank(oFBefore, oF, tank);
@@ -272,8 +273,7 @@ namespace PRD_Ordonnanceur.Algorithms
             DateTime currentTime = time;
             List<Object> resultRessources;
             bool OFinProgress = false;
-            DateTime dti = DateTime.MaxValue;
-
+            DateTime dti;
             SolutionPlanning planningAujourd = new();
 
             foreach (OF oF in DataParsed.OFs)
@@ -297,7 +297,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 }
 
                 // Prend en compte les jours au plus tot
-                while (dti.Day > currentTime.Day || dti.Month > currentTime.Month)
+                while (dti.Day >= currentTime.Day && dti.Month >= currentTime.Month && dti.Year >= currentTime.Year)
                 {
                     currentTime.AddMinutes(5);
                 }
@@ -307,10 +307,11 @@ namespace PRD_Ordonnanceur.Algorithms
                 foreach (Step step in oF.StepSequence)
                 {
                     // Si l'OF est en cours
-                    if (oF.StepSequence[countStep] == oF.StepSequence[oF.Next_step])
-                    {
-                        OFinProgress = false;
-                    }
+
+                    if(oF.Next_step >= 1)
+                        if (oF.StepSequence[countStep] == oF.StepSequence[oF.Next_step])        
+                            OFinProgress = false;
+
 
                     // Etape déja faite, on passe à l'étape suivante
                     if (OFinProgress)
