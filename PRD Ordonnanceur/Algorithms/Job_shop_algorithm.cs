@@ -258,7 +258,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="oFs"></param>
         /// <param name="BeginningDate"></param>
         /// <param name="operators"></param>
-        public int StepAlgorithm(DateTime time)
+        public int StepAlgorithm(DateTime time) //todo heure non respecté
         {
             int nbCteMaxViole = 0; // Il s'agit d'une constante qui va nous permettre de savoir le nombre de contraintes violés et permettra de comparer des heuristics
             bool lastStep = false;

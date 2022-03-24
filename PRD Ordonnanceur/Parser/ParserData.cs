@@ -182,11 +182,11 @@ namespace PRD_Ordonnanceur.Parser
                     Next_step = 0,
                 };
 
-                TimeSpan durationOp = new(csv.GetField<int>("TPS2"),0,0);
+                TimeSpan durationOp = new(0, csv.GetField<int>("TPS2"), 0);
                 TimeSpan durationBeforeOp = new(0, 10, 0);
                 TimeSpan durationAfterOp = new(0, 10, 0);
 
-                Duration duration = new(durationBeforeOp, durationOp, durationAfterOp);
+                Duration duration = new(durationBeforeOp, durationAfterOp, durationOp);
 
                 if (!sameOF)
                 {
@@ -196,7 +196,7 @@ namespace PRD_Ordonnanceur.Parser
                         IdStep = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
-                        //Duration = duration,
+                        Duration = duration,
                     };
 
                     recordsOF.Add(recordOF);
@@ -217,7 +217,7 @@ namespace PRD_Ordonnanceur.Parser
                         IdStep = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
-                        //Duration = duration,
+                        Duration = duration,
                       
                     };
 
