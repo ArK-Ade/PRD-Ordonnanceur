@@ -32,7 +32,7 @@ namespace PRD_Ordonnanceur.View
 
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    MessageBox.Show("Chemin selectionné : " + fbd.SelectedPath, "Message");
+                    AutoClosingMessageBox.Show("Chemin selectionné: " + fbd.SelectedPath, "Notification", 1000);
                     pathCSV = fbd.SelectedPath;
                 }
             }
@@ -52,8 +52,7 @@ namespace PRD_Ordonnanceur.View
         {
             if (pathCSV != "")
             {
-                
-                MessageBox.Show("Lancement de l'algorithme", "Message");
+                AutoClosingMessageBox.Show("Lancement de l'algorithme", "Notification", 1000);
 
                 List<Consumable> consumables = ParserData.ParsingDataConsommable(pathCSV);
                 List<OF> oFs = ParserData.ParsingDataOF(pathCSV, consumables);
@@ -67,18 +66,30 @@ namespace PRD_Ordonnanceur.View
                 DataParsed dataParsed = new(oFs, consumables, machines, tanks, operators, null);
 
                 Job_shop_algorithm algorithm = new(dataParsed, new(), new(), new());
-                int numberConstraint = algorithm.StepAlgorithm(DateTime.Now);
+                int numberConstraint = algorithm.StepAlgorithm(new(2022,02,01,8,0,0));
 
-                bool constraintOF = CheckerOF.CheckConstrainOF(algorithm.SolutionPlanning);
-                bool constrainOperator = CheckerOF.CheckConstrainOperator(algorithm.SolutionPlanning, algorithm.DataParsed.Operators);
-                bool constrainMachine = CheckerOF.CheckConstrainMachine(algorithm.SolutionPlanning);
-                bool constrainTank = CheckerOF.CheckConstrainTank(algorithm.SolutionPlanning);
-                bool constrainConsummable = CheckerOF.CheckConstrainConsommable(algorithm.SolutionPlanning, algorithm.DataParsed.Consummables);
+                bool constraintOF = false;
+                bool constrainOperator = false;
+                bool constrainMachine = false;
+                bool constrainTank = false;
+                bool constrainConsummable = false;
 
-                if(constraintOF && constrainOperator && constrainTank && constrainMachine && constrainConsummable)
-                    MessageBox.Show("Toutes les contraintes ont été respectées", "Message");
+                for (int i = 0; i < algorithm.Plannings.Count; i++)
+                {
+                    constraintOF = CheckerOF.CheckConstrainOF(algorithm.Plannings[i]);
+                    constrainOperator = CheckerOF.CheckConstrainOperator(algorithm.Plannings[i], algorithm.DataParsed.Operators);
+                    constrainMachine = CheckerOF.CheckConstrainMachine(algorithm.Plannings[i]);
+                    constrainTank = CheckerOF.CheckConstrainTank(algorithm.Plannings[i]);
+                    constrainConsummable = CheckerOF.CheckConstrainConsommable(algorithm.Plannings[i], algorithm.DataParsed.Consummables);
+
+                    if (!constraintOF || !constrainOperator || !constrainTank || !constrainMachine || !constrainConsummable)
+                        break;
+                }
+
+                if (constraintOF && constrainOperator && constrainTank && constrainMachine && constrainConsummable)
+                    AutoClosingMessageBox.Show("Toutes les contraintes ont été respectées", "Alerte", 1000);
                 else
-                    MessageBox.Show("Une contrainte de l'algorithme n'a pas été respectée", "Message");
+                    AutoClosingMessageBox.Show("Une contrainte de l'algorithme n'a pas été respectée", "Alerte", 1000);
 
                 // TODO Ajouter l'affichage d'une date pour le lancement de l'algorithme
                 // TODO Changer les durées d'opérations etc

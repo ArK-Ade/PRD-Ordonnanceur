@@ -48,7 +48,6 @@ namespace PRD_Ordonnanceur.Algorithms
             DateTime beginningOpAfterTime = endOpBeforeTime.Add(step.Duration.DurationOp);
             DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
 
-            
             List<Tank> tankAvailable = null;
             List<Operator> operatorAvailableTank = null;
 
@@ -86,8 +85,10 @@ namespace PRD_Ordonnanceur.Algorithms
                 return SearchRessources(time, step, lastStep);
             }
 
+            DateTime endOperation = endOpAfterTime.Add(machineAvailable[0].Duration_cleaning);
+
             // On cherche un operateur pour nettoyer la machine choisie 
-            List<Operator> operatorAvailableCleaning = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOpAfterTime.Add(machineAvailable[0].Duration_cleaning), TypeMachine.cleaning));
+            List <Operator> operatorAvailableCleaning = new(AvailableAlgorithm.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
 
             if(operatorAvailableCleaning.Count == 0)
                 return SearchRessources(time.AddMinutes(5.0), step, lastStep);
@@ -95,7 +96,12 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Object> listRessourcesAvailable = new();
 
             // On choisit la premiere ressource de chaque liste
-            listRessourcesAvailable.Add(endOpAfterTime);
+
+            if(lastStep)
+                listRessourcesAvailable.Add(endOperation.Add(new(0, 10, 0)));
+            else
+                listRessourcesAvailable.Add(endOperation);
+
             listRessourcesAvailable.Add(operatorAvailableBeforeOp[0]);
             listRessourcesAvailable.Add(operatorAvailableAfterOp[0]);
             listRessourcesAvailable.Add(operatorAvailableCleaning[0]);
@@ -107,7 +113,6 @@ namespace PRD_Ordonnanceur.Algorithms
                 listRessourcesAvailable.Add(operatorAvailableTank[0]);
                 listRessourcesAvailable.Add(tankAvailable[0]);
             }
-                
 
             // On renvoie une liste d'objet contenant toutes les ressources
             return listRessourcesAvailable;
@@ -258,7 +263,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="oFs"></param>
         /// <param name="BeginningDate"></param>
         /// <param name="operators"></param>
-        public int StepAlgorithm(DateTime time) //todo heure non respecté
+        public int StepAlgorithm(DateTime time) //todo NetMachine and opbefore
         {
             int nbCteMaxViole = 0; // Il s'agit d'une constante qui va nous permettre de savoir le nombre de contraintes violés et permettra de comparer des heuristics
             bool lastStep = false;
@@ -355,8 +360,19 @@ namespace PRD_Ordonnanceur.Algorithms
                     // Panifier l'étape courante a t'
                     planningAujourd = ScheduleStep(resultRessources, planningAujourd, currentTime, oF, step, lastStep, ofBefore);
 
+                    Machine machine = (Machine)resultRessources[4];
+                    
+
                     // On ajoute le temps passé
-                    currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp);
+                    if (!lastStep)
+                        currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp + machine.Duration_cleaning);
+                    else
+                    {
+                        Tank tank = (Tank)resultRessources[7];
+                        TimeSpan timeSpan = availableAlgorithm.FindTimeCleaningTank(ofBefore, oF, tank);
+                        currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp + machine.Duration_cleaning + timeSpan);
+                    }
+
                     countStep++;
                 }
                 // Mise a jour des compteurs
