@@ -164,23 +164,23 @@ namespace PRD_Ordonnanceur.Checker
         {
             // Verification consommable negatif
             int countConsomable;
-            double numberConso;
+            double quantityConso;
             Consumable currentConso;
 
             for (countConsomable = 0; countConsomable < consumables.Count ; countConsomable++)
             {
                 currentConso = consumables[countConsomable];
-                numberConso = currentConso.QuantityAvailable;
+                quantityConso = currentConso.QuantityAvailable;
 
                 foreach (List<Object> listConsomable in planning.PlanningCons)
                 {
                     if((int) listConsomable[2] == currentConso.Id)
                     {
-                        numberConso -= (double) listConsomable[1];
+                        quantityConso -= (double) listConsomable[1];
                     }
                 }
 
-                if (numberConso < 0)
+                if (quantityConso < 0)
                     return false;
             }
             return true;

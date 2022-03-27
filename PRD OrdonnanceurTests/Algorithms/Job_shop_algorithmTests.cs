@@ -74,9 +74,8 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             DateTime earlyDate = DateTime.MinValue;
             DateTime lateDate = DateTime.MaxValue;
             string numberProduct = "1";
-            List<List<string>> consommableQuantity = new();
 
-            oF = new(idOF, startingHour, 0, steps, earlyDate, lateDate, new(), numberProduct, consommableQuantity);
+            oF = new(idOF, startingHour, 0, steps, earlyDate, lateDate, numberProduct);
 
             List<OF> oFs = new();
             oFs.Add(oF);
@@ -91,7 +90,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             SolutionPlanning solutionPlanning = new();
             Available available = new();
 
-            Job_shop_algorithm algorithm = new(data, available, plannings, solutionPlanning);
+            jobShopAlgorithm algorithm = new(data, available, plannings, solutionPlanning);
             DateTime algotime = new(2022, 01, 01, 7, 0, 0);
             int constraint = algorithm.StepAlgorithm(algotime);
 

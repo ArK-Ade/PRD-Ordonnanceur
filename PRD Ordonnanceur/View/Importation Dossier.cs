@@ -40,12 +40,12 @@ namespace PRD_Ordonnanceur.View
 
         private void label1_Click(object sender, EventArgs e)
         {
-
+            // Method intentionally left empty.
         }
 
         private void Importation_Dossier_Load(object sender, EventArgs e)
         {
-
+            // Method intentionally left empty.
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -65,7 +65,7 @@ namespace PRD_Ordonnanceur.View
 
                 DataParsed dataParsed = new(oFs, consumables, machines, tanks, operators, null);
 
-                Job_shop_algorithm algorithm = new(dataParsed, new(), new(), new());
+                jobShopAlgorithm algorithm = new(dataParsed, new(), new(), new()); //TODO Changer le type de quantitéConsomable
                 int numberConstraint = algorithm.StepAlgorithm(new(2022,02,01,8,0,0));
 
                 bool constraintOF = false;

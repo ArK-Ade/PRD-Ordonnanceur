@@ -22,9 +22,6 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 if (date > oF.EarliestDate)
                 {
-                    if (date == oF.EarliestDate)
-                    {
-                    }
                     date = oF.EarliestDate;
                     index = count;
                 }
