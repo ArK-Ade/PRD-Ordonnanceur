@@ -17,10 +17,10 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             Operator operator1;
             List<Operator> operators = new();
             uint idOperator1 = 1;
-            List<TypeMachine> listSkillOperator1 = new(), listSkillOperator2 = new();
+            List<TypeMachine> listSkillOperator1 = new();
             TypeMachine typeMachine = TypeMachine.blender;
             listSkillOperator1.Add(typeMachine);
-            DateTime jobBeginningTime1 = new(2022, 01, 01, 07, 00, 00), jobEndTime1 = new DateTime(2022, 01, 01, 18, 00, 00);
+            DateTime jobBeginningTime1 = new(2022, 01, 01, 07, 00, 00), jobEndTime1 = new(2022, 01, 01, 18, 00, 00);
 
             operator1 = new(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
 
@@ -90,7 +90,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             SolutionPlanning solutionPlanning = new();
             Available available = new();
 
-            jobShopAlgorithm algorithm = new(data, available, plannings, solutionPlanning);
+            JobShopAlgorithm algorithm = new(data, available, plannings, solutionPlanning);
             DateTime algotime = new(2022, 01, 01, 7, 0, 0);
             int constraint = algorithm.StepAlgorithm(algotime);
 

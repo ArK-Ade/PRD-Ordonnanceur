@@ -26,15 +26,13 @@ namespace PRD_Ordonnanceur.View
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
-            {
-                DialogResult result = fbd.ShowDialog();
+            using var fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
 
-                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-                {
-                    AutoClosingMessageBox.Show("Chemin selectionné: " + fbd.SelectedPath, "Notification", 1000);
-                    pathCSV = fbd.SelectedPath;
-                }
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                AutoClosingMessageBox.Show("Chemin selectionné: " + fbd.SelectedPath, "Notification", 1000);
+                pathCSV = fbd.SelectedPath;
             }
         }
 
@@ -65,8 +63,9 @@ namespace PRD_Ordonnanceur.View
 
                 DataParsed dataParsed = new(oFs, consumables, machines, tanks, operators, null);
 
-                jobShopAlgorithm algorithm = new(dataParsed, new(), new(), new()); //TODO Changer le type de quantitéConsomable
+                JobShopAlgorithm algorithm = new(dataParsed, new(), new(), new());
                 int numberConstraint = algorithm.StepAlgorithm(new(2022,02,01,8,0,0));
+                AutoClosingMessageBox.Show("Nombre de contrainte non respectés : " + numberConstraint, "Alerte", 1000);
 
                 bool constraintOF = false;
                 bool constrainOperator = false;
@@ -87,14 +86,9 @@ namespace PRD_Ordonnanceur.View
                 }
 
                 if (constraintOF && constrainOperator && constrainTank && constrainMachine && constrainConsummable)
-                    AutoClosingMessageBox.Show("Toutes les contraintes ont été respectées", "Alerte", 1000);
+                    AutoClosingMessageBox.Show("Le vérificateur n'a trouvé aucune erreur", "Alerte", 1000);
                 else
-                    AutoClosingMessageBox.Show("Une contrainte de l'algorithme n'a pas été respectée", "Alerte", 1000);
-
-                // TODO Ajouter l'affichage d'une date pour le lancement de l'algorithme
-                // TODO Changer les durées d'opérations etc
-                //string[] files = Directory.GetFiles(fbd.SelectedPath);
-
+                    AutoClosingMessageBox.Show("Le vérificateur a trouvé une erreur", "Alerte", 1000);
             }
             else
             {

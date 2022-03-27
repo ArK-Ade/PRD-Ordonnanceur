@@ -181,7 +181,6 @@ namespace PRD_Ordonnanceur.Algorithms
                 if (beginningTimeOfOperation >= (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[2])
                 {
                     // On supprime l'operateur de la liste available
-                    int id = (int)list[0];
                     foreach (Tank op in listTankAvailable)
                     {
                         listTankAvailable.Remove(op);
@@ -202,7 +201,7 @@ namespace PRD_Ordonnanceur.Algorithms
             if (listConsumableNeeded.Count != quantity.Count)
             {
                 string msg = "Il y a une erreur dans le parseur";
-                Exception exception = new Exception(msg);
+                Exception exception = new(msg);
                 throw exception;
             }
 
@@ -212,7 +211,7 @@ namespace PRD_Ordonnanceur.Algorithms
             // Remplissable de quantityRemaining
             foreach (Consumable consumable in listConsumableNeeded)
             {
-                quantityRemaining.Add(consumable.QuantityAvailable); // TODO A corriger
+                quantityRemaining.Add(consumable.QuantityAvailable);
                 count++;
             }
 
@@ -221,7 +220,6 @@ namespace PRD_Ordonnanceur.Algorithms
             // Pour chaque jour du planning on enleve les consommables utilisés
             foreach (List<Object> list in planningConso)
             {
-                DateTime day = (DateTime)list[0];
                 double quantityUsed = (double)list[1];
                 int idConsumable = (int)list[2];
 

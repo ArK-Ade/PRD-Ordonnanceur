@@ -6,14 +6,14 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
-    public class jobShopAlgorithm
+    public class JobShopAlgorithm
     {
         private DataParsed data;
         private Available availableAlgorithm;
         private List<SolutionPlanning> plannings;
         private SolutionPlanning solutionPlanning;
 
-        public jobShopAlgorithm()
+        public JobShopAlgorithm()
         {
             this.data = new();
             this.availableAlgorithm = new();
@@ -21,7 +21,7 @@ namespace PRD_Ordonnanceur.Algorithms
             this.solutionPlanning = new();
         }
 
-        public jobShopAlgorithm(DataParsed data, Available availableAlgorithm, List<SolutionPlanning> plannings, SolutionPlanning solutionPlanning)
+        public JobShopAlgorithm(DataParsed data, Available availableAlgorithm, List<SolutionPlanning> plannings, SolutionPlanning solutionPlanning)
         {
             this.data = data;
             this.availableAlgorithm = availableAlgorithm;
@@ -263,9 +263,9 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="oFs"></param>
         /// <param name="BeginningDate"></param>
         /// <param name="operators"></param>
-        public int StepAlgorithm(DateTime time) //todo NetMachine and opbefore
+        public int StepAlgorithm(DateTime time)
         {
-            int nbCteMaxViole = 0; // Il s'agit d'une constante qui va nous permettre de savoir le nombre de contraintes violés et permettra de comparer des heuristics
+            int nbCteMaxViole = 0;
             bool lastStep = false;
 
             // S'il on trouve dans un weekend on passe un jour

@@ -9,36 +9,20 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
     [TestFixture()]
     public class AvailableTests
     {
-        private Available available = new Available();
-        private SolutionPlanning plannings = new SolutionPlanning();
+        private readonly SolutionPlanning plannings = new();
 
-        private Operator operator1, operator2;
-        private List<Operator> operators = new();
-        private uint idOperator1 = 1, id2Operator = 2;
-        private List<TypeMachine> listSkillOperator1 = new(), listSkillOperator2 = new();
-
-        private DateTime jobBeginningTime1 = new(2020, 01, 01, 07, 00, 00), jobEndTime1 = new DateTime(2020, 01, 01, 18, 00, 00);
-        private DateTime jobBeginningTime2, jobEndTime2;
-
-
-        private Machine machine1, machine2;
-        private List<Machine> machines = new();
-        private int idMachine1, idMachine2;
-        private TypeMachine typeMachine1 = TypeMachine.blender, typeMachine2;
-        private List<Calendar> calendars1, calendars2;
-        private TimeSpan durationCleaning1, durationCleaning2;
-
-        private Tank tank1, tank2;
-        private List<Tank> tanks;
-        private int typeTank1, typeTank2;
-        private int idTank1, idTank2;
-
-        private Consumable consumable1, consumable2;
-        private List<Consumable> consumables;
-        private int idConsumable1, idConsumable2;
-        private int quantityAvailable1, quantityAvailable2;
-
-        private int idOF1 = 1, idOF2 = 2;
+        private Operator operator1;
+        private readonly List<Operator> operators = new();
+        private readonly uint idOperator1 = 1;
+        private readonly List<TypeMachine> listSkillOperator1 = new();
+        private readonly DateTime jobBeginningTime1 = new(2020, 01, 01, 07, 00, 00);
+        private readonly DateTime jobEndTime1 = new(2020, 01, 01, 18, 00, 00);
+        private Machine machine1;
+        private readonly List<Machine> machines = new();
+        private readonly int idMachine1 = 1;
+        private readonly TypeMachine typeMachine1 = TypeMachine.blender;
+        private TimeSpan durationCleaning1;
+        private readonly int idOF1 = 1;
 
         [Test()]
         public void FindOperatorIfNoOperatorGiven()
@@ -73,7 +57,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             operator1 = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
             operators.Add(operator1);
 
-            DateTime jobDoneBeginning = new(2020, 01, 01, 07, 00, 00), jobDoneEnd = new DateTime(2020, 01, 01, 07, 05, 00);
+            DateTime jobDoneBeginning = new(2020, 01, 01, 07, 00, 00), jobDoneEnd = new(2020, 01, 01, 07, 05, 00);
 
             List<Object> planningDay1 = new();
 
@@ -128,7 +112,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
             DateTime jobtoDoBeginning = new(2020, 01, 01, 07, 05, 0); // JobTODO 1
             DateTime jobtoDoEnd = new(2020, 01, 01, 7, 10, 0);
-            DateTime dateTime = new DateTime(2020, 01, 01);
+            DateTime dateTime = new(2020, 01, 01);
 
 
             planningDay1.Add(dateTime);

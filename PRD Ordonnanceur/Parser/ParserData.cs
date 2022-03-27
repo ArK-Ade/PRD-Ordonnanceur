@@ -226,8 +226,6 @@ namespace PRD_Ordonnanceur.Parser
                 }               
             }
 
-            DataParsed data = new();
-
             // Attribution des consommables aux etapes
             path = rootPath + "/Etapes.csv";
             using var reader2 = new StreamReader(path);

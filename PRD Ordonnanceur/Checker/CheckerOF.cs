@@ -32,7 +32,7 @@ namespace PRD_Ordonnanceur.Checker
                     {
                         currentOperator = operat;
                         break;
-                    };
+                    }
                 }
 
                 // Vérification heure de travail
