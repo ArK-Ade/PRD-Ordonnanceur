@@ -66,23 +66,19 @@ namespace PRD_Ordonnanceur.Algorithms
 
             // Si une des ressources est indisponible on passe 5 minutes plus tard
             if(lastStep && (operatorAvailableTank.Count == 0 || tankAvailable.Count == 0))
-                return SearchRessources(time.AddMinutes(5.0), step, lastStep);
+                return new();
 
             if (operatorAvailableBeforeOp.Count == 0 ||
                 operatorAvailableAfterOp.Count == 0 ||
                 machineAvailable.Count == 0)
             {
-                return SearchRessources(time.AddMinutes(5.0), step, lastStep);
+                return new();
             }
 
             // S'il manque des consommables on passe au jour d'après
             if (!consomableAvailable)
             {
-                while (time.Hour != data.Operators[0].Beginning.Hour)
-                {
-                    time = time.AddMinutes(5.0);
-                }
-                return SearchRessources(time, step, lastStep);
+                return new();
             }
 
             DateTime endOperation = endOpAfterTime.Add(machineAvailable[0].Duration_cleaning);
@@ -91,7 +87,7 @@ namespace PRD_Ordonnanceur.Algorithms
             List <Operator> operatorAvailableCleaning = new(Available.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
 
             if(operatorAvailableCleaning.Count == 0)
-                return SearchRessources(time.AddMinutes(5.0), step, lastStep);
+                return new();
 
             List<Object> listRessourcesAvailable = new();
 
@@ -276,7 +272,7 @@ namespace PRD_Ordonnanceur.Algorithms
             int countStep = 0;
             OF ofBefore = null;
             DateTime currentTime = time;
-            List<Object> resultRessources;
+            List<Object> resultRessources = new();
             bool OFinProgress = false;
             DateTime dti;
             SolutionPlanning planningAujourd = new();
@@ -312,7 +308,6 @@ namespace PRD_Ordonnanceur.Algorithms
                 foreach (Step step in oF.StepSequence)
                 {
                     // Si l'OF est en cours
-
                     if(oF.Next_step >= 1)
                         if (oF.StepSequence[countStep] == oF.StepSequence[oF.Next_step])        
                             OFinProgress = false;
@@ -327,7 +322,13 @@ namespace PRD_Ordonnanceur.Algorithms
                         lastStep = true;
 
                     // On recherche si les ressources sont disponibles
-                    resultRessources = new(SearchRessources(currentTime, step, lastStep));
+                    while(resultRessources.Count == 0)
+                    {
+                        resultRessources = new(SearchRessources(currentTime, step, lastStep));
+
+                        if (resultRessources.Count == 0)
+                            currentTime = currentTime.AddMinutes(5);
+                    }
 
                     DateTime timeNeeded = (DateTime)resultRessources[0];
 
@@ -370,9 +371,10 @@ namespace PRD_Ordonnanceur.Algorithms
                     {
                         Tank tank = (Tank)resultRessources[7];
                         TimeSpan timeSpan = Available.FindTimeCleaningTank(ofBefore, oF, tank);
-                        currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp + machine.Duration_cleaning + timeSpan);
+                        currentTime = timeNeeded;
                     }
 
+                    resultRessources.Clear();
                     countStep++;
                 }
                 // Mise a jour des compteurs

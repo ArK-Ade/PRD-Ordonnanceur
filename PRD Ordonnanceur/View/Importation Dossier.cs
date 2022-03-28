@@ -44,7 +44,10 @@ namespace PRD_Ordonnanceur.View
 
         private void Importation_Dossier_Load(object sender, EventArgs e)
         {
-            // Method intentionally left empty.
+            dateTimePicker1.MinDate = new DateTime(2022, 1, 1);
+            dateTimePicker1.MaxDate = DateTime.Today.AddDays(7);
+            dateTimePicker1.ShowCheckBox = false;
+            dateTimePicker1.ShowUpDown = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -83,7 +86,7 @@ namespace PRD_Ordonnanceur.View
                     for (int i = 0; i < algorithm.Plannings.Count; i++)
                     {
                         constraintOF = CheckerOF.CheckConstrainOF(algorithm.Plannings[i]);
-                        constrainOperator = CheckerOF.CheckConstrainOperator(algorithm.Plannings[i], algorithm.DataParsed.Operators);
+                        constrainOperator = CheckerOF.CheckConstrainOperator(algorithm.Plannings[i], algorithm.DataParsed.Operators); //TODO Verifier l'ordonnancement des opérateurs débuguer l'algorithme
                         constrainMachine = CheckerOF.CheckConstrainMachine(algorithm.Plannings[i]);
                         constrainTank = CheckerOF.CheckConstrainTank(algorithm.Plannings[i]);
                         constrainConsummable = CheckerOF.CheckConstrainConsommable(algorithm.Plannings[i], algorithm.DataParsed.Consummables);
@@ -106,7 +109,12 @@ namespace PRD_Ordonnanceur.View
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            date = dateTimePicker1.Value;
+            DateTime dateTime = dateTimePicker1.Value;
+            int year = dateTime.Year;
+            int mouth = dateTime.Month;
+            int day = dateTime.Day;
+
+            date = new(year, mouth, day, 0, 0, 0);
         }
     }
 }

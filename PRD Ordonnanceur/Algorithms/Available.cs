@@ -62,28 +62,31 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Operator> listOperatorAvailable = new(listOperator);
 
-        reset:
-            // On retire tous les opérateurs indisponibles par leur compétences
+            reset:
+            // On retire tous les opérateurs indisponibles par leur compétences / emploi du temps 
             foreach (Operator operat in listOperatorAvailable)
             {
-                bool haveSkill = false;
+                bool hasSkill = false;
+                bool hasTime = false;
+
+                if ((operat.Beginning.Minute <= beginningTimeOfOperation.Minute && operat.Beginning.Hour <= beginningTimeOfOperation.Hour) || (operat.End.Minute <= endTimeOfOperation.Minute && operat.End.Hour <= endTimeOfOperation.Hour))
+                    hasTime = true;
+                
                 foreach (TypeMachine skill in operat.MachineSkill)
                 {
                     if (skill.CompareTo(Competence) == 0)
-                        haveSkill = true;
+                        hasSkill = true;
                 }
 
-                if (!haveSkill)
+                if (!hasSkill || !hasTime)
                 {
                     listOperatorAvailable.Remove(operat);
                     goto reset;
                 }
             }
 
-            if (count == 0)
-                return listOperator;
-            else if (listOperator.Count == 0)
-                return new();
+            if (listOperator.Count == 0)
+                throw new("Liste Operateur Vide");
 
             // Enlever les opérateurs indisponibles par leur heure de travail
             foreach (List<Object> list in planningOperator)
