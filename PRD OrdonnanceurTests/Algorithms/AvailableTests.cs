@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms.Tests
 {
+    /// <summary>
+    /// class that allows to test the methods that check if the resources are available
+    /// </summary>
     [TestFixture()]
     public class AvailableTests
     {
@@ -24,23 +27,16 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         private TimeSpan durationCleaning1;
         private readonly int idOF1 = 1;
 
-        //[Test()]
-        //[Microsoft.VisualStudio.TestTools.UnitTesting.ExpectedException(typeof(Exception), "Liste Operateur Vide")]
-        //public void FindOperatorIfNoOperatorGiven()
-        //{
-        //    TypeMachine competence = TypeMachine.blender;
-        //    List<Operator> operatorsResult = Available.FindOperator(plannings.PlanningOperator, operators, DateTime.Now, DateTime.Now.AddMinutes(10.0), competence);
-        //}
-
         [Test()]
         public void FindOperator()
         {
             List<Operator> operatorsExpected = new();
+            DateTime startJob = new(2022, 03, 30, 07, 00, 00);
             TypeMachine competence = TypeMachine.blender;
             listSkillOperator1.Add(competence);
             operator1 = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
             operators.Add(operator1);
-            List<Operator> operatorsResult = Available.FindOperator(plannings.PlanningOperator, operators, DateTime.Now, DateTime.Now.AddMinutes(10.0), competence);
+            List<Operator> operatorsResult = RessourceAvailable.FindOperator(plannings.PlanningOperator, operators, startJob, startJob.AddMinutes(10.0), competence);
             operatorsExpected.Add(operator1);
             Assert.AreEqual(operatorsExpected, operatorsResult);
             Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count);
@@ -70,7 +66,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
             plannings.PlanningOperator.Add(planningDay1);
 
-            List<Operator> operatorsResult = Available.FindOperator(plannings.PlanningOperator, operators, jobDoneBeginning, jobDoneEnd, competence);
+            List<Operator> operatorsResult = RessourceAvailable.FindOperator(plannings.PlanningOperator, operators, jobDoneBeginning, jobDoneEnd, competence);
             Assert.AreEqual(operatorsExpected, operatorsResult);
             Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count);
 
@@ -84,7 +80,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             durationCleaning1 = new(0, 10, 0);
             machine1 = new(typeMachine1, null, durationCleaning1, idMachine1);
 
-            List<Machine> machineResult = Available.FindMachineForStep(plannings.PlanningMachine, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
+            List<Machine> machineResult = RessourceAvailable.FindMachineForStep(plannings.PlanningMachine, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
             Assert.IsEmpty(machineResult);
         }
 
@@ -94,7 +90,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             machine1 = new(typeMachine1, null, durationCleaning1, idMachine1);
             machines.Add(machine1);
 
-            List<Machine> machineResult = Available.FindMachineForStep(plannings.PlanningMachine, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
+            List<Machine> machineResult = RessourceAvailable.FindMachineForStep(plannings.PlanningMachine, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
             List<Machine> machineExpected = new();
             machineExpected.Add(machine1);
 
@@ -125,7 +121,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             plannings.PlanningMachine.Add(planningDay1);
             machines.Add(machine1);
 
-            List<Machine> listMachineResult = Available.FindMachineForStep(plannings.PlanningMachine, machines, jobtoDoBeginning, jobtoDoEnd, typeMachine1);
+            List<Machine> listMachineResult = RessourceAvailable.FindMachineForStep(plannings.PlanningMachine, machines, jobtoDoBeginning, jobtoDoEnd, typeMachine1);
             Assert.IsEmpty(listMachineResult);
 
             plannings.PlanningMachine.Clear();

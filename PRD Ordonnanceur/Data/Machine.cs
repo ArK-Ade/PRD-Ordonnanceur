@@ -3,54 +3,50 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
-    public enum TypeMachine
-    {
-        blender,
-        Mixer,
-        disperser,
-        cleaning
-    };
-
-    public struct Calendar
-    {
-        private DateTime day;
-        private DateTime beginning_hour;
-        private DateTime finishing_hour;
-
-        public Calendar(DateTime day, DateTime beginning_hour, DateTime finishing_hour)
-        {
-            this.day = day;
-            this.beginning_hour = beginning_hour;
-            this.finishing_hour = finishing_hour;
-        }
-
-        public DateTime Day { get => day; set => day = value; }
-        public DateTime Beginning_hour { get => beginning_hour; set => beginning_hour = value; }
-        public DateTime Finishing_hour { get => finishing_hour; set => finishing_hour = value; }
-    }
-
+    /// <summary>
+    /// This class represents the machines used by the operators
+    /// </summary>
     public class Machine
     {
-        private int id;
-        private TypeMachine _TypeMachine;
-        private List<Calendar> calendar;
-        private TimeSpan duration_cleaning;
-
+        /// <summary>
+        /// Constructor by default
+        /// </summary>
         public Machine()
         { }
 
-        public Machine(TypeMachine typeMachine, List<Calendar> calendar, TimeSpan duration_cleaning, int id)
+        /// <summary>
+        /// Confortable Constructor
+        /// </summary>
+        /// <param name="typeMachine"></param>
+        /// <param name="calendar"></param>
+        /// <param name="cleaningDuration"></param>
+        /// <param name="id"></param>
+        public Machine(TypeMachine typeMachine, List<Calendar> calendar, TimeSpan cleaningDuration, int id)
         {
-            TypeMachine = typeMachine;
-            this.calendar = calendar;
-            this.Duration_cleaning = duration_cleaning;
+            this.TypeMachine = typeMachine;
+            this.Calendar = calendar;
+            this.CleaningDuration = cleaningDuration;
             this.Id = id;
         }
 
-        public List<Calendar> Calendar { get => calendar; set => calendar = value; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<Calendar> Calendar { get; set; }
 
-        public int Id { get => id; set => id = value; }
-        public TypeMachine TypeMachine { get => _TypeMachine; set => _TypeMachine = value; }
-        public TimeSpan Duration_cleaning { get => duration_cleaning; set => duration_cleaning = value; }
+        /// <summary>
+        /// Unique identifier
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Type of Machine
+        /// </summary>
+        public TypeMachine TypeMachine { get; set; }
+
+        /// <summary>
+        /// Time needed to clean the machine
+        /// </summary>
+        public TimeSpan CleaningDuration { get; set; }
     }
 }

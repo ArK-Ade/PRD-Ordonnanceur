@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms.Tests
 {
+    /// <summary>
+    /// Class for testing the heuristics
+    /// </summary>
     [TestFixture()]
     public class HeuristicTests
     {

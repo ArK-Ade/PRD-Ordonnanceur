@@ -3,40 +3,74 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
+    /// <summary>
+    /// This class represents the person who will work on the machines 
+    /// </summary>
     public class Operator
     {
-        private uint id;
-        private List<TypeMachine> machineSkill = new();
-        private DateTime beginning;
-        private DateTime end;
-        private List<Object> calendar;
-
+        /// <summary>
+        /// Constructor by default
+        /// </summary>
         public Operator()
         { }
 
-        public Operator(DateTime beginning, DateTime end, List<Object> calendar, uint id, List<TypeMachine> machineSkill)
+        /// <summary>
+        /// Confortable Constructor 
+        /// </summary>
+        /// <param name="beginning"></param>
+        /// <param name="end"></param>
+        /// <param name="calendar"></param>
+        /// <param name="id"></param>
+        /// <param name="machineSkill"></param>
+        public Operator(DateTime beginning, DateTime end, List<Calendar> calendar, uint id, List<TypeMachine> machineSkill)
         {
-            this.beginning = beginning;
-            this.end = end;
-            this.calendar = calendar;
-            this.Id = id;
-            this.MachineSkill = machineSkill;
+            this.StartWorkSchedule = beginning;
+            this.End = end;
+            this.Calendar = calendar;
+            this.Uid = id;
+            this.SkillSet = machineSkill;
         }
 
-        public DateTime Beginning { get => beginning; set => beginning = value; }
-        public DateTime End { get => end; set => end = value; }
-        public List<Object> Calendar { get => calendar; set => calendar = value; }
-        public uint Id { get => id; set => id = value; }
-        public List<TypeMachine> MachineSkill { get => machineSkill; set => machineSkill = value; }
+        /// <summary>
+        /// Indicate the beginning of his daily schedule
+        /// </summary>
+        public DateTime StartWorkSchedule { get; set; }
 
+        /// <summary>
+        /// Indicate the end of his daily schedule
+        /// </summary>
+        public DateTime End { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<Calendar> Calendar { get; set; }
+
+        /// <summary>
+        /// Unique identifier
+        /// </summary>
+        public uint Uid { get; set; }
+
+        /// <summary>
+        /// Represent his skill set
+        /// </summary>
+        public List<TypeMachine> SkillSet { get; set; } = new();
+
+        /// <summary>
+        /// Method that reset his skill set
+        /// </summary>
         public void CleanSkill()
         {
-            machineSkill.Clear();
+            SkillSet.Clear();
         }
 
+        /// <summary>
+        /// Method that add a new skill in his skill set
+        /// </summary>
+        /// <param name="typeMachine">New skill to add</param>
         public void AddSkill(TypeMachine typeMachine)
         {
-            machineSkill.Add(typeMachine);
+            SkillSet.Add(typeMachine);
         }
     }
 }

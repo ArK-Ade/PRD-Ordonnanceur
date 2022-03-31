@@ -6,33 +6,56 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
+    /// <summary>
+    /// Class that represent the sheduling algorithm
+    /// </summary>
     public class JobShopAlgorithm
     {
-        private DataParsed data;
-        private Available availableAlgorithm;
-        private List<SolutionPlanning> plannings;
-        private SolutionPlanning solutionPlanning;
-
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public JobShopAlgorithm()
         {
-            this.data = new();
-            this.availableAlgorithm = new();
-            this.plannings = new();
-            this.solutionPlanning = new();
+            this.DataParsed = new();
+            this.AvailableAlgorithm = new();
+            this.Plannings = new();
+            this.SolutionPlanning = new();
         }
 
-        public JobShopAlgorithm(DataParsed data, Available availableAlgorithm, List<SolutionPlanning> plannings, SolutionPlanning solutionPlanning)
+        /// <summary>
+        /// Confortable Constructor
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="availableAlgorithm"></param>
+        /// <param name="plannings"></param>
+        /// <param name="solutionPlanning"></param>
+        public JobShopAlgorithm(DataParsed data, RessourceAvailable availableAlgorithm, List<SolutionPlanning> plannings, SolutionPlanning solutionPlanning)
         {
-            this.data = data;
-            this.availableAlgorithm = availableAlgorithm;
-            this.plannings = plannings;
-            this.solutionPlanning = solutionPlanning;
+            this.DataParsed = data;
+            this.AvailableAlgorithm = availableAlgorithm;
+            this.Plannings = plannings;
+            this.SolutionPlanning = solutionPlanning;
         }
 
-        public DataParsed DataParsed { get => data; set => data = value; }
-        public List<SolutionPlanning> Plannings { get => plannings; set => plannings = value; }
-        public SolutionPlanning SolutionPlanning { get => solutionPlanning; set => solutionPlanning = value; }
-        public Available AvailableAlgorithm { get => availableAlgorithm; set => availableAlgorithm = value; }
+        /// <summary>
+        /// data that has been retrieved by the parser
+        /// </summary>
+        public DataParsed DataParsed { get; set; }
+
+        /// <summary>
+        /// List of planning
+        /// </summary>
+        public List<SolutionPlanning> Plannings { get; set; }
+
+        /// <summary>
+        /// Current planning for the OF
+        /// </summary>
+        public SolutionPlanning SolutionPlanning { get; set; }
+
+        /// <summary>
+        /// Tool to verify if the ressource are available
+        /// </summary>
+        public RessourceAvailable AvailableAlgorithm { get; set; }
 
         /// <summary>
         /// It searchs the ressources necessery for the algorythm
@@ -40,7 +63,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="time"></param>
         /// <param name="step"></param>
         /// <param name="lastStep"></param>
-        /// <returns></returns>
+        /// <returns>Return a list of all the ressource selected</returns>
         public List<Object> SearchRessources(DateTime time, Step step, bool lastStep)
         {
             DateTime beginningOpBeforeTime = time;
@@ -51,20 +74,20 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Tank> tankAvailable = null;
             List<Operator> operatorAvailableTank = null;
 
-            // S'il s'agit de la dernière étape, on recherche une cuve pour l'OF
+            // If it's the last step, we look for a tank
             if (lastStep)
             {
-                tankAvailable = new(Available.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
-                operatorAvailableTank = new(Available.FindOperatorForTank(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime));
+                tankAvailable = new(RessourceAvailable.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
+                operatorAvailableTank = new(RessourceAvailable.FindOperatorForTank(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime));
             }
 
-            List<Operator> operatorAvailableBeforeOp = new(Available.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
-            List<Operator> operatorAvailableAfterOp = new(Available.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
-            List<Machine> machineAvailable = new(Available.FindMachineForStep(SolutionPlanning.PlanningMachine, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
+            List<Operator> operatorAvailableBeforeOp = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
+            List<Operator> operatorAvailableAfterOp = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
+            List<Machine> machineAvailable = new(RessourceAvailable.FindMachineForStep(SolutionPlanning.PlanningMachine, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
             
-            bool consomableAvailable = Available.FindConsoForStep(SolutionPlanning.PlanningCons, DataParsed.Consummables, time, step.ConsumableUsed, step.QuantityConsumable);
+            bool consomableAvailable = RessourceAvailable.FindConsoForStep(SolutionPlanning.PlanningCons, DataParsed.Consummables, time, step.ConsumableUsed, step.QuantityConsumable);
 
-            // Si une des ressources est indisponible on passe 5 minutes plus tard
+            // If one of the ressources are unavailable
             if(lastStep && (operatorAvailableTank.Count == 0 || tankAvailable.Count == 0))
                 return new();
 
@@ -75,24 +98,22 @@ namespace PRD_Ordonnanceur.Algorithms
                 return new();
             }
 
-            // S'il manque des consommables on passe au jour d'après
+            // If they are no consumable
             if (!consomableAvailable)
             {
                 return new();
             }
 
-            DateTime endOperation = endOpAfterTime.Add(machineAvailable[0].Duration_cleaning);
-
-            // On cherche un operateur pour nettoyer la machine choisie 
-            List <Operator> operatorAvailableCleaning = new(Available.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
+            DateTime endOperation = endOpAfterTime.Add(machineAvailable[0].CleaningDuration);
+ 
+            List <Operator> operatorAvailableCleaning = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
 
             if(operatorAvailableCleaning.Count == 0)
                 return new();
 
             List<Object> listRessourcesAvailable = new();
 
-            // On choisit la premiere ressource de chaque liste
-
+            // We choose the first ressource from each list
             if(lastStep)
                 listRessourcesAvailable.Add(endOperation.Add(new(0, 10, 0)));
             else
@@ -110,10 +131,20 @@ namespace PRD_Ordonnanceur.Algorithms
                 listRessourcesAvailable.Add(tankAvailable[0]);
             }
 
-            // On renvoie une liste d'objet contenant toutes les ressources
             return listRessourcesAvailable;
         }
 
+        /// <summary>
+        /// Method that schedule the step
+        /// </summary>
+        /// <param name="ressourceList"></param>
+        /// <param name="solutionPlanning"></param>
+        /// <param name="time"></param>
+        /// <param name="oF"></param>
+        /// <param name="step"></param>
+        /// <param name="lastStep"></param>
+        /// <param name="oFBefore"></param>
+        /// <returns>The planning of the step</returns>
         public SolutionPlanning ScheduleStep(List<Object> ressourceList, SolutionPlanning solutionPlanning, DateTime time, OF oF, Step step, Boolean lastStep, OF oFBefore)
         {
             DateTime dayTime = time.Date;
@@ -132,45 +163,39 @@ namespace PRD_Ordonnanceur.Algorithms
 
             Operator operatorTank = null;
             
-            // Planification OperateurAvant
+            // Scheduling Operator before operation
             List<Object> listOpBefore = new();
             listOpBefore.Add(dayTime);
             listOpBefore.Add(beginningOpBeforeTime);
             listOpBefore.Add(endOpBeforeTime);
             code = "OPBefore";
             listOpBefore.Add(code);
-            listOpBefore.Add(oF.IdOF);
-            listOpBefore.Add(operatorBefore.Id);
-
-            // Ajout dans la planification du jour
+            listOpBefore.Add(oF.Uid);
+            listOpBefore.Add(operatorBefore.Uid);
             solutionPlanning.PlanningOperator.Add(listOpBefore);
 
-            // Planification OperateurApres
+            // Scheduling Operator after operation
             List<Object> listOpAfter = new();
             listOpAfter.Add(dayTime);
             listOpAfter.Add(beginningOpAfterTime);
             listOpAfter.Add(endOpAfterTime);
             code = "OPAfter";
             listOpAfter.Add(code);
-            listOpAfter.Add(oF.IdOF);
-            listOpAfter.Add(operatorAfter.Id);
-
-            // Ajout dans la planification du jour
+            listOpAfter.Add(oF.Uid);
+            listOpAfter.Add(operatorAfter.Uid);
             solutionPlanning.PlanningOperator.Add(listOpAfter);
 
-            // Planification OperateurNettoyage Machine
+            // Scheduling cleaning
             List<Object> listOpCleaning = new();
             listOpCleaning.Add(dayTime);
             listOpCleaning.Add(endOpAfterTime);
-            listOpCleaning.Add(endOpAfterTime.Add(machine.Duration_cleaning));
+            listOpCleaning.Add(endOpAfterTime.Add(machine.CleaningDuration));
             code = "OPNetMachine";
             listOpCleaning.Add(code);
             listOpCleaning.Add(machine.Id);
-            listOpCleaning.Add(operatorNetMachine.Id);
-
+            listOpCleaning.Add(operatorNetMachine.Uid);
             solutionPlanning.PlanningOperator.Add(listOpCleaning);
 
-            // Planification OperateurTank
             List<Object> listOpTank = null;
             List<Object> listTank = null;
 
@@ -179,28 +204,29 @@ namespace PRD_Ordonnanceur.Algorithms
                 operatorTank = (Operator)ressourceList[6];
                 Tank tank = (Tank)ressourceList[7];
 
-                TimeSpan timeSpan = Available.FindTimeCleaningTank(oFBefore, oF, tank);
+                TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(oFBefore, oF, tank);
 
+                // Scheduling operator for the tank
                 listOpTank = new();
                 listOpTank.Add(dayTime);
-                listOpTank.Add(endOpAfterTime.Add(machine.Duration_cleaning));
-                listOpTank.Add(endOpAfterTime.Add(machine.Duration_cleaning).Add(timeSpan));
+                listOpTank.Add(endOpAfterTime.Add(machine.CleaningDuration));
+                listOpTank.Add(endOpAfterTime.Add(machine.CleaningDuration).Add(timeSpan));
                 code = "OPNetTank";
                 listOpTank.Add(code);
                 listOpTank.Add(tank.IdTank);
-                listOpTank.Add(operatorTank.Id);
+                listOpTank.Add(operatorTank.Uid);
 
-                // Planification Tank
+                // Scheduling the tank
                 listTank = new();
                 listTank.Add(dayTime);
-                listTank.Add(endOpAfterTime.Add(machine.Duration_cleaning));
-                listTank.Add(endOpAfterTime.Add(machine.Duration_cleaning).Add(timeSpan));
+                listTank.Add(endOpAfterTime.Add(machine.CleaningDuration));
+                listTank.Add(endOpAfterTime.Add(machine.CleaningDuration).Add(timeSpan));
                 listTank.Add(timeSpan);
-                listTank.Add(oF.IdOF);
-                listTank.Add(operatorTank.Id);
+                listTank.Add(oF.Uid);
+                listTank.Add(operatorTank.Uid);
                 listTank.Add(tank.IdTank);
 
-                // Planification OF
+                // Scheduling the OF
                 List<Object> listOF = new();
                 listOF.Add(dayTime);
                 listOF.Add(tank.IdTank);
@@ -208,11 +234,11 @@ namespace PRD_Ordonnanceur.Algorithms
                 listOF.Add(machine.Id);
                 listOF.Add(operatorBefore);
                 listOF.Add(operatorAfter);
-                listOF.Add(oF.Next_step);
+                listOF.Add(oF.NextStep);
 
-                if (oF.Next_step > 0)
+                if (oF.NextStep > 0)
                 {
-                    listOF.Add(step.IdStep);
+                    listOF.Add(step.Uid);
                 }
 
                 solutionPlanning.PlanningOF.Add(listOF);
@@ -220,19 +246,19 @@ namespace PRD_Ordonnanceur.Algorithms
                 solutionPlanning.PlanningTank.Add(listTank);
             }
 
-            // Planification Machine
+            // Scheduling the machine
             List<Object> listMachine = new();
             listMachine.Add(dayTime);
             listMachine.Add(endOpBeforeTime);
             listMachine.Add(beginningOpAfterTime);
-            listMachine.Add(oF.IdOF);
-            listMachine.Add(operatorBefore.Id);
-            listMachine.Add(operatorAfter.Id);
+            listMachine.Add(oF.Uid);
+            listMachine.Add(operatorBefore.Uid);
+            listMachine.Add(operatorAfter.Uid);
             listMachine.Add(machine.Id);
 
             solutionPlanning.PlanningMachine.Add(listMachine);
 
-            // Planification Consommable
+            // Scheduling consumable
             List<Object> listConsumable = new();
 
             int count = 0;
@@ -251,22 +277,13 @@ namespace PRD_Ordonnanceur.Algorithms
 
         /// <summary>
         /// Algorithm who planify the ressources
-        /// $
-        ///
-        ///
-        ///
         /// </summary>
-        /// <param name="oFs"></param>
-        /// <param name="BeginningDate"></param>
-        /// <param name="operators"></param>
+        /// <param name="time"></param>
+        /// <returns>The number of constraint not met</returns>
         public int StepAlgorithm(DateTime time)
         {
-            int nbCteMaxViole = 0;
+            int nbConstrainNotRespected = 0;
             bool lastStep = false;
-
-            // S'il on trouve dans un weekend on passe un jour
-            while (time.DayOfWeek == DayOfWeek.Saturday || time.DayOfWeek == DayOfWeek.Sunday)
-                time = time.AddDays(1);
 
             int countOF = -1;
             int countStep = 0;
@@ -279,39 +296,36 @@ namespace PRD_Ordonnanceur.Algorithms
 
             foreach (OF oF in DataParsed.OFs)
             {
-                // S'il on trouve dans un weekend on passe un jour
+                // If this is a weekend, skip some time
                 while (currentTime.DayOfWeek == DayOfWeek.Saturday || currentTime.DayOfWeek == DayOfWeek.Sunday)
                     currentTime.AddDays(1);
 
                 if (countOF >= 0)
                     ofBefore = DataParsed.OFs[countOF];
 
-                // On regarde si l'OF est en cours
-                if (oF.Starting_hour == DateTime.MinValue)
+                // if the OF has already begun
+                if (oF.StartingHour == DateTime.MinValue)
                 {
                     dti = oF.EarliestDate;
                 }
                 else
                 {
-                    dti = oF.Starting_hour;
+                    dti = oF.StartingHour;
                     OFinProgress = true;
                 }
 
-                // Prend en compte les jours au plus tot
+                // Looking if we can start the OF
                 while (dti.Day >= currentTime.Day && dti.Month >= currentTime.Month && dti.Year >= currentTime.Year)
                 {
                     currentTime.AddMinutes(5);
                 }
 
-            // Permet le reset de la loop
             restart:
                 foreach (Step step in oF.StepSequence)
                 {
-                    // Si l'OF est en cours
-                    if(oF.Next_step >= 1)
-                        if (oF.StepSequence[countStep] == oF.StepSequence[oF.Next_step])        
-                            OFinProgress = false;
-
+                    // if OF already begun
+                    if(oF.NextStep >= 1 && oF.StepSequence[countStep] == oF.StepSequence[oF.NextStep])      
+                        OFinProgress = false;
 
                     // Etape déja faite, on passe à l'étape suivante
                     if (OFinProgress)
@@ -321,7 +335,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     if (countStep + 1 == oF.StepSequence.Count)
                         lastStep = true;
 
-                    // On recherche si les ressources sont disponibles
+                    // Looking if the ressources are available
                     while(resultRessources.Count == 0)
                     {
                         resultRessources = new(SearchRessources(currentTime, step, lastStep));
@@ -332,61 +346,59 @@ namespace PRD_Ordonnanceur.Algorithms
 
                     DateTime timeNeeded = (DateTime)resultRessources[0];
 
-                    // On arrive a la fin de la journée et l'étape est reportable
-                    if ((timeNeeded.Hour > data.Operators[0].End.Hour || (timeNeeded.Minute > data.Operators[0].End.Minute && timeNeeded.Hour == data.Operators[0].End.Hour)) && step.NextStepReportable)
+                    // We arrive at the end of the day and the stage is postable
+                    if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && step.NextStepReportable)
                     {
-                        while (currentTime.Hour != data.Operators[0].Beginning.Hour)
+                        while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
                             currentTime = currentTime.AddMinutes(5);
 
                         resultRessources = SearchRessources(currentTime, step, lastStep);
                     }
 
-                    // on arrive a la fin de la journée et l'étape n'est pas reportable, on change de jour et on annule la reservation de l'OF
-                    if ((timeNeeded.Hour > data.Operators[0].End.Hour || (timeNeeded.Minute > data.Operators[0].End.Minute && timeNeeded.Hour == data.Operators[0].End.Hour)) && !step.NextStepReportable)
+                    // We arrive at the end of the day and the stage is not postponable, we change day and we cancel the reservation of the OF
+                    if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && !step.NextStepReportable)
                     {
                         planningAujourd = new();
 
-                        // Sinon on passe au jour suivant a l'heure de debut d'un employé
-                        while (currentTime.Hour != data.Operators[0].Beginning.Hour)
+                        // We move to the next day at the start time of an employee
+                        while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
                             currentTime = currentTime.AddMinutes(5);
 
-                        // On va au reset
                         goto restart;
                     }
 
                     // Si on respecte pas la contrainte de jour au plus tard, on incrémente nbCteMaxViole
                     if (timeNeeded.Day > oF.LatestDate.Day || timeNeeded.Month > oF.LatestDate.Month)
-                        nbCteMaxViole++;
+                        nbConstrainNotRespected++;
 
                     // Panifier l'étape courante a t'
                     planningAujourd = ScheduleStep(resultRessources, planningAujourd, currentTime, oF, step, lastStep, ofBefore);
 
                     Machine machine = (Machine)resultRessources[4];
-                    
 
-                    // On ajoute le temps passé
+
+                    // We add the time spent
                     if (!lastStep)
-                        currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp + machine.Duration_cleaning);
+                        currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp + machine.CleaningDuration);
                     else
                     {
                         Tank tank = (Tank)resultRessources[7];
-                        TimeSpan timeSpan = Available.FindTimeCleaningTank(ofBefore, oF, tank);
+                        TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(ofBefore, oF, tank);
                         currentTime = timeNeeded;
                     }
 
                     resultRessources.Clear();
                     countStep++;
                 }
-                // Mise a jour des compteurs
                 countStep = 0;
                 countOF++;
 
-                // Ajout de l'OF dans le planning
-                plannings.Add(planningAujourd);
+                // Addition of the OF in the planning
+                Plannings.Add(planningAujourd);
                 planningAujourd = new();
             }
 
-            return nbCteMaxViole;
+            return nbConstrainNotRespected;
         }
     }
 }

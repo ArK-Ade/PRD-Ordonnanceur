@@ -4,8 +4,18 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
-    public class Available
+    /// <summary>
+    /// This class regroup all the method you need to use to verify if a ressource is available
+    /// </summary>
+    public class RessourceAvailable
     {
+        /// <summary>
+        /// Methods that search if an operator is available for a tank
+        /// </summary>
+        /// <param name="planningOperator"></param>
+        /// <param name="listOperator"></param>
+        /// <param name="timeNow"></param>
+        /// <returns>return a list of operator available</returns>
         public static List<Operator> FindOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
         {
             if (planningOperator.Count == 0)
@@ -29,16 +39,14 @@ namespace PRD_Ordonnanceur.Algorithms
 
             foreach (List<Object> list in planningOperator)
             {
-                // On retire tous les opérateurs indisponibles sur le temps
                 if (list[2] is DateTime && timeNow <= (DateTime)list[2])
                 {
-                    // On supprime l'operateur de la liste available
                     int id = (int)list[0];
                     int count2 = 0;
                     int index = -1;
                     foreach (Operator op in listOperatorAvailable)
                     {
-                        if (op.Id == id)
+                        if (op.Uid == id)
                         {
                             index = count2;
                         }
@@ -51,6 +59,15 @@ namespace PRD_Ordonnanceur.Algorithms
             return listOperatorAvailable;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningOperator"></param>
+        /// <param name="listOperator"></param>
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <param name="Competence"></param>
+        /// <returns></returns>
         public static List<Operator> FindOperator(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine Competence)
         {
             int count = 0;
@@ -69,10 +86,10 @@ namespace PRD_Ordonnanceur.Algorithms
                 bool hasSkill = false;
                 bool hasTime = false;
 
-                if ((operat.Beginning.Minute <= beginningTimeOfOperation.Minute && operat.Beginning.Hour <= beginningTimeOfOperation.Hour) || (operat.End.Minute <= endTimeOfOperation.Minute && operat.End.Hour <= endTimeOfOperation.Hour))
+                if ((operat.StartWorkSchedule.Minute <= beginningTimeOfOperation.Minute && operat.StartWorkSchedule.Hour <= beginningTimeOfOperation.Hour) || (operat.End.Minute <= endTimeOfOperation.Minute && operat.End.Hour <= endTimeOfOperation.Hour))
                     hasTime = true;
                 
-                foreach (TypeMachine skill in operat.MachineSkill)
+                foreach (TypeMachine skill in operat.SkillSet)
                 {
                     if (skill.CompareTo(Competence) == 0)
                         hasSkill = true;
@@ -100,7 +117,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     int index = -1;
                     foreach (Operator op in listOperatorAvailable)
                     {
-                        if (op.Id == id)
+                        if (op.Uid == id)
                             index = count2;
                         count2++;
                     }
@@ -111,6 +128,15 @@ namespace PRD_Ordonnanceur.Algorithms
             return listOperatorAvailable;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningMachine"></param>
+        /// <param name="listMachine"></param>
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <param name="typeMachine"></param>
+        /// <returns></returns>
         public static List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
         {
             int count = 0;
@@ -161,6 +187,14 @@ namespace PRD_Ordonnanceur.Algorithms
             return listMachineAvailable;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningTank"></param>
+        /// <param name="listTank"></param>
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <returns></returns>
         public static List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
         {
             int count = 0;
@@ -195,6 +229,15 @@ namespace PRD_Ordonnanceur.Algorithms
             return listTankAvailable;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningConso"></param>
+        /// <param name="listComsumable"></param>
+        /// <param name="timeNow"></param>
+        /// <param name="listConsumableNeeded"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
         public static bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, List<Consumable> listConsumableNeeded, List<double> quantity)
         {
             // On recherche dans le planning la quantité restante de consommable restant
@@ -247,6 +290,13 @@ namespace PRD_Ordonnanceur.Algorithms
             return consumubleIsAvailable;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oFBefore"></param>
+        /// <param name="oFAfter"></param>
+        /// <param name="tank"></param>
+        /// <returns></returns>
         public static TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)
         {
             return new(0, 10, 0);

@@ -86,9 +86,9 @@ namespace PRD_Ordonnanceur.Parser
 
                 var record = new Operator
                 {
-                    Id = csv.GetField<uint>("Id"),
-                    MachineSkill = new(typeMachines),
-                    Beginning = csv.GetField<DateTime>("Debut"),
+                    Uid = csv.GetField<uint>("Id"),
+                    SkillSet = new(typeMachines),
+                    StartWorkSchedule = csv.GetField<DateTime>("Debut"),
                     End = csv.GetField<DateTime>("Fin"),
                 };
 
@@ -129,7 +129,7 @@ namespace PRD_Ordonnanceur.Parser
                 {
                     Id = csv.GetField<int>("Id"),
                     TypeMachine = type,
-                    Duration_cleaning = new TimeSpan(0,csv.GetField<int>("dureeNettoyage"),0),
+                    CleaningDuration = new TimeSpan(0,csv.GetField<int>("dureeNettoyage"),0),
                 };
 
                 records.Add(record);
@@ -175,11 +175,11 @@ namespace PRD_Ordonnanceur.Parser
 
                 var recordOF = new OF
                 {
-                    IdOF = csv.GetField<int>("ACTIVITE"),
-                    Starting_hour = DateTime.MinValue,
+                    Uid = csv.GetField<int>("ACTIVITE"),
+                    StartingHour = DateTime.MinValue,
                     StepSequence = new(),
                     EarliestDate = DateTime.MinValue,
-                    Next_step = 0,
+                    NextStep = 0,
                 };
 
                 TimeSpan durationOp = new(0, csv.GetField<int>("TPS2"), 0);
@@ -193,7 +193,7 @@ namespace PRD_Ordonnanceur.Parser
                     // Nouvelle OF avec des etapes
                     var recordStep = new Step
                     {
-                        IdStep = csv.GetField<double>("IDENTIFIANT"),
+                        Uid = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
                         Duration = duration,
@@ -214,7 +214,7 @@ namespace PRD_Ordonnanceur.Parser
                     // Nouvelle etape
                     var recordStep = new Step
                     {
-                        IdStep = csv.GetField<double>("IDENTIFIANT"),
+                        Uid = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
                         Duration = duration,
@@ -240,7 +240,7 @@ namespace PRD_Ordonnanceur.Parser
                 {
                     foreach (Step step in oF.StepSequence)
                     {
-                        if (step.IdStep == csv2.GetField<double>("ETAPES"))
+                        if (step.Uid == csv2.GetField<double>("ETAPES"))
                         {
                             foreach(Consumable consumable in consumables)
                             {
