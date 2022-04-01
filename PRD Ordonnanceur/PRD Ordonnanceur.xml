@@ -794,11 +794,40 @@
             This class allows to transform the schedules of the algorithm in csv file
             </summary>
         </member>
-        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOF(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning})">
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOperator(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
             <summary>
-            Methods that transform the OFs in a csv file
+            Methods that transform the Operator in a csv file
             </summary>
             <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataMachine(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataConsumable(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOF(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataTank(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
         </member>
         <member name="M:PRD_Ordonnanceur.Program.Main">
             <summary>

@@ -124,7 +124,10 @@ namespace PRD_Ordonnanceur.View
                     else
                         AutoClosingMessageBox.Show("Le vérificateur a trouvé une erreur", "Alerte", 1000);
 
-                    DataToCsv.ParsingDataOperator(algorithm.Plannings);
+
+                    string pathParsing = "C:/Users/antho/Desktop";
+
+                    DataToCsv.ParsingDataOperator(algorithm.Plannings, pathParsing);
                 }
                 else
                 {
