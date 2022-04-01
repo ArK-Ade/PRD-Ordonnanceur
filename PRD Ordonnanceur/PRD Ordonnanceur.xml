@@ -4,9 +4,47 @@
         <name>PRD Ordonnanceur</name>
     </assembly>
     <members>
+        <member name="T:PRD_Ordonnanceur.Algorithms.Context">
+            <summary>
+            This class allows to choose the strategy to use for scheduling.
+            </summary>
+        </member>
+        <member name="F:PRD_Ordonnanceur.Algorithms.Context._strategy">
+            <summary>
+            The Context maintains a reference to one of the Strategy objects. The
+            Context does not know the concrete class of a strategy. It should
+            work with all strategies via the Strategy interface.
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.#ctor(PRD_Ordonnanceur.Algorithms.IHeuristic)">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="strategy"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.SetStrategy(PRD_Ordonnanceur.Algorithms.IHeuristic)">
+            <summary>
+            Setter
+            </summary>
+            <param name="strategy"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.Launch(System.Int32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            The Context delegates some work to the Strategy object instead of
+            implementing multiple versions of the algorithm on its own.
+            </summary>
+            <param name="choice"></param>
+            <param name="oFs"></param>
+            <returns></returns>
+        </member>
         <member name="T:PRD_Ordonnanceur.Algorithms.Heuristic">
             <summary>
-            
+            Class that represents the heuristic that will classify the OFs 
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.#ctor">
@@ -44,7 +82,7 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.PRD_Ordonnanceur#Algorithms#IHeuristic#SortingAlgorithm(System.Int32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
             <summary>
-            
+            Methods that permit to change between the different heuristics
             </summary>
             <param name="choice"></param>
             <param name="Ofs"></param>
@@ -298,7 +336,7 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Consumable.Id">
             <summary>
-            Unique 
+            Unique Identifier
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Consumable.QuantityAvailable">
@@ -308,17 +346,17 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Consumable.Calendar">
             <summary>
-            Getter and Setters for Calendar
+            Timetable of unavailability
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Consumable.DelaySupply">
             <summary>
-            Getter and Setters for DelaySupply
+            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Consumable.Name">
             <summary>
-            Getter and Setters for Name
+            Name of the consumable
             </summary>
         </member>
         <member name="T:PRD_Ordonnanceur.Data.Duration">
@@ -370,7 +408,7 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Machine.Calendar">
             <summary>
-            
+            Timetable of unavailability
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Machine.Id">
@@ -659,6 +697,47 @@
              the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:PRD_Ordonnanceur.Parser.CsvToData">
+            <summary>
+            This class transform the csv into parsed data
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataConsommable(System.String)">
+            <summary>
+            Parse Consumable data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataOperator(System.String)">
+            <summary>
+            Parse Operator data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataMachine(System.String)">
+            <summary>
+            Parse Machine data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataOF(System.String,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable})">
+            <summary>
+            Parse OF data
+            </summary>
+            <param name="rootPath"></param>
+            <param name="consumables"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataTank(System.String)">
+            <summary>
+            Parse Tank data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
         <member name="T:PRD_Ordonnanceur.Parser.DataParsed">
             <summary>
             
@@ -712,14 +791,14 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Parser.DataToCsv">
             <summary>
-            
+            This class allows to transform the schedules of the algorithm in csv file
             </summary>
         </member>
-        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOF(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOF(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning})">
             <summary>
-            
+            Methods that transform the OFs in a csv file
             </summary>
-            <param name="records"></param>
+            <param name="plannings"></param>
         </member>
         <member name="M:PRD_Ordonnanceur.Program.Main">
             <summary>
@@ -728,7 +807,7 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Solution.SolutionPlanning">
             <summary>
-            
+            Class that represents a planning for one day
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Solution.SolutionPlanning.#ctor">
@@ -773,24 +852,24 @@
         </member>
         <member name="T:PRD_Ordonnanceur.View.Importation_Dossier">
             <summary>
-            
+            This class represents the view where you can use the algorithm
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.#ctor">
             <summary>
-            
+            Loading the view
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.button1_Click(System.Object,System.EventArgs)">
             <summary>
-            
+            Button1 listener
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
         </member>
         <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.label1_Click(System.Object,System.EventArgs)">
             <summary>
-            
+            Label1 listener
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
@@ -804,14 +883,14 @@
         </member>
         <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.button2_Click(System.Object,System.EventArgs)">
             <summary>
-            
+            Button2 listener
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
         </member>
         <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.dateTimePicker1_ValueChanged(System.Object,System.EventArgs)">
             <summary>
-            
+            DateTimePicker listening
             </summary>
             <param name="sender"></param>
             <param name="e"></param>

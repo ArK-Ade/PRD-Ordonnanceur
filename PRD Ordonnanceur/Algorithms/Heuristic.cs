@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace PRD_Ordonnanceur.Algorithms
 {
     /// <summary>
-    /// 
+    /// Class that represents the heuristic that will classify the OFs 
     /// </summary>
     public class Heuristic : IHeuristic
     {
@@ -49,7 +49,7 @@ namespace PRD_Ordonnanceur.Algorithms
         public List<OF> SortCrescentDtiCrescentDli(List<OF> OFs)
         {
             List<OF> tmp = new(OFs);
-            List<OF> tableau = new (OFs);
+            List<OF> tableau = new(OFs);
 
             int index;
 
@@ -87,32 +87,34 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// 
+        /// Methods that permit to change between the different heuristics
         /// </summary>
         /// <param name="choice"></param>
         /// <param name="Ofs"></param>
         /// <returns></returns>
         List<OF> IHeuristic.SortingAlgorithm(int choice, List<OF> Ofs)
         {
+            List<OF> newListOfs;
+
             switch (choice)
             {
                 case 1:
-                    SortCrescentDtiCrescentDli(Ofs);
+                    newListOfs = new(SortCrescentDtiCrescentDli(Ofs));
                     break;
 
                 case 2:
-                    Sort_crescent_dti_decendant_dli(Ofs);
+                    newListOfs = new(Sort_crescent_dti_decendant_dli(Ofs));
                     break;
 
                 case 3:
-                    Sort_random_5_crescent(Ofs);
+                    newListOfs = new(Sort_random_5_crescent(Ofs));
                     break;
 
                 default:
-                    SortCrescentDtiCrescentDli(Ofs);
+                    newListOfs = new(SortCrescentDtiCrescentDli(Ofs));
                     break;
             }
-            return Ofs;
+            return newListOfs;
         }
     }
 }

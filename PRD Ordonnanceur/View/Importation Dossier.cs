@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace PRD_Ordonnanceur.View
 {
     /// <summary>
-    /// 
+    /// This class represents the view where you can use the algorithm
     /// </summary>
     public partial class Importation_Dossier : Form
     {
@@ -17,7 +17,7 @@ namespace PRD_Ordonnanceur.View
         DateTime date = DateTime.MaxValue;
 
         /// <summary>
-        /// 
+        /// Loading the view
         /// </summary>
         public Importation_Dossier()
         {
@@ -25,7 +25,7 @@ namespace PRD_Ordonnanceur.View
         }
 
         /// <summary>
-        /// 
+        /// Button1 listener
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -42,7 +42,7 @@ namespace PRD_Ordonnanceur.View
         }
 
         /// <summary>
-        /// 
+        /// Label1 listener
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -65,7 +65,7 @@ namespace PRD_Ordonnanceur.View
         }
 
         /// <summary>
-        /// 
+        /// Button2 listener
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -81,21 +81,26 @@ namespace PRD_Ordonnanceur.View
                 {
                     AutoClosingMessageBox.Show("Lancement de l'algorithme", "Notification", 1000);
 
-                    List<Consumable> consumables = ParserData.ParsingDataConsommable(pathCSV);
-                    List<OF> oFs = ParserData.ParsingDataOF(pathCSV, consumables);
-                    List<Operator> operators = ParserData.ParsingDataOperator(pathCSV);
-                    List<Machine> machines = ParserData.ParsingDataMachine(pathCSV);
-                    List<Tank> tanks = ParserData.ParsingDataTank(pathCSV);
+                    List<Consumable> consumables = CsvToData.ParsingDataConsommable(pathCSV);
+                    List<OF> oFs = CsvToData.ParsingDataOF(pathCSV, consumables);
+                    List<Operator> operators = CsvToData.ParsingDataOperator(pathCSV);
+                    List<Machine> machines = CsvToData.ParsingDataMachine(pathCSV);
+                    List<Tank> tanks = CsvToData.ParsingDataTank(pathCSV);
 
+                    // Selecting the strategy for the heuristic
                     Heuristic heuristic = new();
-                    oFs = new(heuristic.SortCrescentDtiCrescentDli(oFs));
+                    Context context = new(heuristic);
+
+                    oFs = context.Launch(1, oFs);
 
                     DataParsed dataParsed = new(oFs, consumables, machines, tanks, operators, null);
 
+                    // Launching the algorithm
                     JobShopAlgorithm algorithm = new(dataParsed, new(), new(), new());
                     int numberConstraint = algorithm.StepAlgorithm(date);
                     AutoClosingMessageBox.Show("Nombre de contrainte non respectés : " + numberConstraint, "Alerte", 1000);
 
+                    // Verifing the constraints 
                     bool constraintOF = false;
                     bool constrainOperator = false;
                     bool constrainMachine = false;
@@ -119,8 +124,7 @@ namespace PRD_Ordonnanceur.View
                     else
                         AutoClosingMessageBox.Show("Le vérificateur a trouvé une erreur", "Alerte", 1000);
 
-                    //DataToCsv.ParsingDataOF(algorithm.Plannings);
-
+                    DataToCsv.ParsingDataOperator(algorithm.Plannings);
                 }
                 else
                 {
@@ -130,7 +134,7 @@ namespace PRD_Ordonnanceur.View
         }
 
         /// <summary>
-        /// 
+        /// DateTimePicker listening
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

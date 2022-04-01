@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace PRD_Ordonnanceur.Solution
 {
     /// <summary>
-    /// 
+    /// Class that represents a planning for one day
     /// </summary>
     public class SolutionPlanning
     {

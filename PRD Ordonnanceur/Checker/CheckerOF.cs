@@ -34,7 +34,6 @@ namespace PRD_Ordonnanceur.Checker
                 jobEnd1 = (DateTime)list[2];
                 uint idOp1 = (uint)list[5];
 
-
                 foreach (Operator operat in operators)
                 {
                     if (idOp1 == operat.Uid)

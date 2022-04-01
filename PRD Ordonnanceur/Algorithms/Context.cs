@@ -1,81 +1,57 @@
-﻿using System;
+﻿using PRD_Ordonnanceur.Data;
+using System;
 using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
+    /// <summary>
+    /// This class allows to choose the strategy to use for scheduling.
+    /// </summary>
     internal class Context
     {
-        // The Context maintains a reference to one of the Strategy objects. The
-        // Context does not know the concrete class of a strategy. It should
-        // work with all strategies via the Strategy interface.
-        private IStrategy _strategy;
+        /// <summary>
+        /// The Context maintains a reference to one of the Strategy objects. The
+        /// Context does not know the concrete class of a strategy. It should
+        /// work with all strategies via the Strategy interface.
+        /// </summary>
+        private IHeuristic _strategy;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Context()
         { }
 
-        // Usually, the Context accepts a strategy through the constructor, but
-        // also provides a setter to change it at runtime.
-        public Context(IStrategy strategy)
+        /// <summary>
+        /// Confortable Constructor
+        /// </summary>
+        /// <param name="strategy"></param>
+        public Context(IHeuristic strategy)
         {
             this._strategy = strategy;
         }
 
-        // Usually, the Context allows replacing a Strategy object at runtime.
-        public void SetStrategy(IStrategy strategy)
+        /// <summary>
+        /// Setter
+        /// </summary>
+        /// <param name="strategy"></param>
+        public void SetStrategy(IHeuristic strategy)
         {
             this._strategy = strategy;
         }
 
-        // The Context delegates some work to the Strategy object instead of
-        // implementing multiple versions of the algorithm on its own.
-        public void DoSomeBusinessLogic()
+        /// <summary>
+        /// The Context delegates some work to the Strategy object instead of
+        /// implementing multiple versions of the algorithm on its own.
+        /// </summary>
+        /// <param name="choice"></param>
+        /// <param name="oFs"></param>
+        /// <returns></returns>
+        public List<OF> Launch(int choice, List<OF> oFs)
         {
-            Console.WriteLine("Context: Sorting data using the strategy (not sure how it'll do it)");
-            var result = this._strategy.DoAlgorithm(new List<string> { "a", "b", "c", "d", "e" });
-
-            string resultStr = string.Empty;
-            foreach (var element in result as List<string>)
-            {
-                resultStr += element + ",";
-            }
-
-            Console.WriteLine(resultStr);
-        }
-    }
-
-    // The Strategy interface declares operations common to all supported
-    // versions of some algorithm.
-    //
-    // The Context uses this interface to call the algorithm defined by Concrete
-    // Strategies.
-    public interface IStrategy
-    {
-        object DoAlgorithm(object data);
-    }
-
-    // Concrete Strategies implement the algorithm while following the base
-    // Strategy interface. The interface makes them interchangeable in the
-    // Context.
-    internal class ConcreteStrategyA : IStrategy
-    {
-        public object DoAlgorithm(object data)
-        {
-            var list = data as List<string>;
-            list.Sort();
-
-            return list;
-        }
-    }
-
-    internal class ConcreteStrategyB : IStrategy
-    {
-        public object DoAlgorithm(object data)
-        {
-            var list = data as List<string>;
-            list.Sort();
-            list.Reverse();
-
-            return list;
+            Console.WriteLine("Context: Sorting data using the strategy");
+            var result = this._strategy.SortingAlgorithm(choice, oFs);
+            return result;
         }
     }
 }

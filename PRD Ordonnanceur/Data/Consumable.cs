@@ -49,7 +49,7 @@ namespace PRD_Ordonnanceur.Data
         }
 
         /// <summary>
-        /// Unique 
+        /// Unique Identifier
         /// </summary>
         public int Id { get; set; }
 
@@ -59,17 +59,17 @@ namespace PRD_Ordonnanceur.Data
         public double QuantityAvailable { get; set; }
 
         /// <summary>
-        /// Getter and Setters for Calendar
+        /// Timetable of unavailability
         /// </summary>
         public List<Object> Calendar { get; set; }
 
         /// <summary>
-        /// Getter and Setters for DelaySupply
+        /// 
         /// </summary>
         public DateTime DelaySupply { get; set; }
 
         /// <summary>
-        /// Getter and Setters for Name
+        /// Name of the consumable
         /// </summary>
         public string Name { get; set; }
     }

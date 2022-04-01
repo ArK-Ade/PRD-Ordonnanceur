@@ -30,7 +30,7 @@ namespace PRD_Ordonnanceur.Data
         }
 
         /// <summary>
-        /// 
+        /// Timetable of unavailability
         /// </summary>
         public List<Calendar> Calendar { get; set; }
 

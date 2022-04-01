@@ -292,7 +292,7 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Object> resultRessources = new();
             bool OFinProgress = false;
             DateTime dti;
-            SolutionPlanning planningAujourd = new();
+            SolutionPlanning currentPlanning = new();
 
             foreach (OF oF in DataParsed.OFs)
             {
@@ -358,7 +358,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     // We arrive at the end of the day and the stage is not postponable, we change day and we cancel the reservation of the OF
                     if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && !step.NextStepReportable)
                     {
-                        planningAujourd = new();
+                        currentPlanning = new();
 
                         // We move to the next day at the start time of an employee
                         while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
@@ -372,7 +372,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         nbConstrainNotRespected++;
 
                     // Panifier l'étape courante a t'
-                    planningAujourd = ScheduleStep(resultRessources, planningAujourd, currentTime, oF, step, lastStep, ofBefore);
+                    currentPlanning = ScheduleStep(resultRessources, currentPlanning, currentTime, oF, step, lastStep, ofBefore);
 
                     Machine machine = (Machine)resultRessources[4];
 
@@ -394,8 +394,8 @@ namespace PRD_Ordonnanceur.Algorithms
                 countOF++;
 
                 // Addition of the OF in the planning
-                Plannings.Add(planningAujourd);
-                planningAujourd = new();
+                Plannings.Add(currentPlanning);
+                currentPlanning = new();
             }
 
             return nbConstrainNotRespected;
