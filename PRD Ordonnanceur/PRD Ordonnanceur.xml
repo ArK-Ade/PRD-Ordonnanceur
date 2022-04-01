@@ -794,6 +794,13 @@
             This class allows to transform the schedules of the algorithm in csv file
             </summary>
         </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.LaunchParsing(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            Launch all the parsing
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
         <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOperator(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
             <summary>
             Methods that transform the Operator in a csv file
@@ -815,7 +822,7 @@
             <param name="plannings"></param>
             <param name="path"></param>
         </member>
-        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOF(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataStep(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
             <summary>
             
             </summary>
@@ -854,6 +861,17 @@
             <param name="planningTank"></param>
             <param name="planningOperator"></param>
         </member>
+        <member name="M:PRD_Ordonnanceur.Solution.SolutionPlanning.#ctor(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}})">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="planningOF"></param>
+            <param name="planningCons"></param>
+            <param name="planningMachine"></param>
+            <param name="planningTank"></param>
+            <param name="planningOperator"></param>
+            <param name="planningStep"></param>
+        </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningOF">
             <summary>
             
@@ -875,6 +893,11 @@
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningOperator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningStep">
             <summary>
             
             </summary>

@@ -13,6 +13,7 @@ namespace PRD_Ordonnanceur.Solution
         private List<List<Object>> planningMachine;
         private List<List<Object>> planningTank;
         private List<List<Object>> planningOperator;
+        private List<List<Object>> planningStep;
 
         /// <summary>
         /// Default Constructor
@@ -24,6 +25,7 @@ namespace PRD_Ordonnanceur.Solution
             planningMachine = new();
             planningTank = new();
             planningOperator = new();
+            PlanningStep = new();
         }
 
         /// <summary>
@@ -41,6 +43,25 @@ namespace PRD_Ordonnanceur.Solution
             this.PlanningMachine = planningMachine;
             this.PlanningTank = planningTank;
             this.PlanningOperator = planningOperator;
+        }
+
+        /// <summary>
+        /// Confortable Constructor
+        /// </summary>
+        /// <param name="planningOF"></param>
+        /// <param name="planningCons"></param>
+        /// <param name="planningMachine"></param>
+        /// <param name="planningTank"></param>
+        /// <param name="planningOperator"></param>
+        /// <param name="planningStep"></param>
+        public SolutionPlanning(List<List<object>> planningOF, List<List<object>> planningCons, List<List<object>> planningMachine, List<List<object>> planningTank, List<List<object>> planningOperator, List<List<object>> planningStep)
+        {
+            this.planningOF = planningOF;
+            this.planningCons = planningCons;
+            this.planningMachine = planningMachine;
+            this.planningTank = planningTank;
+            this.planningOperator = planningOperator;
+            this.PlanningStep = planningStep;
         }
 
         /// <summary>
@@ -67,5 +88,10 @@ namespace PRD_Ordonnanceur.Solution
         /// 
         /// </summary>
         public List<List<Object>> PlanningOperator { get => planningOperator; set => planningOperator = value; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<List<object>> PlanningStep { get => planningStep; set => planningStep = value; }
     }
 }

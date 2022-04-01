@@ -150,16 +150,18 @@ namespace PRD_Ordonnanceur.Algorithms
             DateTime dayTime = time.Date;
             string code;
 
-            DateTime beginningOpBeforeTime = time;
-            DateTime endOpBeforeTime = time.Add(step.Duration.DurationBeforeOp);
-            DateTime beginningOpAfterTime = endOpBeforeTime.Add(step.Duration.DurationOp);
-            DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
-            
             Operator operatorBefore = (Operator)ressourceList[1];
             Operator operatorAfter = (Operator)ressourceList[2];
             Operator operatorNetMachine = (Operator)ressourceList[3];
             Machine machine = (Machine)ressourceList[4];
             bool consumable = (bool)ressourceList[5];
+
+            DateTime beginningOpBeforeTime = time;
+            DateTime endOpBeforeTime = time.Add(step.Duration.DurationBeforeOp);
+            DateTime beginningOpAfterTime = endOpBeforeTime.Add(step.Duration.DurationOp);
+            DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
+            DateTime endCleaning = endOpAfterTime.Add(machine.CleaningDuration);
+
 
             Operator operatorTank = null;
             
@@ -189,7 +191,7 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Object> listOpCleaning = new();
             listOpCleaning.Add(dayTime);
             listOpCleaning.Add(endOpAfterTime);
-            listOpCleaning.Add(endOpAfterTime.Add(machine.CleaningDuration));
+            listOpCleaning.Add(endCleaning);
             code = "OPNetMachine";
             listOpCleaning.Add(code);
             listOpCleaning.Add(machine.Id);
@@ -209,8 +211,8 @@ namespace PRD_Ordonnanceur.Algorithms
                 // Scheduling operator for the tank
                 listOpTank = new();
                 listOpTank.Add(dayTime);
-                listOpTank.Add(endOpAfterTime.Add(machine.CleaningDuration));
-                listOpTank.Add(endOpAfterTime.Add(machine.CleaningDuration).Add(timeSpan));
+                listOpTank.Add(endCleaning);
+                listOpTank.Add(endCleaning.Add(timeSpan));
                 code = "OPNetTank";
                 listOpTank.Add(code);
                 listOpTank.Add(tank.IdTank);
@@ -219,8 +221,8 @@ namespace PRD_Ordonnanceur.Algorithms
                 // Scheduling the tank
                 listTank = new();
                 listTank.Add(dayTime);
-                listTank.Add(endOpAfterTime.Add(machine.CleaningDuration));
-                listTank.Add(endOpAfterTime.Add(machine.CleaningDuration).Add(timeSpan));
+                listTank.Add(endCleaning);
+                listTank.Add(endCleaning.Add(timeSpan));
                 listTank.Add(timeSpan);
                 listTank.Add(oF.Uid);
                 listTank.Add(operatorTank.Uid);
@@ -249,8 +251,8 @@ namespace PRD_Ordonnanceur.Algorithms
             // Scheduling the machine
             List<Object> listMachine = new();
             listMachine.Add(dayTime);
-            listMachine.Add(endOpBeforeTime);
-            listMachine.Add(beginningOpAfterTime);
+            listMachine.Add(beginningOpBeforeTime);
+            listMachine.Add(endOpAfterTime);
             listMachine.Add(oF.Uid);
             listMachine.Add(operatorBefore.Uid);
             listMachine.Add(operatorAfter.Uid);
@@ -271,6 +273,20 @@ namespace PRD_Ordonnanceur.Algorithms
                 listConsumable.Clear();
                 count++;
             }
+
+            // Scheduling step
+            List<Object> listStep = new();
+            listStep.Add(step.Uid);
+            listStep.Add(beginningOpBeforeTime);
+            if(!lastStep)
+                listStep.Add(endOpAfterTime);
+            else
+            {
+                Tank tank = (Tank)ressourceList[7];
+                TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(oFBefore, oF, tank);
+                listStep.Add(endCleaning.Add(timeSpan));
+            }
+            solutionPlanning.PlanningStep.Add(new(listStep));
 
             return solutionPlanning;
         }
