@@ -387,6 +387,8 @@ namespace PRD_Ordonnanceur.Algorithms
                         while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
                             currentTime = currentTime.AddMinutes(5);
 
+                        resultRessources.Clear();
+
                         goto restart;
                     }
 

@@ -4,6 +4,7 @@ using PRD_Ordonnanceur.Data;
 using PRD_Ordonnanceur.Parser;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace PRD_Ordonnanceur.View
@@ -15,6 +16,7 @@ namespace PRD_Ordonnanceur.View
     {
         string pathToCsvData = "";
         string pathToResultFolder = "";
+        TimeSpan duration;
 
         DateTime date = DateTime.MaxValue;
 
@@ -96,7 +98,18 @@ namespace PRD_Ordonnanceur.View
 
             // Launching the algorithm
             JobShopAlgorithm algorithm = new(dataParsed, new(), new(), new());
+
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
             int numberConstraint = algorithm.StepAlgorithm(date);
+            stopwatch.Stop();
+
+            duration = stopwatch.Elapsed;
+
+            label2.Text = String.Format("Elapsed Time is {0:00}:{1:00}:{2:00}.{3}",
+                            duration.Hours, duration.Minutes, duration.Seconds, duration.Milliseconds);
+            
             AutoClosingMessageBox.Show("Nombre de contrainte non respectés : " + numberConstraint, "Alerte", 1000);
 
             // Verifing the constraints 
@@ -158,6 +171,11 @@ namespace PRD_Ordonnanceur.View
 
             if (pathToCsvData != "" && pathToResultFolder != "" && date != DateTime.MaxValue)
                 button2.Visible = true;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
