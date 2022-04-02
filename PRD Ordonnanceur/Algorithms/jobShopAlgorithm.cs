@@ -312,10 +312,6 @@ namespace PRD_Ordonnanceur.Algorithms
 
             foreach (OF oF in DataParsed.OFs)
             {
-                // If this is a weekend, skip some time
-                while (currentTime.DayOfWeek == DayOfWeek.Saturday || currentTime.DayOfWeek == DayOfWeek.Sunday)
-                    currentTime.AddDays(1);
-
                 if (countOF >= 0)
                     ofBefore = DataParsed.OFs[countOF];
 
@@ -333,7 +329,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 // Looking if we can start the OF
                 while (dti.Day >= currentTime.Day && dti.Month >= currentTime.Month && dti.Year >= currentTime.Year)
                 {
-                    currentTime.AddMinutes(5);
+                    currentTime = currentTime.AddMinutes(5);
                 }
 
             restart:

@@ -70,6 +70,12 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <returns></returns>
         public static List<Operator> FindOperator(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine Competence)
         {
+            // Checking if it's a weekend
+            if (beginningTimeOfOperation.DayOfWeek == DayOfWeek.Saturday || beginningTimeOfOperation.DayOfWeek == DayOfWeek.Sunday)
+                return new();
+            if (endTimeOfOperation.DayOfWeek == DayOfWeek.Saturday || endTimeOfOperation.DayOfWeek == DayOfWeek.Sunday)
+                return new();
+
             int count = 0;
 
             foreach (List<Object> list in planningOperator)
