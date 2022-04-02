@@ -113,22 +113,33 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Object> listRessourcesAvailable = new();
 
-            // We choose the first ressource from each list
-            if(lastStep)
+            // We randomly choose one ressource from each list
+            if (lastStep)
                 listRessourcesAvailable.Add(endOperation.Add(new(0, 10, 0)));
             else
                 listRessourcesAvailable.Add(endOperation);
 
-            listRessourcesAvailable.Add(operatorAvailableBeforeOp[0]);
-            listRessourcesAvailable.Add(operatorAvailableAfterOp[0]);
-            listRessourcesAvailable.Add(operatorAvailableCleaning[0]);
-            listRessourcesAvailable.Add(machineAvailable[0]);
+            Random rnd = new();
+            int randomIndex = rnd.Next(0, operatorAvailableBeforeOp.Count);
+            listRessourcesAvailable.Add(operatorAvailableBeforeOp[randomIndex]);
+
+            randomIndex = rnd.Next(0, operatorAvailableAfterOp.Count);
+            listRessourcesAvailable.Add(operatorAvailableAfterOp[randomIndex]);
+
+            randomIndex = rnd.Next(0, operatorAvailableCleaning.Count);
+            listRessourcesAvailable.Add(operatorAvailableCleaning[randomIndex]);
+
+            randomIndex = rnd.Next(0, machineAvailable.Count);
+            listRessourcesAvailable.Add(machineAvailable[randomIndex]);
             listRessourcesAvailable.Add(consomableAvailable);
 
             if (lastStep)
             {
-                listRessourcesAvailable.Add(operatorAvailableTank[0]);
-                listRessourcesAvailable.Add(tankAvailable[0]);
+                randomIndex = rnd.Next(0, operatorAvailableTank.Count);
+                listRessourcesAvailable.Add(operatorAvailableTank[randomIndex]);
+
+                randomIndex = rnd.Next(0, tankAvailable.Count);
+                listRessourcesAvailable.Add(tankAvailable[randomIndex]);
             }
 
             return listRessourcesAvailable;
