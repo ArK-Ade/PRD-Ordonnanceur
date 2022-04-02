@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic.FileIO;
+﻿using CsvHelper;
 using PRD_Ordonnanceur.Data;
-using PRD_Ordonnanceur.Solution;
-using PRD_Ordonnanceur.Parser;
-using CsvHelper;
-using CsvHelper.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 
 namespace PRD_Ordonnanceur.Parser
 {
-    public class ParserData
+    /// <summary>
+    /// This class transform the csv into parsed data
+    /// </summary>
+    public class CsvToData
     {
         private const string defaultPath = "C:/";
 
+        /// <summary>
+        /// Parse Consumable data
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
         public static List<Consumable> ParsingDataConsommable(string rootPath)
         {
             if (rootPath == "")
@@ -27,7 +28,7 @@ namespace PRD_Ordonnanceur.Parser
 
             // Lecture des données Consommables
 
-            string path = rootPath + "Stocks2.csv";
+            string path = rootPath + "/Stocks.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Consumable>();
@@ -52,6 +53,11 @@ namespace PRD_Ordonnanceur.Parser
             return records;
         }
 
+        /// <summary>
+        /// Parse Operator data
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
         public static List<Operator> ParsingDataOperator(string rootPath)
         {
             if (rootPath == "")
@@ -61,7 +67,7 @@ namespace PRD_Ordonnanceur.Parser
 
             // Lecture des données Consommables
 
-            string path = rootPath + "Operateurs.csv";
+            string path = rootPath + "/Operateurs.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Operator>();
@@ -70,10 +76,25 @@ namespace PRD_Ordonnanceur.Parser
 
             while (csv.Read())
             {
+
+                string list = csv.GetField<String>("Competences");
+
+                List<TypeMachine> typeMachines = new();
+
+                if (list.Contains("blender"))
+                    typeMachines.Add(TypeMachine.blender);
+
+                if (list.Contains("mixer"))
+                    typeMachines.Add(TypeMachine.Mixer);
+
+                if (list.Contains("cleaning"))
+                    typeMachines.Add(TypeMachine.cleaning);
+
                 var record = new Operator
                 {
-                    Id = csv.GetField<uint>("Id"),
-                    Beginning = csv.GetField<DateTime>("Debut"),
+                    Uid = csv.GetField<uint>("Id"),
+                    SkillSet = new(typeMachines),
+                    StartWorkSchedule = csv.GetField<DateTime>("Debut"),
                     End = csv.GetField<DateTime>("Fin"),
                 };
 
@@ -83,6 +104,11 @@ namespace PRD_Ordonnanceur.Parser
             return records;
         }
 
+        /// <summary>
+        /// Parse Machine data
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
         public static List<Machine> ParsingDataMachine(string rootPath)
         {
             if (rootPath == "")
@@ -90,9 +116,8 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            // Lecture des données Consommables
-
-            string path = rootPath + "Machines.csv";
+            // Data reading Consumables
+            string path = rootPath + "/Machines.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Machine>();
@@ -101,9 +126,9 @@ namespace PRD_Ordonnanceur.Parser
 
             while (csv.Read())
             {
-                string qqch = csv.GetField("Type");
+                string typeMachineCsv = csv.GetField("Type");
 
-                var type = qqch switch
+                var type = typeMachineCsv switch
                 {
                     "Qualite" => TypeMachine.blender,
                     "Disperseur" => TypeMachine.Mixer,
@@ -114,7 +139,7 @@ namespace PRD_Ordonnanceur.Parser
                 {
                     Id = csv.GetField<int>("Id"),
                     TypeMachine = type,
-                    Duration_cleaning = new TimeSpan(csv.GetField<int>("dureeNettoyage")),
+                    CleaningDuration = new TimeSpan(0, csv.GetField<int>("dureeNettoyage"), 0),
                 };
 
                 records.Add(record);
@@ -123,6 +148,12 @@ namespace PRD_Ordonnanceur.Parser
             return records;
         }
 
+        /// <summary>
+        /// Parse OF data
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <param name="consumables"></param>
+        /// <returns></returns>
         public static List<OF> ParsingDataOF(string rootPath, List<Consumable> consumables)
         {
             if (rootPath == "")
@@ -130,9 +161,8 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            // Lecture des données
-
-            string path = rootPath + "OF_ROU2.csv";
+            // Reading the data
+            string path = rootPath + "/OFS.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var recordsOF = new List<OF>();
@@ -141,8 +171,7 @@ namespace PRD_Ordonnanceur.Parser
             csv.Read();
             csv.ReadHeader();
 
-            // Lecture des OFs et etapes
-
+            // Reading OFs and steps
             bool sameOF = false;
             var currentOFName = "";
 
@@ -160,19 +189,28 @@ namespace PRD_Ordonnanceur.Parser
 
                 var recordOF = new OF
                 {
-                    IdOF = csv.GetField<int>("ACTIVITE"),
-                    Starting_hour = DateTime.MinValue,
+                    Uid = csv.GetField<int>("ACTIVITE"),
+                    StartingHour = DateTime.MinValue,
                     StepSequence = new(),
+                    EarliestDate = DateTime.MinValue,
+                    NextStep = 0,
                 };
+
+                TimeSpan durationOp = new(0, csv.GetField<int>("TPS2"), 0);
+                TimeSpan durationBeforeOp = new(0, 10, 0);
+                TimeSpan durationAfterOp = new(0, 10, 0);
+
+                Duration duration = new(durationBeforeOp, durationAfterOp, durationOp);
 
                 if (!sameOF)
                 {
-                    // Nouvelle OF avec des etapes
+                    // New OF with new step
                     var recordStep = new Step
                     {
-                        IdStep = csv.GetField<double>("IDENTIFIANT"),
+                        Uid = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
+                        Duration = duration,
                     };
 
                     recordsOF.Add(recordOF);
@@ -187,23 +225,23 @@ namespace PRD_Ordonnanceur.Parser
                         recordsOF[recordsOF.Count - 1].LatestDate = csv.GetField<DateTime>("DATE_CIBLE");
                     }
 
-                    // Nouvelle etape
+                    // New step
                     var recordStep = new Step
                     {
-                        IdStep = csv.GetField<double>("IDENTIFIANT"),
+                        Uid = csv.GetField<double>("IDENTIFIANT"),
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
+                        Duration = duration,
+
                     };
 
                     recordsStep.Add(recordStep);
                     recordsOF[recordsOF.Count - 1].StepSequence.Add(recordStep);
-                }               
+                }
             }
 
-            DataParsed data = new();
-
-            // Attribution des consommables aux etapes
-            path = rootPath + "OF_BOM2.csv";
+            // Allocation of consumables to steps
+            path = rootPath + "/Etapes.csv";
             using var reader2 = new StreamReader(path);
             using var csv2 = new CsvReader(reader2, CultureInfo.CurrentCulture);
 
@@ -212,15 +250,20 @@ namespace PRD_Ordonnanceur.Parser
 
             while (csv2.Read())
             {
-                foreach(OF oF in recordsOF)
+                foreach (OF oF in recordsOF)
                 {
                     foreach (Step step in oF.StepSequence)
                     {
-                        if (step.IdStep == csv2.GetField<double>("ETAPES"))
+                        if (step.Uid == csv2.GetField<double>("ETAPES"))
                         {
-                            Consumable consumable = consumables.Find(x => x.Name == csv2.GetField("COMPOSANT"));
-                            step.ConsumableUsed.Add(consumable);
-                            step.QuantityConsumable.Add(csv2.GetField<float>("QTE_T"));
+                            foreach (Consumable consumable in consumables)
+                            {
+                                if (consumable.Name == csv2.GetField("COMPOSANT"))
+                                {
+                                    step.ConsumableUsed.Add(consumable);
+                                    step.QuantityConsumable.Add(csv2.GetField<float>("QTE_T"));
+                                }
+                            }
                         }
                     }
                 }
@@ -229,6 +272,11 @@ namespace PRD_Ordonnanceur.Parser
             return recordsOF;
         }
 
+        /// <summary>
+        /// Parse Tank data
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
         public static List<Tank> ParsingDataTank(string rootPath)
         {
             if (rootPath == "")
@@ -236,7 +284,7 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            string path = rootPath + "Cuves.csv";
+            string path = rootPath + "/Cuves.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
             var records = new List<Tank>();

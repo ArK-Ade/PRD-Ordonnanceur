@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data.Tests
 {
+    /// <summary>
+    /// Class for testing the consumable
+    /// </summary>
     [TestFixture()]
     public class ConsumableTests
     {

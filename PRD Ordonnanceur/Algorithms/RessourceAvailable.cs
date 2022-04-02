@@ -4,14 +4,24 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms
 {
-    public class Available
+    /// <summary>
+    /// This class regroup all the method you need to use to verify if a ressource is available
+    /// </summary>
+    public class RessourceAvailable
     {
-        public List<Operator> FindOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
+        /// <summary>
+        /// Methods that search if an operator is available for a tank
+        /// </summary>
+        /// <param name="planningOperator"></param>
+        /// <param name="listOperator"></param>
+        /// <param name="timeNow"></param>
+        /// <returns>return a list of operator available</returns>
+        public static List<Operator> FindOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
         {
             if (planningOperator.Count == 0)
                 return listOperator;
             else if (listOperator.Count == 0)
-                return null;
+                return new();
 
             int count = 0;
 
@@ -29,33 +39,43 @@ namespace PRD_Ordonnanceur.Algorithms
 
             foreach (List<Object> list in planningOperator)
             {
-                // On retire tous les opérateurs indisponibles sur le temps
-                if (list[2] is DateTime)
+                if (list[2] is DateTime && timeNow <= (DateTime)list[2])
                 {
-                    if (timeNow <= (DateTime)list[2])
+                    int id = (int)list[0];
+                    int count2 = 0;
+                    int index = -1;
+                    foreach (Operator op in listOperatorAvailable)
                     {
-                        // On supprime l'operateur de la liste available
-                        int id = (int)list[0];
-                        int count2 = 0;
-                        int index = -1;
-                        foreach (Operator op in listOperatorAvailable)
+                        if (op.Uid == id)
                         {
-                            if (op.Id == id)
-                            {
-                                index = count2;
-                            }
-                            count2++;
+                            index = count2;
                         }
-                        listOperatorAvailable.RemoveAt(index);
+                        count2++;
                     }
+                    listOperatorAvailable.RemoveAt(index);
                 }
             }
 
             return listOperatorAvailable;
         }
 
-        public List<Operator> FindOperator(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine Competence)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningOperator"></param>
+        /// <param name="listOperator"></param>
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <param name="Competence"></param>
+        /// <returns></returns>
+        public static List<Operator> FindOperator(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine Competence)
         {
+            // Checking if it's a weekend
+            if (beginningTimeOfOperation.DayOfWeek == DayOfWeek.Saturday || beginningTimeOfOperation.DayOfWeek == DayOfWeek.Sunday)
+                return new();
+            if (endTimeOfOperation.DayOfWeek == DayOfWeek.Saturday || endTimeOfOperation.DayOfWeek == DayOfWeek.Sunday)
+                return new();
+
             int count = 0;
 
             foreach (List<Object> list in planningOperator)
@@ -65,28 +85,31 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Operator> listOperatorAvailable = new(listOperator);
 
-        reset:
-            // On retire tous les opérateurs indisponibles par leur compétences
+            reset:
+            // On retire tous les opérateurs indisponibles par leur compétences / emploi du temps 
             foreach (Operator operat in listOperatorAvailable)
             {
-                bool haveSkill = false;
-                foreach (TypeMachine skill in operat.MachineSkill)
+                bool hasSkill = false;
+                bool hasTime = false;
+
+                if ((operat.StartWorkSchedule.Minute <= beginningTimeOfOperation.Minute && operat.StartWorkSchedule.Hour <= beginningTimeOfOperation.Hour) || (operat.End.Minute <= endTimeOfOperation.Minute && operat.End.Hour <= endTimeOfOperation.Hour))
+                    hasTime = true;
+                
+                foreach (TypeMachine skill in operat.SkillSet)
                 {
                     if (skill.CompareTo(Competence) == 0)
-                        haveSkill = true;
+                        hasSkill = true;
                 }
 
-                if (haveSkill == false)
+                if (!hasSkill || !hasTime)
                 {
                     listOperatorAvailable.Remove(operat);
                     goto reset;
                 }
             }
 
-            if (count == 0)
-                return listOperator;
-            else if (listOperator.Count == 0)
-                return new();
+            if (listOperator.Count == 0)
+                throw new("Liste Operateur Vide");
 
             // Enlever les opérateurs indisponibles par leur heure de travail
             foreach (List<Object> list in planningOperator)
@@ -100,7 +123,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     int index = -1;
                     foreach (Operator op in listOperatorAvailable)
                     {
-                        if (op.Id == id)
+                        if (op.Uid == id)
                             index = count2;
                         count2++;
                     }
@@ -111,7 +134,16 @@ namespace PRD_Ordonnanceur.Algorithms
             return listOperatorAvailable;
         }
 
-        public List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningMachine"></param>
+        /// <param name="listMachine"></param>
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <param name="typeMachine"></param>
+        /// <returns></returns>
+        public static List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
         {
             int count = 0;
 
@@ -161,7 +193,15 @@ namespace PRD_Ordonnanceur.Algorithms
             return listMachineAvailable;
         }
 
-        public List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningTank"></param>
+        /// <param name="listTank"></param>
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <returns></returns>
+        public static List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
         {
             int count = 0;
 
@@ -184,7 +224,6 @@ namespace PRD_Ordonnanceur.Algorithms
                 if (beginningTimeOfOperation >= (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[2])
                 {
                     // On supprime l'operateur de la liste available
-                    int id = (int)list[0];
                     foreach (Tank op in listTankAvailable)
                     {
                         listTankAvailable.Remove(op);
@@ -196,7 +235,16 @@ namespace PRD_Ordonnanceur.Algorithms
             return listTankAvailable;
         }
 
-        public bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, List<Consumable> listConsumableNeeded, List<double> quantity)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planningConso"></param>
+        /// <param name="listComsumable"></param>
+        /// <param name="timeNow"></param>
+        /// <param name="listConsumableNeeded"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public static bool FindConsoForStep(List<List<Object>> planningConso, List<Consumable> listComsumable, DateTime timeNow, List<Consumable> listConsumableNeeded, List<double> quantity)
         {
             // On recherche dans le planning la quantité restante de consommable restant
             bool consumubleIsAvailable = true;
@@ -205,7 +253,7 @@ namespace PRD_Ordonnanceur.Algorithms
             if (listConsumableNeeded.Count != quantity.Count)
             {
                 string msg = "Il y a une erreur dans le parseur";
-                Exception exception = new Exception(msg);
+                Exception exception = new(msg);
                 throw exception;
             }
 
@@ -215,7 +263,7 @@ namespace PRD_Ordonnanceur.Algorithms
             // Remplissable de quantityRemaining
             foreach (Consumable consumable in listConsumableNeeded)
             {
-                quantityRemaining.Add(consumable.QuantityAvailable); // TODO A corriger
+                quantityRemaining.Add(consumable.QuantityAvailable);
                 count++;
             }
 
@@ -224,7 +272,6 @@ namespace PRD_Ordonnanceur.Algorithms
             // Pour chaque jour du planning on enleve les consommables utilisés
             foreach (List<Object> list in planningConso)
             {
-                DateTime day = (DateTime)list[0];
                 double quantityUsed = (double)list[1];
                 int idConsumable = (int)list[2];
 
@@ -249,8 +296,14 @@ namespace PRD_Ordonnanceur.Algorithms
             return consumubleIsAvailable;
         }
 
-        // TODO Terminer la fonction si utiliser
-        public TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oFBefore"></param>
+        /// <param name="oFAfter"></param>
+        /// <param name="tank"></param>
+        /// <returns></returns>
+        public static TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)
         {
             return new(0, 10, 0);
         }

@@ -3,56 +3,78 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
-    public struct Duration
-    {
-        private TimeSpan durationBeforeOp;
-        private TimeSpan durationAfterOp;
-        private TimeSpan durationOp;
-
-        public Duration(TimeSpan durationBeforeOp, TimeSpan durationAfterOp, TimeSpan durationOp)
-        {
-            this.durationBeforeOp = durationBeforeOp;
-            this.durationAfterOp = durationAfterOp;
-            this.durationOp = durationOp;
-        }
-
-        public TimeSpan DurationBeforeOp { get => durationBeforeOp; set => durationBeforeOp = value; }
-        public TimeSpan DurationAfterOp { get => durationAfterOp; set => durationAfterOp = value; }
-        public TimeSpan DurationOp { get => durationOp; set => durationOp = value; }
-    }
-
+    /// <summary>
+    /// This class represents the step to do in order to complete an OF
+    /// </summary>
     public class Step
     {
-        private double idStep;
-        private string name;
-        private TypeMachine typeMachineNeeded;
         private Duration duration;
-        private DateTime durationMaxNextStep;
-        private bool nextStepReportable;
-        private List<Consumable> consumableUsed;
-        private List<double> quantityConsumable;
 
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public Step()
         { }
 
+        /// <summary>
+        /// Confortable Constructor
+        /// </summary>
+        /// <param name="idStep"></param>
+        /// <param name="typeMachineNeeded"></param>
+        /// <param name="duration"></param>
+        /// <param name="durationMaxNextStep"></param>
+        /// <param name="nextStepReportable"></param>
+        /// <param name="consumableUsed"></param>
+        /// <param name="quantityConsumable"></param>
         public Step(double idStep, TypeMachine typeMachineNeeded, Duration duration, DateTime durationMaxNextStep, bool nextStepReportable, List<Consumable> consumableUsed, List<double> quantityConsumable)
         {
-            this.idStep = idStep;
-            this.typeMachineNeeded = typeMachineNeeded;
+            this.Uid = idStep;
+            this.TypeMachineNeeded = typeMachineNeeded;
             this.duration = duration;
-            this.durationMaxNextStep = durationMaxNextStep;
-            this.nextStepReportable = nextStepReportable;
+            this.DurationMaxNextStep = durationMaxNextStep;
+            this.NextStepReportable = nextStepReportable;
             this.ConsumableUsed = consumableUsed;
             this.QuantityConsumable = quantityConsumable;
         }
 
-        public double IdStep { get => idStep; set => idStep = value; }
-        public TypeMachine TypeMachineNeeded { get => typeMachineNeeded; set => typeMachineNeeded = value; }
+        /// <summary>
+        /// Unique identifier
+        /// </summary>
+        public double Uid { get; set; }
+
+        /// <summary>
+        /// Represent the type of the machine
+        /// </summary>
+        public TypeMachine TypeMachineNeeded { get; set; }
+
+        /// <summary>
+        /// Indicate the time of the Operation
+        /// </summary>
         public Duration Duration { get => duration; set => duration = value; }
-        public DateTime DurationMaxNextStep { get => durationMaxNextStep; set => durationMaxNextStep = value; }
-        public bool NextStepReportable { get => nextStepReportable; set => nextStepReportable = value; }
-        public List<Consumable> ConsumableUsed { get => consumableUsed; set => consumableUsed = value; }
-        public List<double> QuantityConsumable { get => quantityConsumable; set => quantityConsumable = value; }
-        public string Name { get => name; set => name = value; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime DurationMaxNextStep { get; set; }
+
+        /// <summary>
+        /// Bool that indicate if the next step is reportable to next day
+        /// </summary>
+        public bool NextStepReportable { get; set; }
+
+        /// <summary>
+        /// List that contain the consumable needed
+        /// </summary>
+        public List<Consumable> ConsumableUsed { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<double> QuantityConsumable { get; set; }
+
+        /// <summary>
+        /// Name of a step
+        /// </summary>
+        public string Name { get; set; }
     }
 }
