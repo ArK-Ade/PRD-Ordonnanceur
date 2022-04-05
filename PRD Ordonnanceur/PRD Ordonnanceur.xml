@@ -680,6 +680,16 @@
             
             </summary>
         </member>
+        <member name="T:PRD_Ordonnanceur.Form1">
+            <summary>
+            Main View of the application
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Form1.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
         <member name="F:PRD_Ordonnanceur.Form1.components">
             <summary>
              Required designer variable.

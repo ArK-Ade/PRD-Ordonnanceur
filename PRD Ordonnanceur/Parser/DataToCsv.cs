@@ -136,8 +136,8 @@ namespace PRD_Ordonnanceur.Parser
             {
                 foreach (var list in planning.PlanningCons)
                 {
-                    csvWriter.WriteField<double>((double)list[1]);
                     csvWriter.WriteField<int>((int)list[2]);
+                    csvWriter.WriteField<double>((double)list[1]);
                     csvWriter.NextRecord();
                 }
             }
