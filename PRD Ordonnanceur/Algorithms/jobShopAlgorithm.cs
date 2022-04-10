@@ -388,6 +388,7 @@ namespace PRD_Ordonnanceur.Algorithms
                             currentTime = currentTime.AddMinutes(5);
 
                         resultRessources.Clear();
+                        nbConstrainNotRespected -= countStep;
 
                         goto restart;
                     }
@@ -401,15 +402,14 @@ namespace PRD_Ordonnanceur.Algorithms
 
                     Machine machine = (Machine)resultRessources[4];
 
-
                     // We add the time spent
                     if (!lastStep)
-                        currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp + machine.CleaningDuration);
+                        currentTime = time;
                     else
                     {
                         Tank tank = (Tank)resultRessources[7];
                         TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(ofBefore, oF, tank);
-                        currentTime = timeNeeded;
+                        currentTime = time;
                     }
 
                     resultRessources.Clear();
