@@ -3,42 +3,86 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Data
 {
+    /// <summary>
+    /// This class represents the production orders
+    /// </summary>
     public class OF
     {
-        private int idOF;
-        private DateTime starting_hour;
-        private int next_step;
-        private List<Step> stepSequence;
-        private DateTime earliestDate;
-        private DateTime latestDate;
-        private List<Tank> setTank;
-        private string numberProduct;
-        private List<List<string>> consommableQuantity; // TODO surement supprimer cette fonction
-
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public OF()
         { }
 
-        public OF(int idOF, DateTime starting_hour, int next_step, List<Step> stepSequence, DateTime earliestDate, DateTime latestDate, List<Tank> setTank, string numberProduct, List<List<string>> consommableQuantity)
+        /// <summary>
+        /// Confortable Constructor
+        /// </summary>
+        /// <param name="idOF"></param>
+        /// <param name="starting_hour"></param>
+        /// <param name="next_step"></param>
+        /// <param name="stepSequence"></param>
+        /// <param name="earliestDate"></param>
+        /// <param name="latestDate"></param>
+        /// <param name="numberProduct"></param>
+        public OF(int idOF, DateTime starting_hour, int next_step, List<Step> stepSequence, DateTime earliestDate, DateTime latestDate, string numberProduct)
         {
-            this.IdOF = idOF;
-            this.Starting_hour = starting_hour;
-            this.Next_step = next_step;
+            this.Uid = idOF;
+            this.StartingHour = starting_hour;
+            this.NextStep = next_step;
             this.StepSequence = stepSequence;
             this.EarliestDate = earliestDate;
             this.LatestDate = latestDate;
-            this.SetTank = setTank;
             this.NumberProduct = numberProduct;
-            this.ConsommableQuantity = consommableQuantity;
         }
 
-        public int IdOF { get => idOF; set => idOF = value; }
-        public DateTime Starting_hour { get => starting_hour; set => starting_hour = value; }
-        public int Next_step { get => next_step; set => next_step = value; }
-        public List<Step> StepSequence { get => stepSequence; set => stepSequence = value; }
-        public DateTime EarliestDate { get => earliestDate; set => earliestDate = value; }
-        public DateTime LatestDate { get => latestDate; set => latestDate = value; }
-        public List<Tank> SetTank { get => setTank; set => setTank = value; }
-        public string NumberProduct { get => numberProduct; set => numberProduct = value; }
-        public List<List<string>> ConsommableQuantity { get => consommableQuantity; set => consommableQuantity = value; }
+        /// <summary>
+        /// Copy Constructor
+        /// </summary>
+        /// <param name="oF">OF to copy</param>
+        public OF(OF oF)
+        {
+            this.Uid = oF.Uid;
+            this.StartingHour = oF.StartingHour;
+            this.NextStep = oF.NextStep;
+            this.StepSequence = oF.StepSequence;
+            this.EarliestDate = oF.EarliestDate;
+            this.LatestDate = oF.LatestDate;
+            this.NumberProduct = oF.NumberProduct;
+        }
+
+        /// <summary>
+        /// Unique identifier
+        /// </summary>
+        public int Uid { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime StartingHour { get; set; }
+
+        /// <summary>
+        /// Represent the index of the next step if the OF has already started
+        /// </summary>
+        public int NextStep { get; set; }
+
+        /// <summary>
+        /// List of steps
+        /// </summary>
+        public List<Step> StepSequence { get; set; }
+
+        /// <summary>
+        /// Indicate the earliest date you can start the OF
+        /// </summary>
+        public DateTime EarliestDate { get; set; }
+
+        /// <summary>
+        /// Indicate the latest date you can start the OF
+        /// </summary>
+        public DateTime LatestDate { get; set; }
+
+        /// <summary>
+        /// ID of the product linked to the OF
+        /// </summary>
+        public string NumberProduct { get; set; }
     }
 }

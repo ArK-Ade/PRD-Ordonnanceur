@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Algorithms.Tests
 {
+    /// <summary>
+    /// Class for testing the heuristics
+    /// </summary>
     [TestFixture()]
     public class HeuristicTests
     {
@@ -19,18 +22,15 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
             DateTime latestDate = DateTime.Now;
 
-            List<Tank> setTank = new();
             string numberProduct1 = "1";
             string numberProduct2 = "2";
-
-            List<List<String>> consommableQuantity = new();
 
             DateTime starting_hour = DateTime.Now;
             int next_step = 2;
 
-            OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, setTank, numberProduct1, consommableQuantity);
-            OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, setTank, numberProduct2, consommableQuantity);
-            OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, setTank, numberProduct1, consommableQuantity);
+            OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, numberProduct1);
+            OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, numberProduct2);
+            OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, numberProduct1);
 
             List<OF> OFs1 = new();
             OFs1.Add(OF1); 
@@ -75,26 +75,17 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
 
             DateTime latestDate = DateTime.Now;
 
-            Tank tank1 = new();
-            Tank tank2 = new();
-
             string numberProduct1 = "1";
             string numberProduct2 = "2";
 
-            string[] tableau1 = { "1" };
-            string[] tableau2 = { "2" };
-
-            List<Tank> setTank = new();
             List<Step> stepSequence = new();
-            List<List<String>> consommableQuantity = new();
 
             DateTime starting_hour = DateTime.Now;
             int next_step = 2;
 
-            OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, setTank, numberProduct1, consommableQuantity);
-            OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, setTank, numberProduct2, consommableQuantity);
-            OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, setTank, numberProduct1, consommableQuantity);
-
+            OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, numberProduct1);
+            OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, numberProduct2);
+            OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, numberProduct1);
 
             List<OF> OFs1 = new();
             OFs1.Add(OF1);

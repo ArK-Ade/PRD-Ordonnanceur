@@ -8,6 +8,10 @@
     <CodeAnalysisRuleSet>..\.sonarlint\ark-ade_prd-ordonnanceurcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\antho\source\repos\PRD Ordonnanceur\PRD Ordonnanceur\PRD Ordonnanceur.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Data\CustomClic.cs~RF6887809.TMP" />
   </ItemGroup>

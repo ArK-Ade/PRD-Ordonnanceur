@@ -1,0 +1,968 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PRD Ordonnanceur</name>
+    </assembly>
+    <members>
+        <member name="T:PRD_Ordonnanceur.Algorithms.Context">
+            <summary>
+            This class allows to choose the strategy to use for scheduling.
+            </summary>
+        </member>
+        <member name="F:PRD_Ordonnanceur.Algorithms.Context._strategy">
+            <summary>
+            The Context maintains a reference to one of the Strategy objects. The
+            Context does not know the concrete class of a strategy. It should
+            work with all strategies via the Strategy interface.
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.#ctor(PRD_Ordonnanceur.Algorithms.IHeuristic)">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="strategy"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.SetStrategy(PRD_Ordonnanceur.Algorithms.IHeuristic)">
+            <summary>
+            Setter
+            </summary>
+            <param name="strategy"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Context.Launch(System.Int32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            The Context delegates some work to the Strategy object instead of
+            implementing multiple versions of the algorithm on its own.
+            </summary>
+            <param name="choice"></param>
+            <param name="oFs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Algorithms.Heuristic">
+            <summary>
+            Class that represents the heuristic that will classify the OFs 
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.Smallest_index_DTI(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            Methods that search the OF who can be schedule the earliest
+            </summary>
+            <param name="OFs"></param>
+            <returns>index of the OF</returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.SortCrescentDtiCrescentDli(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            Methods that sort a list of OF 
+            </summary>
+            <param name="OFs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.Sort_crescent_dti_decendant_dli(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            
+            </summary>
+            <param name="OFs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.Sort_random_5_crescent(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            
+            </summary>
+            <param name="OFs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.PRD_Ordonnanceur#Algorithms#IHeuristic#SortingAlgorithm(System.Int32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            Methods that permit to change between the different heuristics
+            </summary>
+            <param name="choice"></param>
+            <param name="Ofs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Algorithms.IHeuristic">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.IHeuristic.SortingAlgorithm(System.Int32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
+            <summary>
+            
+            </summary>
+            <param name="choice"></param>
+            <param name="Ofs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm">
+            <summary>
+            Class that represent the sheduling algorithm
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.#ctor(PRD_Ordonnanceur.Parser.DataParsed,PRD_Ordonnanceur.Algorithms.RessourceAvailable,System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},PRD_Ordonnanceur.Solution.SolutionPlanning)">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="data"></param>
+            <param name="availableAlgorithm"></param>
+            <param name="plannings"></param>
+            <param name="solutionPlanning"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.DataParsed">
+            <summary>
+            data that has been retrieved by the parser
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.Plannings">
+            <summary>
+            List of planning
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.SolutionPlanning">
+            <summary>
+            Current planning for the OF
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.AvailableAlgorithm">
+            <summary>
+            Tool to verify if the ressource are available
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.SearchRessources(System.DateTime,PRD_Ordonnanceur.Data.Step,System.Boolean)">
+            <summary>
+            It searchs the ressources necessery for the algorythm
+            </summary>
+            <param name="time"></param>
+            <param name="step"></param>
+            <param name="lastStep"></param>
+            <returns>Return a list of all the ressource selected</returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.ScheduleStep(System.Collections.Generic.List{System.Object},PRD_Ordonnanceur.Solution.SolutionPlanning,System.DateTime,PRD_Ordonnanceur.Data.OF,PRD_Ordonnanceur.Data.Step,System.Boolean,PRD_Ordonnanceur.Data.OF)">
+            <summary>
+            Method that schedule the step
+            </summary>
+            <param name="ressourceList"></param>
+            <param name="solutionPlanning"></param>
+            <param name="time"></param>
+            <param name="oF"></param>
+            <param name="step"></param>
+            <param name="lastStep"></param>
+            <param name="oFBefore"></param>
+            <returns>The planning of the step</returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.JobShopAlgorithm.StepAlgorithm(System.DateTime)">
+            <summary>
+            Algorithm who planify the ressources
+            </summary>
+            <param name="time"></param>
+            <returns>The number of constraint not met</returns>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Algorithms.RessourceAvailable">
+            <summary>
+            This class regroup all the method you need to use to verify if a ressource is available
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindOperatorForTank(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Operator},System.DateTime)">
+            <summary>
+            Methods that search if an operator is available for a tank
+            </summary>
+            <param name="planningOperator"></param>
+            <param name="listOperator"></param>
+            <param name="timeNow"></param>
+            <returns>return a list of operator available</returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindOperator(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Operator},System.DateTime,System.DateTime,PRD_Ordonnanceur.Data.TypeMachine)">
+            <summary>
+            
+            </summary>
+            <param name="planningOperator"></param>
+            <param name="listOperator"></param>
+            <param name="beginningTimeOfOperation"></param>
+            <param name="endTimeOfOperation"></param>
+            <param name="Competence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindMachineForStep(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Machine},System.DateTime,System.DateTime,PRD_Ordonnanceur.Data.TypeMachine)">
+            <summary>
+            
+            </summary>
+            <param name="planningMachine"></param>
+            <param name="listMachine"></param>
+            <param name="beginningTimeOfOperation"></param>
+            <param name="endTimeOfOperation"></param>
+            <param name="typeMachine"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindTankForStep(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Tank},System.DateTime,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="planningTank"></param>
+            <param name="listTank"></param>
+            <param name="beginningTimeOfOperation"></param>
+            <param name="endTimeOfOperation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindConsoForStep(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable},System.DateTime,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable},System.Collections.Generic.List{System.Double})">
+            <summary>
+            
+            </summary>
+            <param name="planningConso"></param>
+            <param name="listComsumable"></param>
+            <param name="timeNow"></param>
+            <param name="listConsumableNeeded"></param>
+            <param name="quantity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindTimeCleaningTank(PRD_Ordonnanceur.Data.OF,PRD_Ordonnanceur.Data.OF,PRD_Ordonnanceur.Data.Tank)">
+            <summary>
+            
+            </summary>
+            <param name="oFBefore"></param>
+            <param name="oFAfter"></param>
+            <param name="tank"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Checker.CheckerOF">
+            <summary>
+            Static class that verifiy that the algorithm respect each constraint
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Checker.CheckerOF.CheckConstraintOperator(PRD_Ordonnanceur.Solution.SolutionPlanning,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Operator})">
+            <summary>
+            Method that verify the constraint link to the operator
+            </summary>
+            <param name="planning"></param>
+            <param name="operators"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Checker.CheckerOF.CheckConstraintMachine(PRD_Ordonnanceur.Solution.SolutionPlanning)">
+            <summary>
+            Method that verify the constraint link to the machine
+            </summary>
+            <param name="planning"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Checker.CheckerOF.CheckConstraintTank(PRD_Ordonnanceur.Solution.SolutionPlanning)">
+            <summary>
+            Method that verify the constraint link to the tank
+            </summary>
+            <param name="planning"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Checker.CheckerOF.CheckConstraintConsumable(PRD_Ordonnanceur.Solution.SolutionPlanning,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable})">
+            <summary>
+            Method that verify the constraint link to the consumable
+            </summary>
+            <param name="planning"></param>
+            <param name="consumables"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Checker.CheckerOF.CheckConstraintOF(PRD_Ordonnanceur.Solution.SolutionPlanning)">
+            <summary>
+            
+            </summary>
+            <param name="planning"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.Calendar">
+            <summary>
+            Represente the calendar of an operator or a machine for one job
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Calendar.#ctor(System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="day"></param>
+            <param name="beginning_hour"></param>
+            <param name="finishing_hour"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Calendar.Day">
+            <summary>
+            Represente the day
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Calendar.BeginningHour">
+            <summary>
+            Represente the beginning of the job in the calendar
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Calendar.FinishingHour">
+            <summary>
+            Represente the end of the job in the calendar
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.Consumable">
+            <summary>
+            This class represents the consumables used by the OF steps
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Consumable.#ctor">
+            <summary>
+            Constructor by default
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Consumable.#ctor(System.Int32,System.Double,System.Collections.Generic.List{System.Object},System.DateTime)">
+            <summary>
+            Confortable Constructor 
+            </summary>
+            <param name="_id"></param>
+            <param name="_quantityAvailable"></param>
+            <param name="_calendar"></param>
+            <param name="_delaySupply"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Consumable.#ctor(System.Int32,System.Double,System.String,System.Collections.Generic.List{System.Object},System.DateTime)">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="_id"></param>
+            <param name="_quantityAvailable"></param>
+            <param name="_name"></param>
+            <param name="_calendar"></param>
+            <param name="_delaySupply"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Consumable.Id">
+            <summary>
+            Unique Identifier
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Consumable.QuantityAvailable">
+            <summary>
+            Getter and Setters for QuantityAvailable
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Consumable.Calendar">
+            <summary>
+            Timetable of unavailability
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Consumable.DelaySupply">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Consumable.Name">
+            <summary>
+            Name of the consumable
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.Duration">
+            <summary>
+            In ordor to complete a step, an operator is needed before and after the actual operation.Structure that represents those moments
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Duration.#ctor(System.TimeSpan,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="durationBeforeOp"></param>
+            <param name="durationAfterOp"></param>
+            <param name="durationOp"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Duration.DurationBeforeOp">
+            <summary>
+            Amount of time an operator need to prepare the step
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Duration.DurationAfterOp">
+            <summary>
+            Amount of time when the operator is not needed
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Duration.DurationOp">
+            <summary>
+            Amount of time an operator need to finish the step
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.Machine">
+            <summary>
+            This class represents the machines used by the operators
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Machine.#ctor">
+            <summary>
+            Constructor by default
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Machine.#ctor(PRD_Ordonnanceur.Data.TypeMachine,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Calendar},System.TimeSpan,System.Int32)">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="typeMachine"></param>
+            <param name="calendar"></param>
+            <param name="cleaningDuration"></param>
+            <param name="id"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Machine.Calendar">
+            <summary>
+            Timetable of unavailability
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Machine.Id">
+            <summary>
+            Unique identifier
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Machine.TypeMachine">
+            <summary>
+            Type of Machine
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Machine.CleaningDuration">
+            <summary>
+            Time needed to clean the machine
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.MatrixCleaning">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.MatrixCleaning.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.MatrixCleaning.#ctor(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}})">
+            <summary>
+            
+            </summary>
+            <param name="matrix"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.MatrixCleaning.Matrix">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.OF">
+            <summary>
+            This class represents the production orders
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.OF.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.OF.#ctor(System.Int32,System.DateTime,System.Int32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Step},System.DateTime,System.DateTime,System.String)">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="idOF"></param>
+            <param name="starting_hour"></param>
+            <param name="next_step"></param>
+            <param name="stepSequence"></param>
+            <param name="earliestDate"></param>
+            <param name="latestDate"></param>
+            <param name="numberProduct"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.OF.#ctor(PRD_Ordonnanceur.Data.OF)">
+            <summary>
+            Copy Constructor
+            </summary>
+            <param name="oF">OF to copy</param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.OF.Uid">
+            <summary>
+            Unique identifier
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.OF.StartingHour">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.OF.NextStep">
+            <summary>
+            Represent the index of the next step if the OF has already started
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.OF.StepSequence">
+            <summary>
+            List of steps
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.OF.EarliestDate">
+            <summary>
+            Indicate the earliest date you can start the OF
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.OF.LatestDate">
+            <summary>
+            Indicate the latest date you can start the OF
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.OF.NumberProduct">
+            <summary>
+            ID of the product linked to the OF
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.Operator">
+            <summary>
+            This class represents the person who will work on the machines 
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Operator.#ctor">
+            <summary>
+            Constructor by default
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Operator.#ctor(System.DateTime,System.DateTime,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Calendar},System.UInt32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.TypeMachine})">
+            <summary>
+            Confortable Constructor 
+            </summary>
+            <param name="beginning"></param>
+            <param name="end"></param>
+            <param name="calendar"></param>
+            <param name="id"></param>
+            <param name="machineSkill"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Operator.StartWorkSchedule">
+            <summary>
+            Indicate the beginning of his daily schedule
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Operator.End">
+            <summary>
+            Indicate the end of his daily schedule
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Operator.Calendar">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Operator.Uid">
+            <summary>
+            Unique identifier
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Operator.SkillSet">
+            <summary>
+            Represent his skill set
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Operator.CleanSkill">
+            <summary>
+            Method that reset his skill set
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Operator.AddSkill(PRD_Ordonnanceur.Data.TypeMachine)">
+            <summary>
+            Method that add a new skill in his skill set
+            </summary>
+            <param name="typeMachine">New skill to add</param>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.Step">
+            <summary>
+            This class represents the step to do in order to complete an OF
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Step.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Step.#ctor(System.Double,PRD_Ordonnanceur.Data.TypeMachine,PRD_Ordonnanceur.Data.Duration,System.DateTime,System.Boolean,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable},System.Collections.Generic.List{System.Double})">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="idStep"></param>
+            <param name="typeMachineNeeded"></param>
+            <param name="duration"></param>
+            <param name="durationMaxNextStep"></param>
+            <param name="nextStepReportable"></param>
+            <param name="consumableUsed"></param>
+            <param name="quantityConsumable"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.Uid">
+            <summary>
+            Unique identifier
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.TypeMachineNeeded">
+            <summary>
+            Represent the type of the machine
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.Duration">
+            <summary>
+            Indicate the time of the Operation
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.DurationMaxNextStep">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.NextStepReportable">
+            <summary>
+            Bool that indicate if the next step is reportable to next day
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.ConsumableUsed">
+            <summary>
+            List that contain the consumable needed
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.QuantityConsumable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Step.Name">
+            <summary>
+            Name of a step
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.Tank">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Tank.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Data.Tank.#ctor(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="idTank"></param>
+            <param name="typeTank"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Tank.IdTank">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Data.Tank.TypeTank">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Data.TypeMachine">
+            <summary>
+            This enumeration allows to list the machine types 
+            </summary>
+        </member>
+        <member name="F:PRD_Ordonnanceur.Data.TypeMachine.blender">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PRD_Ordonnanceur.Data.TypeMachine.Mixer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PRD_Ordonnanceur.Data.TypeMachine.disperser">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PRD_Ordonnanceur.Data.TypeMachine.cleaning">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PRD_Ordonnanceur.Form1.components">
+            <summary>
+             Required designer variable.
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Form1.Dispose(System.Boolean)">
+            <summary>
+             Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Form1.InitializeComponent">
+            <summary>
+             Required method for Designer support - do not modify
+             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Parser.CsvToData">
+            <summary>
+            This class transform the csv into parsed data
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataConsommable(System.String)">
+            <summary>
+            Parse Consumable data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataOperator(System.String)">
+            <summary>
+            Parse Operator data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataMachine(System.String)">
+            <summary>
+            Parse Machine data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataOF(System.String,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable})">
+            <summary>
+            Parse OF data
+            </summary>
+            <param name="rootPath"></param>
+            <param name="consumables"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.CsvToData.ParsingDataTank(System.String)">
+            <summary>
+            Parse Tank data
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Parser.DataParsed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataParsed.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataParsed.#ctor(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Machine},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Tank},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Operator},PRD_Ordonnanceur.Data.MatrixCleaning)">
+            <summary>
+            
+            </summary>
+            <param name="oFs"></param>
+            <param name="consummables"></param>
+            <param name="machine"></param>
+            <param name="tanks"></param>
+            <param name="operators"></param>
+            <param name="matrix_Cleaning"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Parser.DataParsed.OFs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Consummables">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Machine">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Tanks">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Operators">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Matrix_Cleaning">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Parser.DataToCsv">
+            <summary>
+            This class allows to transform the schedules of the algorithm in csv file
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.LaunchParsing(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            Launch all the parsing
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataOperator(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            Methods that transform the Operator in a csv file
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataMachine(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataConsumable(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataStep(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataTank(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="plannings"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Program.Main">
+            <summary>
+             The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.Solution.SolutionPlanning">
+            <summary>
+            Class that represents a planning for one day
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Solution.SolutionPlanning.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Solution.SolutionPlanning.#ctor(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}})">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="planningOF"></param>
+            <param name="planningCons"></param>
+            <param name="planningMachine"></param>
+            <param name="planningTank"></param>
+            <param name="planningOperator"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.Solution.SolutionPlanning.#ctor(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{System.Collections.Generic.List{System.Object}})">
+            <summary>
+            Confortable Constructor
+            </summary>
+            <param name="planningOF"></param>
+            <param name="planningCons"></param>
+            <param name="planningMachine"></param>
+            <param name="planningTank"></param>
+            <param name="planningOperator"></param>
+            <param name="planningStep"></param>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningOF">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningCons">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningMachine">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningTank">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningOperator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningStep">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:PRD_Ordonnanceur.View.Importation_Dossier">
+            <summary>
+            This class represents the view where you can use the algorithm
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.#ctor">
+            <summary>
+            Loading the view
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.button1_Click(System.Object,System.EventArgs)">
+            <summary>
+            Button1 listener
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.label1_Click(System.Object,System.EventArgs)">
+            <summary>
+            Label1 listener
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.Importation_Dossier_Load(System.Object,System.EventArgs)">
+            <summary>
+            
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.button2_Click(System.Object,System.EventArgs)">
+            <summary>
+            Button2 listener
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.dateTimePicker1_ValueChanged(System.Object,System.EventArgs)">
+            <summary>
+            DateTimePicker listening
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:PRD_Ordonnanceur.View.Importation_Dossier.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+    </members>
+</doc>
