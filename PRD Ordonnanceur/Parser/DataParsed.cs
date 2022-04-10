@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace PRD_Ordonnanceur.Parser
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DataParsed
     {
         private List<OF> oFs;
