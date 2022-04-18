@@ -81,8 +81,8 @@ namespace PRD_Ordonnanceur.Algorithms
                 operatorAvailableTank = new(RessourceAvailable.FindOperatorForTank(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime));
             }
 
-            List<Operator> operatorAvailableBeforeOp = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
-            List<Operator> operatorAvailableAfterOp = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
+            List<Operator> operatorAvailableBeforeOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
+            List<Operator> operatorAvailableAfterOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
             List<Machine> machineAvailable = new(RessourceAvailable.FindMachineForStep(SolutionPlanning.PlanningMachine, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
             
             bool consomableAvailable = RessourceAvailable.FindConsoForStep(SolutionPlanning.PlanningCons, DataParsed.Consummables, time, step.ConsumableUsed, step.QuantityConsumable);
@@ -106,7 +106,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             DateTime endOperation = endOpAfterTime.Add(machineAvailable[0].CleaningDuration);
  
-            List <Operator> operatorAvailableCleaning = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
+            List <Operator> operatorAvailableCleaning = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
 
             if(operatorAvailableCleaning.Count == 0)
                 return new();
@@ -404,12 +404,13 @@ namespace PRD_Ordonnanceur.Algorithms
 
                     // We add the time spent
                     if (!lastStep)
-                        currentTime = time;
+                        currentTime = timeNeeded;
                     else
                     {
                         Tank tank = (Tank)resultRessources[7];
                         TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(ofBefore, oF, tank);
                         currentTime = time;
+                        lastStep = false;
                     }
 
                     resultRessources.Clear();
