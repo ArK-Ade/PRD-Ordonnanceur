@@ -1,7 +1,7 @@
 ﻿namespace PRD_Ordonnanceur.Data
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class Tank
     {
@@ -9,14 +9,14 @@
         private int typeTank;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Tank()
         {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="idTank"></param>
         /// <param name="typeTank"></param>
@@ -27,12 +27,12 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int IdTank { get => idTank; set => idTank = value; }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int TypeTank { get => typeTank; set => typeTank = value; }
     }

@@ -8,7 +8,7 @@ namespace PRD_Ordonnanceur.Data
     public struct Duration
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="durationBeforeOp"></param>
         /// <param name="durationAfterOp"></param>

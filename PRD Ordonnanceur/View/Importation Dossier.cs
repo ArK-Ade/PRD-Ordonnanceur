@@ -14,11 +14,11 @@ namespace PRD_Ordonnanceur.View
     /// </summary>
     public partial class Importation_Dossier : Form
     {
-        string pathToCsvData = "";
-        string pathToResultFolder = "";
-        TimeSpan duration;
+        private string pathToCsvData = "";
+        private string pathToResultFolder = "";
+        private TimeSpan duration;
 
-        DateTime date = DateTime.MaxValue;
+        private DateTime date = DateTime.MaxValue;
 
         /// <summary>
         /// Loading the view
@@ -59,7 +59,7 @@ namespace PRD_Ordonnanceur.View
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -109,10 +109,10 @@ namespace PRD_Ordonnanceur.View
 
             label2.Text = String.Format("Elapsed Time is {0:00}:{1:00}:{2:00}.{3}",
                             duration.Hours, duration.Minutes, duration.Seconds, duration.Milliseconds);
-            
+
             AutoClosingMessageBox.Show("Nombre de contrainte non respectés : " + numberConstraint, "Alerte", 1000);
 
-            // Verifing the constraints 
+            // Verifing the constraints
             bool constraintOF = false;
             bool constrainOperator = false;
             bool constrainMachine = false;
@@ -152,7 +152,7 @@ namespace PRD_Ordonnanceur.View
             int mouth = dateTime.Month;
             int day = dateTime.Day;
 
-            date = new(year, mouth, day, 0, 0, 0);
+            date = new(year, mouth, day, 8, 0, 0);
 
             if (pathToCsvData != "" && pathToResultFolder != "" && date != DateTime.MaxValue)
                 button2.Visible = true;
@@ -175,7 +175,6 @@ namespace PRD_Ordonnanceur.View
 
         private void label2_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

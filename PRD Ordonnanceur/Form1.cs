@@ -4,8 +4,14 @@ using System.Windows.Forms;
 
 namespace PRD_Ordonnanceur
 {
+    /// <summary>
+    /// Main View of the application
+    /// </summary>
     public partial class Form1 : Form
     {
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public Form1()
         {
             InitializeComponent();

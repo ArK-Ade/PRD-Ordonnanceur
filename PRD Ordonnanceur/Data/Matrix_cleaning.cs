@@ -3,21 +3,21 @@
 namespace PRD_Ordonnanceur.Data
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class MatrixCleaning
     {
         private List<List<object>> matrix;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public MatrixCleaning()
         {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="matrix"></param>
         public MatrixCleaning(List<List<object>> matrix)
@@ -26,7 +26,7 @@ namespace PRD_Ordonnanceur.Data
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<List<object>> Matrix { get => matrix; set => matrix = value; }
     }

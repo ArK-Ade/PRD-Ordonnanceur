@@ -24,7 +24,7 @@ namespace PRD_Ordonnanceur.Checker
             DateTime jobEnd2;
 
             List<Object> list;
-            
+
             for (int i = 0; i < planning.PlanningOperator.Count; i++)
             {
                 list = planning.PlanningOperator[i];
@@ -32,7 +32,7 @@ namespace PRD_Ordonnanceur.Checker
                 Operator currentOperator = new();
                 jobBeginning1 = (DateTime)list[1];
                 jobEnd1 = (DateTime)list[2];
-                uint idOp1 = (uint)list[5];
+                int idOp1 = (int)list[5];
 
                 foreach (Operator operat in operators)
                 {
@@ -46,8 +46,8 @@ namespace PRD_Ordonnanceur.Checker
                 // Checking if the job is within the work schedule
                 if (jobBeginning1.Hour < currentOperator.StartWorkSchedule.Hour || (jobBeginning1.Hour == currentOperator.StartWorkSchedule.Hour && jobBeginning1.Minute < currentOperator.StartWorkSchedule.Minute))
                     return false;
-                    
-                if(jobEnd1.Hour > currentOperator.End.Hour || (jobEnd1.Hour == currentOperator.End.Hour && jobEnd1.Minute > currentOperator.End.Minute))
+
+                if (jobEnd1.Hour > currentOperator.End.Hour || (jobEnd1.Hour == currentOperator.End.Hour && jobEnd1.Minute > currentOperator.End.Minute))
                     return false;
 
                 int count = 0;
@@ -61,12 +61,12 @@ namespace PRD_Ordonnanceur.Checker
                     bool check = false;
 
                     // if it's the same operator and the jobs are different
-                    if (idOp1 == (uint)planningOperator[5] && i != count)
+                    if (idOp1 == (int)planningOperator[5] && i != count)
                     {
-                        if(jobBeginning1 < jobBeginning2 && jobEnd1 <= jobBeginning2)
+                        if (jobBeginning1 < jobBeginning2 && jobEnd1 <= jobBeginning2)
                             check = true;
 
-                        if(jobBeginning2 < jobBeginning1 && jobEnd2 <= jobEnd1)
+                        if (jobBeginning2 < jobBeginning1 && jobEnd2 <= jobEnd1)
                             check = true;
 
                         // if the jobs are sheduled at the same time
@@ -196,17 +196,17 @@ namespace PRD_Ordonnanceur.Checker
             double quantityConso;
             Consumable currentConso;
 
-            // Checking if the sum used for one consumable 
-            for (countConsomable = 0; countConsomable < consumables.Count ; countConsomable++)
+            // Checking if the sum used for one consumable
+            for (countConsomable = 0; countConsomable < consumables.Count; countConsomable++)
             {
                 currentConso = consumables[countConsomable];
                 quantityConso = currentConso.QuantityAvailable;
 
                 foreach (List<Object> listConsomable in planning.PlanningCons)
                 {
-                    if((int) listConsomable[2] == currentConso.Id)
+                    if ((int)listConsomable[2] == currentConso.Id)
                     {
-                        quantityConso -= (double) listConsomable[1];
+                        quantityConso -= (double)listConsomable[1];
                     }
                 }
 
@@ -217,7 +217,7 @@ namespace PRD_Ordonnanceur.Checker
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="planning"></param>
         /// <returns></returns>

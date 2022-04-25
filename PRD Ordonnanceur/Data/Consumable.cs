@@ -17,7 +17,7 @@ namespace PRD_Ordonnanceur.Data
         }
 
         /// <summary>
-        /// Confortable Constructor 
+        /// Confortable Constructor
         /// </summary>
         /// <param name="_id"></param>
         /// <param name="_quantityAvailable"></param>
@@ -64,7 +64,7 @@ namespace PRD_Ordonnanceur.Data
         public List<Object> Calendar { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public DateTime DelaySupply { get; set; }
 
