@@ -11,24 +11,28 @@ namespace PRD_Ordonnanceur.Algorithms
     public class RessourceAvailable
     {
         /// <summary>
-        /// Methods that search if an operator is available for a tank
+        /// 
         /// </summary>
-        /// <param name="planningOperator"></param>
+        /// <param name="plannings"></param>
         /// <param name="listOperator"></param>
-        /// <param name="timeNow"></param>
-        /// <returns>return a list of operator available</returns>
-        public static List<Operator> FindOperatorForTank(List<List<Object>> planningOperator, List<Operator> listOperator, DateTime timeNow)
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <returns></returns>
+        public static List<Operator> FindOperatorForTank(List<SolutionPlanning> plannings, List<Operator> listOperator, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
         {
-            if (planningOperator.Count == 0)
+            if (plannings.Count == 0)
                 return listOperator;
             else if (listOperator.Count == 0)
                 return new();
 
             int count = 0;
 
-            foreach (List<Object> list in planningOperator)
+            foreach(SolutionPlanning planning in plannings)
             {
-                count += list.Count;
+                foreach (List<Object> list in planning.PlanningOperator)
+                {
+                    count += list.Count;
+                }
             }
 
             if (count == 0)
@@ -38,26 +42,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Operator> listOperatorAvailable = listOperator;
 
-            foreach (List<Object> list in planningOperator)
-            {
-                if (list[2] is DateTime && timeNow <= (DateTime)list[2])
-                {
-                    int id = (int)list[0];
-                    int count2 = 0;
-                    int index = -1;
-                    foreach (Operator op in listOperatorAvailable)
-                    {
-                        if (op.Uid == id)
-                        {
-                            index = count2;
-                        }
-                        count2++;
-                    }
-                    listOperatorAvailable.RemoveAt(index);
-                }
-            }
-
-            return listOperatorAvailable;
+            return RessourceHasTime<Operator>(plannings, listOperatorAvailable, beginningTimeOfOperation, endTimeOfOperation);
         }
 
         /// <summary>
@@ -77,20 +62,18 @@ namespace PRD_Ordonnanceur.Algorithms
             if (endTimeOfOperation.DayOfWeek == DayOfWeek.Saturday || endTimeOfOperation.DayOfWeek == DayOfWeek.Sunday)
                 return new();
 
-            List<Operator> listOperatorAvailable = new(listOperator);
-
-            List<Operator> tempList = new(listOperatorAvailable);
+            List<Operator> listOperatorAvailable = new(listOperator), tempList = new(listOperator);
 
             // On retire tous les opérateurs indisponibles par leur compétences / emploi du temps 
-            foreach (Operator operat in listOperatorAvailable)
+            foreach (Operator currentOperator in listOperatorAvailable)
             {
                 bool hasSkill = false;
                 bool hasTime = false;
 
-                if ((operat.StartWorkSchedule.Minute <= beginningTimeOfOperation.Minute && operat.StartWorkSchedule.Hour <= beginningTimeOfOperation.Hour) || (operat.End.Minute <= endTimeOfOperation.Minute && operat.End.Hour <= endTimeOfOperation.Hour))
+                if ((currentOperator.StartWorkSchedule.Minute <= beginningTimeOfOperation.Minute && currentOperator.StartWorkSchedule.Hour <= beginningTimeOfOperation.Hour) || (currentOperator.End.Minute <= endTimeOfOperation.Minute && currentOperator.End.Hour <= endTimeOfOperation.Hour))
                     hasTime = true;
                 
-                foreach (TypeMachine skill in operat.SkillSet)
+                foreach (TypeMachine skill in currentOperator.SkillSet)
                 {
                     if (skill.CompareTo(Competence) == 0)
                         hasSkill = true;
@@ -98,7 +81,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 if (!hasSkill || !hasTime)
                 {
-                    tempList.Remove(operat);
+                    tempList.Remove(currentOperator);
                 }
             }
 
@@ -124,41 +107,7 @@ namespace PRD_Ordonnanceur.Algorithms
             if (listOperator.Count == 0)
                 throw new("Liste Operateur Vide");
 
-            tempList = new(listOperatorAvailable);
-            
-            foreach(SolutionPlanning planning in plannings)
-            {
-                foreach (Operator currentOperator in listOperatorAvailable)
-                {
-                    // Enlever les opérateurs indisponibles par leur heure de travail
-                    foreach (List<Object> list in planning.PlanningOperator)
-                    {
-                        // Trouvé l'id de l'operateur en fonction du planning operateur
-                        // si différent on passe 
-                        if ((uint)list[5] != currentOperator.Uid)
-                            continue;
-
-                        bool hasTime = false;
-
-                        if (beginningTimeOfOperation < (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[1])
-                            hasTime = true;
-
-                        if (beginningTimeOfOperation >= (DateTime)list[2] && endTimeOfOperation > (DateTime)list[2])
-                            hasTime = true;
-
-                        // On retire tous les opérateurs indisponibles sur le temps (planning)
-                        if (!hasTime)
-                        {
-                            // On supprime l'operateur de la liste available
-                            tempList.Remove(currentOperator);
-                        }
-                    }
-                }
-            }
-
-            listOperatorAvailable = new(tempList);
-
-            return listOperatorAvailable;
+            return RessourceHasTime<Operator>(plannings, listOperatorAvailable, beginningTimeOfOperation,endTimeOfOperation);
         }
 
         /// <summary>
@@ -170,62 +119,39 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="endTimeOfOperation"></param>
         /// <param name="typeMachine"></param>
         /// <returns></returns>
-        public static List<Machine> FindMachineForStep(List<List<Object>> planningMachine, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
+        public static List<Machine> FindMachineForStep(List<SolutionPlanning> plannings, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
         {
             int count = 0;
 
-            foreach (List<Object> list in planningMachine)
+            foreach(SolutionPlanning planning in plannings)
             {
-                count += list.Count;
+                foreach (List<Object> list in planning.PlanningMachine)
+                {
+                    count += list.Count;
+                }
             }
 
             List<Machine> listMachineAvailable = new(listMachine);
 
-        reset:
+            List<Machine> tempList = new(listMachine);
+
             // On retire toutes les machines indisponibles par leur compétences
             foreach (Machine operat in listMachineAvailable)
             {
                 if (operat.TypeMachine.CompareTo(typeMachine) != 0)
                 {
-                    listMachineAvailable.Remove(operat);
-                    goto reset;
+                    tempList.Remove(operat);
                 }
             }
+
+            listMachineAvailable = new(tempList);
 
             if (count == 0)
                 return listMachine;
             else if (listMachine.Count == 0)
                 return new();
 
-            foreach (List<Object> list in planningMachine)
-            {
-                bool hasTime = false;
-
-                if (beginningTimeOfOperation < (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[1])
-                    hasTime = true;
-
-                if (beginningTimeOfOperation >= (DateTime)list[2] && endTimeOfOperation > (DateTime)list[2])
-                    hasTime = true;
-
-                // On retire toutes les machines indisponibles sur le temps
-                if (!hasTime)
-                {
-                    // On supprime la machine de la liste available
-                    int id = (int)list[5];
-                    int count2 = 0;
-                    int index = -1;
-                    foreach (Machine op in listMachineAvailable)
-                    {
-                        if (op.Id == id)
-                        {
-                            index = count2;
-                        }
-                        count2++;
-                    }
-                    listMachineAvailable.RemoveAt(index);
-                }
-            }
-            return listMachineAvailable;
+            return RessourceHasTime<Machine>(plannings, listMachineAvailable, beginningTimeOfOperation, endTimeOfOperation);
         }
 
         /// <summary>
@@ -236,44 +162,26 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="beginningTimeOfOperation"></param>
         /// <param name="endTimeOfOperation"></param>
         /// <returns></returns>
-        public static List<Tank> FindTankForStep(List<List<Object>> planningTank, List<Tank> listTank, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
+        public static List<Tank> FindTankForStep(List<SolutionPlanning> plannings, List<Tank> listTank, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
         {
             int count = 0;
 
-            foreach (List<Object> list in planningTank)
+            foreach(SolutionPlanning planning in plannings)
             {
-                count += list.Count;
+                foreach (List<Object> list in planning.PlanningTank)
+                {
+                    count += list.Count;
+                }
             }
 
             if (count == 0)
                 return listTank;
-            else if (planningTank.Count == 0)
+            else if (plannings.Count == 0)
                 return new();
 
             List<Tank> listTankAvailable = new(listTank);
 
-        reset:
-
-            foreach (List<Object> list in planningTank)
-            {
-                bool hasTime = false;
-
-                if (beginningTimeOfOperation < (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[1])
-                    hasTime = true;
-
-                if (beginningTimeOfOperation >= (DateTime)list[2] && endTimeOfOperation > (DateTime)list[2])
-                    hasTime = true;
-
-                if (!hasTime)
-                {
-                    // On supprime l'operateur de la liste available
-                    foreach (Tank op in listTankAvailable)
-                    {
-                        listTankAvailable.Remove(op);
-                        goto reset;
-                    }
-                }
-            }
+            listTankAvailable = RessourceHasTime<Tank>(plannings, listTankAvailable, beginningTimeOfOperation, endTimeOfOperation);
 
             return listTankAvailable;
         }
@@ -349,6 +257,83 @@ namespace PRD_Ordonnanceur.Algorithms
         public static TimeSpan FindTimeCleaningTank(OF oFBefore, OF oFAfter, Tank tank)
         {
             return new(0, 10, 0);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="plannings"></param>
+        /// <param name="listRessourcesAvailable"></param>
+        /// <param name="beginningTimeOfOperation"></param>
+        /// <param name="endTimeOfOperation"></param>
+        /// <returns></returns>
+        public static List<T> RessourceHasTime<T>(List<SolutionPlanning> plannings, List<T> listRessourcesAvailable, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
+        {
+            List<T> tempList = new(listRessourcesAvailable);
+            List<List<Object>> solutionPlanning = new();
+
+            foreach (SolutionPlanning planning in plannings)
+            {
+                foreach (T currentOperator in listRessourcesAvailable)
+                {
+                    if (typeof(T) == typeof(Operator))
+                    {
+                        solutionPlanning = planning.PlanningOperator;
+
+                    }
+                    else if (typeof(T) == typeof(Machine))
+                    {
+                        solutionPlanning = planning.PlanningMachine;
+                    }
+                    else if (typeof(T) == typeof(Tank))
+                    {
+                        solutionPlanning = planning.PlanningTank;
+                    }
+
+                    foreach (List<Object> list in solutionPlanning)
+                    {
+                        int uidObject = -1;
+                        // Trouvé l'id de l'operateur en fonction du planning operateur
+                        // si différent on passe 
+                        if (typeof(T) == typeof(Operator))
+                        {
+                            Operator operatorgrrg = (Operator)(object)currentOperator;
+                            uidObject = (int)operatorgrrg.Uid;
+
+                        }
+                        else if (typeof(T) == typeof(Machine))
+                        {
+                            Machine machine = (Machine)(object)currentOperator;
+                            uidObject = machine.Id;
+                        }
+                        else if (typeof(T) == typeof(Tank))
+                        {
+                            Tank tank = (Tank)(object)currentOperator;
+                            uidObject = tank.IdTank;
+                        }
+
+                        if ((uint)list[5] != uidObject)
+                            continue;
+
+                        bool hasTime = false;
+
+                        if (beginningTimeOfOperation < (DateTime)list[1] && endTimeOfOperation <= (DateTime)list[1])
+                            hasTime = true;
+
+                        if (beginningTimeOfOperation >= (DateTime)list[2] && endTimeOfOperation > (DateTime)list[2])
+                            hasTime = true;
+
+                        // On retire tous les opérateurs indisponibles sur le temps (planning)
+                        if (!hasTime)
+                        {
+                            // On supprime l'operateur de la liste available
+                            tempList.Remove(currentOperator);
+                        }
+                    }
+                }
+            }
+            return tempList;
         }
     }
 }

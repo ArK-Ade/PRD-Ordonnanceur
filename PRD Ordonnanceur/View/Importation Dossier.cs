@@ -152,7 +152,7 @@ namespace PRD_Ordonnanceur.View
             int mouth = dateTime.Month;
             int day = dateTime.Day;
 
-            date = new(year, mouth, day, 0, 0, 0);
+            date = new(year, mouth, day, 8, 0, 0);
 
             if (pathToCsvData != "" && pathToResultFolder != "" && date != DateTime.MaxValue)
                 button2.Visible = true;

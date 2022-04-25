@@ -77,13 +77,13 @@ namespace PRD_Ordonnanceur.Algorithms
             // If it's the last step, we look for a tank
             if (lastStep)
             {
-                tankAvailable = new(RessourceAvailable.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
-                operatorAvailableTank = new(RessourceAvailable.FindOperatorForTank(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime));
+                tankAvailable = new(RessourceAvailable.FindTankForStep(Plannings, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
+                operatorAvailableTank = new(RessourceAvailable.FindOperatorForTank(Plannings, DataParsed.Operators, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
             }
 
             List<Operator> operatorAvailableBeforeOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
             List<Operator> operatorAvailableAfterOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
-            List<Machine> machineAvailable = new(RessourceAvailable.FindMachineForStep(SolutionPlanning.PlanningMachine, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
+            List<Machine> machineAvailable = new(RessourceAvailable.FindMachineForStep(Plannings, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
             
             bool consomableAvailable = RessourceAvailable.FindConsoForStep(SolutionPlanning.PlanningCons, DataParsed.Consummables, time, step.ConsumableUsed, step.QuantityConsumable);
 
@@ -397,7 +397,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     if (timeNeeded.Day > oF.LatestDate.Day || timeNeeded.Month > oF.LatestDate.Month)
                         nbConstrainNotRespected++;
 
-                    // Panifier l'étape courante a t'
+                    // Planification
                     currentPlanning = ScheduleStep(resultRessources, currentPlanning, currentTime, oF, step, lastStep, ofBefore);
 
                     Machine machine = (Machine)resultRessources[4];
