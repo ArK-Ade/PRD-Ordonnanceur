@@ -56,7 +56,7 @@ namespace PRD_Ordonnanceur.Data
         public int Uid { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public DateTime StartingHour { get; set; }
 

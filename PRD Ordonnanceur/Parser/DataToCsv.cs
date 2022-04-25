@@ -41,17 +41,17 @@ namespace PRD_Ordonnanceur.Parser
             csvWriter.WriteField("Job Start");
             csvWriter.WriteField("Job End");
             csvWriter.WriteField("Code");
-            
+
             csvWriter.NextRecord();
 
             foreach (var planning in plannings)
             {
                 foreach (var list in planning.PlanningOperator)
                 {
-                    switch((string)list[3])
+                    switch ((string)list[3])
                     {
                         case "OPNetMachine":
-                            csvWriter.WriteField<uint>((uint)list[5]);
+                            csvWriter.WriteField<int>((int)list[5]);
                             csvWriter.WriteField("/");
                             csvWriter.WriteField<DateTime>((DateTime)list[1]);
                             csvWriter.WriteField<DateTime>((DateTime)list[2]);
@@ -60,7 +60,7 @@ namespace PRD_Ordonnanceur.Parser
                             break;
 
                         case "OPNetTank":
-                            csvWriter.WriteField<uint>((uint)list[5]);
+                            csvWriter.WriteField<int>((int)list[5]);
                             csvWriter.WriteField("//");
                             csvWriter.WriteField<DateTime>((DateTime)list[1]);
                             csvWriter.WriteField<DateTime>((DateTime)list[2]);
@@ -68,8 +68,8 @@ namespace PRD_Ordonnanceur.Parser
                             csvWriter.NextRecord();
                             break;
 
-                        default :
-                            csvWriter.WriteField<uint>((uint)list[5]);
+                        default:
+                            csvWriter.WriteField<int>((int)list[5]);
                             csvWriter.WriteField<int>((int)list[4]);
                             csvWriter.WriteField<DateTime>((DateTime)list[1]);
                             csvWriter.WriteField<DateTime>((DateTime)list[2]);
@@ -84,7 +84,7 @@ namespace PRD_Ordonnanceur.Parser
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="plannings"></param>
         /// <param name="path"></param>
@@ -109,8 +109,8 @@ namespace PRD_Ordonnanceur.Parser
                     csvWriter.WriteField<DateTime>((DateTime)list[1]);
                     csvWriter.WriteField<DateTime>((DateTime)list[2]);
                     csvWriter.WriteField<int>((int)list[3]);
-                    csvWriter.WriteField<uint>((uint)list[4]);
-                    csvWriter.WriteField<uint>((uint)list[5]);
+                    csvWriter.WriteField<int>((int)list[4]);
+                    csvWriter.WriteField<int>((int)list[5]);
                     csvWriter.NextRecord();
                 }
             }
@@ -119,7 +119,7 @@ namespace PRD_Ordonnanceur.Parser
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="plannings"></param>
         /// <param name="path"></param>
@@ -146,7 +146,7 @@ namespace PRD_Ordonnanceur.Parser
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="plannings"></param>
         /// <param name="path"></param>
@@ -157,7 +157,7 @@ namespace PRD_Ordonnanceur.Parser
             using CsvWriter csvWriter = new(streamWriter, CultureInfo.CurrentCulture);
             csvWriter.WriteField("IDENTIFIANT");
             csvWriter.WriteField("DATE_DEBUT");
-            csvWriter.WriteField("DATE_FIN");  
+            csvWriter.WriteField("DATE_FIN");
 
             csvWriter.NextRecord();
 
@@ -176,7 +176,7 @@ namespace PRD_Ordonnanceur.Parser
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="plannings"></param>
         /// <param name="path"></param>
@@ -200,7 +200,7 @@ namespace PRD_Ordonnanceur.Parser
                     csvWriter.WriteField<DateTime>((DateTime)list[1]);
                     csvWriter.WriteField<DateTime>((DateTime)list[2]);
                     csvWriter.WriteField<int>((int)list[4]);
-                    csvWriter.WriteField<uint>((uint)list[5]);
+                    csvWriter.WriteField<int>((int)list[5]);
                     csvWriter.NextRecord();
                 }
             }

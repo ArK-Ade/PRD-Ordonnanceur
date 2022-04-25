@@ -11,7 +11,7 @@ namespace PRD_Ordonnanceur.Algorithms
     public class RessourceAvailable
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="plannings"></param>
         /// <param name="listOperator"></param>
@@ -27,7 +27,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             int count = 0;
 
-            foreach(SolutionPlanning planning in plannings)
+            foreach (SolutionPlanning planning in plannings)
             {
                 foreach (List<Object> list in planning.PlanningOperator)
                 {
@@ -46,7 +46,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="plannings"></param>
         /// <param name="listOperator"></param>
@@ -64,7 +64,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
             List<Operator> listOperatorAvailable = new(listOperator), tempList = new(listOperator);
 
-            // On retire tous les opérateurs indisponibles par leur compétences / emploi du temps 
+            // On retire tous les opérateurs indisponibles par leur compétences / emploi du temps
             foreach (Operator currentOperator in listOperatorAvailable)
             {
                 bool hasSkill = false;
@@ -72,7 +72,7 @@ namespace PRD_Ordonnanceur.Algorithms
 
                 if ((currentOperator.StartWorkSchedule.Minute <= beginningTimeOfOperation.Minute && currentOperator.StartWorkSchedule.Hour <= beginningTimeOfOperation.Hour) || (currentOperator.End.Minute <= endTimeOfOperation.Minute && currentOperator.End.Hour <= endTimeOfOperation.Hour))
                     hasTime = true;
-                
+
                 foreach (TypeMachine skill in currentOperator.SkillSet)
                 {
                     if (skill.CompareTo(Competence) == 0)
@@ -107,11 +107,11 @@ namespace PRD_Ordonnanceur.Algorithms
             if (listOperator.Count == 0)
                 throw new("Liste Operateur Vide");
 
-            return RessourceHasTime<Operator>(plannings, listOperatorAvailable, beginningTimeOfOperation,endTimeOfOperation);
+            return RessourceHasTime<Operator>(plannings, listOperatorAvailable, beginningTimeOfOperation, endTimeOfOperation);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="planningMachine"></param>
         /// <param name="listMachine"></param>
@@ -123,7 +123,7 @@ namespace PRD_Ordonnanceur.Algorithms
         {
             int count = 0;
 
-            foreach(SolutionPlanning planning in plannings)
+            foreach (SolutionPlanning planning in plannings)
             {
                 foreach (List<Object> list in planning.PlanningMachine)
                 {
@@ -155,7 +155,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="planningTank"></param>
         /// <param name="listTank"></param>
@@ -166,7 +166,7 @@ namespace PRD_Ordonnanceur.Algorithms
         {
             int count = 0;
 
-            foreach(SolutionPlanning planning in plannings)
+            foreach (SolutionPlanning planning in plannings)
             {
                 foreach (List<Object> list in planning.PlanningTank)
                 {
@@ -187,7 +187,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="planningConso"></param>
         /// <param name="listComsumable"></param>
@@ -248,7 +248,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="oFBefore"></param>
         /// <param name="oFAfter"></param>
@@ -260,7 +260,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="plannings"></param>
@@ -280,7 +280,6 @@ namespace PRD_Ordonnanceur.Algorithms
                     if (typeof(T) == typeof(Operator))
                     {
                         solutionPlanning = planning.PlanningOperator;
-
                     }
                     else if (typeof(T) == typeof(Machine))
                     {
@@ -295,12 +294,11 @@ namespace PRD_Ordonnanceur.Algorithms
                     {
                         int uidObject = -1;
                         // Trouvé l'id de l'operateur en fonction du planning operateur
-                        // si différent on passe 
+                        // si différent on passe
                         if (typeof(T) == typeof(Operator))
                         {
                             Operator operatorgrrg = (Operator)(object)currentOperator;
                             uidObject = (int)operatorgrrg.Uid;
-
                         }
                         else if (typeof(T) == typeof(Machine))
                         {
@@ -313,7 +311,7 @@ namespace PRD_Ordonnanceur.Algorithms
                             uidObject = tank.IdTank;
                         }
 
-                        if ((uint)list[5] != uidObject)
+                        if ((int)list[5] != uidObject)
                             continue;
 
                         bool hasTime = false;

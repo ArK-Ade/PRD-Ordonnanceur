@@ -33,7 +33,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, numberProduct1);
 
             List<OF> OFs1 = new();
-            OFs1.Add(OF1); 
+            OFs1.Add(OF1);
             OFs1.Add(OF2);
             OFs1.Add(OF3);
 
@@ -41,7 +41,6 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             OFs2.Add(OF2);
             OFs2.Add(OF1);
             OFs2.Add(OF3);
-
 
             List<OF> OFs3 = new();
             OFs3.Add(OF2);
@@ -96,7 +95,6 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             OFs2.Add(OF2);
             OFs2.Add(OF1);
             OFs2.Add(OF3);
-
 
             List<OF> OFs3 = new();
             OFs3.Add(OF2);

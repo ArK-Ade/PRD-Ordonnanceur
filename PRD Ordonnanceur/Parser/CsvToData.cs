@@ -76,7 +76,6 @@ namespace PRD_Ordonnanceur.Parser
 
             while (csv.Read())
             {
-
                 string list = csv.GetField<String>("Competences");
 
                 List<TypeMachine> typeMachines = new();
@@ -92,7 +91,7 @@ namespace PRD_Ordonnanceur.Parser
 
                 var record = new Operator
                 {
-                    Uid = csv.GetField<uint>("Id"),
+                    Uid = csv.GetField<int>("Id"),
                     SkillSet = new(typeMachines),
                     StartWorkSchedule = csv.GetField<DateTime>("Debut"),
                     End = csv.GetField<DateTime>("Fin"),
@@ -232,7 +231,6 @@ namespace PRD_Ordonnanceur.Parser
                         ConsumableUsed = new(),
                         QuantityConsumable = new(),
                         Duration = duration,
-
                     };
 
                     recordsStep.Add(recordStep);

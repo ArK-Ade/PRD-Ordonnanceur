@@ -53,7 +53,7 @@ namespace PRD_Ordonnanceur.Data
         public Duration Duration { get => duration; set => duration = value; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public DateTime DurationMaxNextStep { get; set; }
 
@@ -68,7 +68,7 @@ namespace PRD_Ordonnanceur.Data
         public List<Consumable> ConsumableUsed { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<double> QuantityConsumable { get; set; }
 

@@ -44,7 +44,7 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Algorithms.Heuristic">
             <summary>
-            Class that represents the heuristic that will classify the OFs 
+            Class that represents the heuristic that will classify the OFs
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.#ctor">
@@ -61,21 +61,19 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.SortCrescentDtiCrescentDli(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
             <summary>
-            Methods that sort a list of OF 
+            Methods that sort a list of OF
             </summary>
             <param name="OFs"></param>
             <returns></returns>
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.Sort_crescent_dti_decendant_dli(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
             <summary>
-            
             </summary>
             <param name="OFs"></param>
             <returns></returns>
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.Heuristic.Sort_random_5_crescent(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
             <summary>
-            
             </summary>
             <param name="OFs"></param>
             <returns></returns>
@@ -90,12 +88,10 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Algorithms.IHeuristic">
             <summary>
-            
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.IHeuristic.SortingAlgorithm(System.Int32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF})">
             <summary>
-            
             </summary>
             <param name="choice"></param>
             <param name="Ofs"></param>
@@ -185,7 +181,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindOperator(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Operator},System.DateTime,System.DateTime,PRD_Ordonnanceur.Data.TypeMachine)">
             <summary>
-            
             </summary>
             <param name="planningOperator"></param>
             <param name="listOperator"></param>
@@ -196,7 +191,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindMachineForStep(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Machine},System.DateTime,System.DateTime,PRD_Ordonnanceur.Data.TypeMachine)">
             <summary>
-            
             </summary>
             <param name="planningMachine"></param>
             <param name="listMachine"></param>
@@ -207,7 +201,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindTankForStep(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Tank},System.DateTime,System.DateTime)">
             <summary>
-            
             </summary>
             <param name="planningTank"></param>
             <param name="listTank"></param>
@@ -217,7 +210,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindConsoForStep(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable},System.DateTime,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable},System.Collections.Generic.List{System.Double})">
             <summary>
-            
             </summary>
             <param name="planningConso"></param>
             <param name="listComsumable"></param>
@@ -228,7 +220,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Algorithms.RessourceAvailable.FindTimeCleaningTank(PRD_Ordonnanceur.Data.OF,PRD_Ordonnanceur.Data.OF,PRD_Ordonnanceur.Data.Tank)">
             <summary>
-            
             </summary>
             <param name="oFBefore"></param>
             <param name="oFAfter"></param>
@@ -272,7 +263,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Checker.CheckerOF.CheckConstraintOF(PRD_Ordonnanceur.Solution.SolutionPlanning)">
             <summary>
-            
             </summary>
             <param name="planning"></param>
             <returns></returns>
@@ -317,7 +307,7 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Data.Consumable.#ctor(System.Int32,System.Double,System.Collections.Generic.List{System.Object},System.DateTime)">
             <summary>
-            Confortable Constructor 
+            Confortable Constructor
             </summary>
             <param name="_id"></param>
             <param name="_quantityAvailable"></param>
@@ -351,7 +341,6 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Consumable.DelaySupply">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Consumable.Name">
@@ -366,7 +355,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Data.Duration.#ctor(System.TimeSpan,System.TimeSpan,System.TimeSpan)">
             <summary>
-            
             </summary>
             <param name="durationBeforeOp"></param>
             <param name="durationAfterOp"></param>
@@ -428,23 +416,19 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Data.MatrixCleaning">
             <summary>
-            
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Data.MatrixCleaning.#ctor">
             <summary>
-            
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Data.MatrixCleaning.#ctor(System.Collections.Generic.List{System.Collections.Generic.List{System.Object}})">
             <summary>
-            
             </summary>
             <param name="matrix"></param>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.MatrixCleaning.Matrix">
             <summary>
-            
             </summary>
         </member>
         <member name="T:PRD_Ordonnanceur.Data.OF">
@@ -482,7 +466,6 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.OF.StartingHour">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.OF.NextStep">
@@ -512,7 +495,7 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Data.Operator">
             <summary>
-            This class represents the person who will work on the machines 
+            This class represents the person who will work on the machines
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Data.Operator.#ctor">
@@ -522,7 +505,7 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Data.Operator.#ctor(System.DateTime,System.DateTime,System.Collections.Generic.List{PRD_Ordonnanceur.Data.Calendar},System.UInt32,System.Collections.Generic.List{PRD_Ordonnanceur.Data.TypeMachine})">
             <summary>
-            Confortable Constructor 
+            Confortable Constructor
             </summary>
             <param name="beginning"></param>
             <param name="end"></param>
@@ -542,7 +525,6 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Operator.Calendar">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Operator.Uid">
@@ -605,7 +587,6 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Step.DurationMaxNextStep">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Step.NextStepReportable">
@@ -620,7 +601,6 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Step.QuantityConsumable">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Step.Name">
@@ -630,54 +610,45 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Data.Tank">
             <summary>
-            
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Data.Tank.#ctor">
             <summary>
-            
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Data.Tank.#ctor(System.Int32,System.Int32)">
             <summary>
-            
             </summary>
             <param name="idTank"></param>
             <param name="typeTank"></param>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Tank.IdTank">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Data.Tank.TypeTank">
             <summary>
-            
             </summary>
         </member>
         <member name="T:PRD_Ordonnanceur.Data.TypeMachine">
             <summary>
-            This enumeration allows to list the machine types 
+            This enumeration allows to list the machine types
             </summary>
         </member>
         <member name="F:PRD_Ordonnanceur.Data.TypeMachine.blender">
             <summary>
-            
             </summary>
         </member>
         <member name="F:PRD_Ordonnanceur.Data.TypeMachine.Mixer">
             <summary>
-            
             </summary>
         </member>
         <member name="F:PRD_Ordonnanceur.Data.TypeMachine.disperser">
             <summary>
-            
             </summary>
         </member>
         <member name="F:PRD_Ordonnanceur.Data.TypeMachine.cleaning">
             <summary>
-            
             </summary>
         </member>
         <member name="T:PRD_Ordonnanceur.Form1">
@@ -750,17 +721,14 @@
         </member>
         <member name="T:PRD_Ordonnanceur.Parser.DataParsed">
             <summary>
-            
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Parser.DataParsed.#ctor">
             <summary>
-            
             </summary>
         </member>
         <member name="M:PRD_Ordonnanceur.Parser.DataParsed.#ctor(System.Collections.Generic.List{PRD_Ordonnanceur.Data.OF},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Consumable},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Machine},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Tank},System.Collections.Generic.List{PRD_Ordonnanceur.Data.Operator},PRD_Ordonnanceur.Data.MatrixCleaning)">
             <summary>
-            
             </summary>
             <param name="oFs"></param>
             <param name="consummables"></param>
@@ -771,32 +739,26 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Parser.DataParsed.OFs">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Consummables">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Machine">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Tanks">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Operators">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Parser.DataParsed.Matrix_Cleaning">
             <summary>
-            
             </summary>
         </member>
         <member name="T:PRD_Ordonnanceur.Parser.DataToCsv">
@@ -820,28 +782,24 @@
         </member>
         <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataMachine(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
             <summary>
-            
             </summary>
             <param name="plannings"></param>
             <param name="path"></param>
         </member>
         <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataConsumable(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
             <summary>
-            
             </summary>
             <param name="plannings"></param>
             <param name="path"></param>
         </member>
         <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataStep(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
             <summary>
-            
             </summary>
             <param name="plannings"></param>
             <param name="path"></param>
         </member>
         <member name="M:PRD_Ordonnanceur.Parser.DataToCsv.ParsingDataTank(System.Collections.Generic.List{PRD_Ordonnanceur.Solution.SolutionPlanning},System.String)">
             <summary>
-            
             </summary>
             <param name="plannings"></param>
             <param name="path"></param>
@@ -884,32 +842,26 @@
         </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningOF">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningCons">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningMachine">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningTank">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningOperator">
             <summary>
-            
             </summary>
         </member>
         <member name="P:PRD_Ordonnanceur.Solution.SolutionPlanning.PlanningStep">
             <summary>
-            
             </summary>
         </member>
         <member name="T:PRD_Ordonnanceur.View.Importation_Dossier">
@@ -938,7 +890,6 @@
         </member>
         <member name="M:PRD_Ordonnanceur.View.Importation_Dossier.Importation_Dossier_Load(System.Object,System.EventArgs)">
             <summary>
-            
             </summary>
             <param name="sender"></param>
             <param name="e"></param>

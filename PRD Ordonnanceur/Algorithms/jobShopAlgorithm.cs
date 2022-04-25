@@ -84,11 +84,11 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Operator> operatorAvailableBeforeOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
             List<Operator> operatorAvailableAfterOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
             List<Machine> machineAvailable = new(RessourceAvailable.FindMachineForStep(Plannings, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
-            
+
             bool consomableAvailable = RessourceAvailable.FindConsoForStep(SolutionPlanning.PlanningCons, DataParsed.Consummables, time, step.ConsumableUsed, step.QuantityConsumable);
 
             // If one of the ressources are unavailable
-            if(lastStep && (operatorAvailableTank.Count == 0 || tankAvailable.Count == 0))
+            if (lastStep && (operatorAvailableTank.Count == 0 || tankAvailable.Count == 0))
                 return new();
 
             if (operatorAvailableBeforeOp.Count == 0 ||
@@ -105,10 +105,10 @@ namespace PRD_Ordonnanceur.Algorithms
             }
 
             DateTime endOperation = endOpAfterTime.Add(machineAvailable[0].CleaningDuration);
- 
-            List <Operator> operatorAvailableCleaning = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
 
-            if(operatorAvailableCleaning.Count == 0)
+            List<Operator> operatorAvailableCleaning = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
+
+            if (operatorAvailableCleaning.Count == 0)
                 return new();
 
             List<Object> listRessourcesAvailable = new();
@@ -173,9 +173,8 @@ namespace PRD_Ordonnanceur.Algorithms
             DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
             DateTime endCleaning = endOpAfterTime.Add(machine.CleaningDuration);
 
-
             Operator operatorTank = null;
-            
+
             // Scheduling Operator before operation
             List<Object> listOpBefore = new();
             listOpBefore.Add(dayTime);
@@ -289,7 +288,7 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Object> listStep = new();
             listStep.Add(step.Uid);
             listStep.Add(beginningOpBeforeTime);
-            if(!lastStep)
+            if (!lastStep)
                 listStep.Add(endOpAfterTime);
             else
             {
@@ -347,7 +346,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 foreach (Step step in oF.StepSequence)
                 {
                     // if OF already begun
-                    if(oF.NextStep >= 1 && oF.StepSequence[countStep] == oF.StepSequence[oF.NextStep])      
+                    if (oF.NextStep >= 1 && oF.StepSequence[countStep] == oF.StepSequence[oF.NextStep])
                         OFinProgress = false;
 
                     // Etape déja faite, on passe à l'étape suivante
@@ -359,7 +358,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         lastStep = true;
 
                     // Looking if the ressources are available
-                    while(resultRessources.Count == 0)
+                    while (resultRessources.Count == 0)
                     {
                         resultRessources = new(SearchRessources(currentTime, step, lastStep));
 
