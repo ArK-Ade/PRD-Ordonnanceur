@@ -88,11 +88,11 @@ namespace PRD_Ordonnanceur.View
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(283, 206);
+            this.label2.Location = new System.Drawing.Point(240, 204);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 15);
+            this.label2.Size = new System.Drawing.Size(106, 15);
             this.label2.TabIndex = 5;
-            this.label2.Text = "label2";
+            this.label2.Text = "Temps d\'execution";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // Importation_Dossier

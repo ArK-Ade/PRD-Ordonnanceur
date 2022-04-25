@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace PRD_Ordonnanceur.Algorithms
 {
     /// <summary>
-    /// Class that represents the heuristic that will classify the OFs 
+    /// Class that represents the heuristic that will classify the OFs
     /// </summary>
     public class Heuristic : IHeuristic
     {
@@ -42,7 +42,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// Methods that sort a list of OF 
+        /// Methods that sort a list of OF
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>
@@ -66,7 +66,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>
@@ -75,9 +75,8 @@ namespace PRD_Ordonnanceur.Algorithms
             return OFs;
         }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>

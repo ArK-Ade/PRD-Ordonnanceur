@@ -12,11 +12,11 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
     [TestFixture()]
     public class AvailableTests
     {
+        private readonly List<SolutionPlanning> solutionPlannings = new();
         private readonly SolutionPlanning plannings = new();
-
         private Operator operator1;
         private readonly List<Operator> operators = new();
-        private readonly uint idOperator1 = 1;
+        private readonly int idOperator1 = 1;
         private readonly List<TypeMachine> listSkillOperator1 = new();
         private readonly DateTime jobBeginningTime1 = new(2020, 01, 01, 07, 00, 00);
         private readonly DateTime jobEndTime1 = new(2020, 01, 01, 18, 00, 00);
@@ -27,6 +27,20 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         private TimeSpan durationCleaning1;
         private readonly int idOF1 = 1;
 
+        [SetUp]
+        public void SetupBeforeEachTest()
+        {
+        }
+
+        [TearDown]
+        public void TearDownAfterEachTest()
+        {
+            solutionPlannings.Clear();
+            operators.Clear();
+            listSkillOperator1.Clear();
+            machines.Clear();
+        }
+
         [Test()]
         public void FindOperator()
         {
@@ -36,7 +50,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             listSkillOperator1.Add(competence);
             operator1 = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
             operators.Add(operator1);
-            List<Operator> operatorsResult = RessourceAvailable.FindOperator(plannings.PlanningOperator, operators, startJob, startJob.AddMinutes(10.0), competence);
+            List<Operator> operatorsResult = RessourceAvailable.FindOperator(solutionPlannings, operators, startJob, startJob.AddMinutes(10.0), competence);
             operatorsExpected.Add(operator1);
             Assert.AreEqual(operatorsExpected, operatorsResult);
             Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count);
@@ -65,13 +79,11 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             planningDay1.Add(idOperator1);
 
             plannings.PlanningOperator.Add(planningDay1);
+            solutionPlannings.Add(plannings);
 
-            List<Operator> operatorsResult = RessourceAvailable.FindOperator(plannings.PlanningOperator, operators, jobDoneBeginning, jobDoneEnd, competence);
+            List<Operator> operatorsResult = RessourceAvailable.FindOperator(solutionPlannings, operators, jobDoneBeginning, jobDoneEnd, competence);
             Assert.AreEqual(operatorsExpected, operatorsResult);
             Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count);
-
-            operators.Clear();
-            plannings.PlanningOperator.Clear();
         }
 
         [Test()]
@@ -80,7 +92,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             durationCleaning1 = new(0, 10, 0);
             machine1 = new(typeMachine1, null, durationCleaning1, idMachine1);
 
-            List<Machine> machineResult = RessourceAvailable.FindMachineForStep(plannings.PlanningMachine, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
+            List<Machine> machineResult = RessourceAvailable.FindMachineForStep(solutionPlannings, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
             Assert.IsEmpty(machineResult);
         }
 
@@ -90,14 +102,12 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             machine1 = new(typeMachine1, null, durationCleaning1, idMachine1);
             machines.Add(machine1);
 
-            List<Machine> machineResult = RessourceAvailable.FindMachineForStep(plannings.PlanningMachine, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
+            List<Machine> machineResult = RessourceAvailable.FindMachineForStep(solutionPlannings, machines, jobBeginningTime1, jobEndTime1, typeMachine1);
             List<Machine> machineExpected = new();
             machineExpected.Add(machine1);
 
             Assert.AreEqual(machineExpected, machineResult);
             Assert.AreEqual(machineExpected.Count, machineResult.Count);
-
-            machines.Clear();
         }
 
         [Test()]
@@ -110,7 +120,6 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             DateTime jobtoDoEnd = new(2020, 01, 01, 7, 10, 0);
             DateTime dateTime = new(2020, 01, 01);
 
-
             planningDay1.Add(dateTime);
             planningDay1.Add(jobtoDoBeginning);
             planningDay1.Add(jobtoDoEnd);
@@ -119,13 +128,11 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             planningDay1.Add(idMachine1);
 
             plannings.PlanningMachine.Add(planningDay1);
+            solutionPlannings.Add(plannings);
             machines.Add(machine1);
 
-            List<Machine> listMachineResult = RessourceAvailable.FindMachineForStep(plannings.PlanningMachine, machines, jobtoDoBeginning, jobtoDoEnd, typeMachine1);
+            List<Machine> listMachineResult = RessourceAvailable.FindMachineForStep(solutionPlannings, machines, jobtoDoBeginning, jobtoDoEnd, typeMachine1);
             Assert.IsEmpty(listMachineResult);
-
-            plannings.PlanningMachine.Clear();
-            machines.Clear();
         }
 
         [Test()]

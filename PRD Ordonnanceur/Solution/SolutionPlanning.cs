@@ -64,33 +64,43 @@ namespace PRD_Ordonnanceur.Solution
             this.PlanningStep = planningStep;
         }
 
+        public SolutionPlanning(SolutionPlanning solutionPlanning)
+        {
+            this.planningOF = new(solutionPlanning.planningOF);
+            this.planningCons = new(solutionPlanning.planningCons);
+            this.planningMachine = new(solutionPlanning.planningMachine);
+            this.planningTank = new(solutionPlanning.planningTank);
+            this.planningOperator = new(solutionPlanning.planningOperator);
+            this.PlanningStep = new(solutionPlanning.planningStep);
+        }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<List<Object>> PlanningOF { get => planningOF; set => planningOF = value; }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<List<Object>> PlanningCons { get => planningCons; set => planningCons = value; }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<List<Object>> PlanningMachine { get => planningMachine; set => planningMachine = value; }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<List<Object>> PlanningTank { get => planningTank; set => planningTank = value; }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<List<Object>> PlanningOperator { get => planningOperator; set => planningOperator = value; }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<List<object>> PlanningStep { get => planningStep; set => planningStep = value; }
     }

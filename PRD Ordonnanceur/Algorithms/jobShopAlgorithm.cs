@@ -77,18 +77,18 @@ namespace PRD_Ordonnanceur.Algorithms
             // If it's the last step, we look for a tank
             if (lastStep)
             {
-                tankAvailable = new(RessourceAvailable.FindTankForStep(SolutionPlanning.PlanningTank, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
-                operatorAvailableTank = new(RessourceAvailable.FindOperatorForTank(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime));
+                tankAvailable = new(RessourceAvailable.FindTankForStep(Plannings, DataParsed.Tanks, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
+                operatorAvailableTank = new(RessourceAvailable.FindOperatorForTank(Plannings, DataParsed.Operators, endOpAfterTime, endOpAfterTime.Add(new(0, 10, 0))));
             }
 
-            List<Operator> operatorAvailableBeforeOp = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
-            List<Operator> operatorAvailableAfterOp = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
-            List<Machine> machineAvailable = new(RessourceAvailable.FindMachineForStep(SolutionPlanning.PlanningMachine, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
-            
+            List<Operator> operatorAvailableBeforeOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpBeforeTime, endOpBeforeTime, step.TypeMachineNeeded));
+            List<Operator> operatorAvailableAfterOp = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, beginningOpAfterTime, endOpAfterTime, step.TypeMachineNeeded));
+            List<Machine> machineAvailable = new(RessourceAvailable.FindMachineForStep(Plannings, DataParsed.Machine, beginningOpBeforeTime, endOpAfterTime, step.TypeMachineNeeded));
+
             bool consomableAvailable = RessourceAvailable.FindConsoForStep(SolutionPlanning.PlanningCons, DataParsed.Consummables, time, step.ConsumableUsed, step.QuantityConsumable);
 
             // If one of the ressources are unavailable
-            if(lastStep && (operatorAvailableTank.Count == 0 || tankAvailable.Count == 0))
+            if (lastStep && (operatorAvailableTank.Count == 0 || tankAvailable.Count == 0))
                 return new();
 
             if (operatorAvailableBeforeOp.Count == 0 ||
@@ -105,10 +105,10 @@ namespace PRD_Ordonnanceur.Algorithms
             }
 
             DateTime endOperation = endOpAfterTime.Add(machineAvailable[0].CleaningDuration);
- 
-            List <Operator> operatorAvailableCleaning = new(RessourceAvailable.FindOperator(SolutionPlanning.PlanningOperator, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
 
-            if(operatorAvailableCleaning.Count == 0)
+            List<Operator> operatorAvailableCleaning = new(RessourceAvailable.FindOperator(Plannings, DataParsed.Operators, endOpAfterTime, endOperation, TypeMachine.cleaning));
+
+            if (operatorAvailableCleaning.Count == 0)
                 return new();
 
             List<Object> listRessourcesAvailable = new();
@@ -173,9 +173,8 @@ namespace PRD_Ordonnanceur.Algorithms
             DateTime endOpAfterTime = beginningOpAfterTime.Add(step.Duration.DurationAfterOp);
             DateTime endCleaning = endOpAfterTime.Add(machine.CleaningDuration);
 
-
             Operator operatorTank = null;
-            
+
             // Scheduling Operator before operation
             List<Object> listOpBefore = new();
             listOpBefore.Add(dayTime);
@@ -289,7 +288,7 @@ namespace PRD_Ordonnanceur.Algorithms
             List<Object> listStep = new();
             listStep.Add(step.Uid);
             listStep.Add(beginningOpBeforeTime);
-            if(!lastStep)
+            if (!lastStep)
                 listStep.Add(endOpAfterTime);
             else
             {
@@ -299,7 +298,7 @@ namespace PRD_Ordonnanceur.Algorithms
             }
             solutionPlanning.PlanningStep.Add(new(listStep));
 
-            return solutionPlanning;
+            return new(solutionPlanning);
         }
 
         /// <summary>
@@ -324,7 +323,9 @@ namespace PRD_Ordonnanceur.Algorithms
             foreach (OF oF in DataParsed.OFs)
             {
                 if (countOF >= 0)
+                {
                     ofBefore = DataParsed.OFs[countOF];
+                }
 
                 // if the OF has already begun
                 if (oF.StartingHour == DateTime.MinValue)
@@ -347,24 +348,32 @@ namespace PRD_Ordonnanceur.Algorithms
                 foreach (Step step in oF.StepSequence)
                 {
                     // if OF already begun
-                    if(oF.NextStep >= 1 && oF.StepSequence[countStep] == oF.StepSequence[oF.NextStep])      
+                    if (oF.NextStep >= 1 && oF.StepSequence[countStep] == oF.StepSequence[oF.NextStep])
+                    {
                         OFinProgress = false;
+                    }
 
                     // Etape déja faite, on passe à l'étape suivante
                     if (OFinProgress)
+                    {
                         continue;
+                    }
 
                     // On regarde s'il s'agit de la derniere etape
                     if (countStep + 1 == oF.StepSequence.Count)
+                    {
                         lastStep = true;
+                    }
 
                     // Looking if the ressources are available
-                    while(resultRessources.Count == 0)
+                    while (resultRessources.Count == 0)
                     {
                         resultRessources = new(SearchRessources(currentTime, step, lastStep));
 
                         if (resultRessources.Count == 0)
+                        {
                             currentTime = currentTime.AddMinutes(5);
+                        }
                     }
 
                     DateTime timeNeeded = (DateTime)resultRessources[0];
@@ -373,7 +382,9 @@ namespace PRD_Ordonnanceur.Algorithms
                     if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && step.NextStepReportable)
                     {
                         while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
+                        {
                             currentTime = currentTime.AddMinutes(5);
+                        }
 
                         resultRessources = SearchRessources(currentTime, step, lastStep);
                     }
@@ -381,35 +392,49 @@ namespace PRD_Ordonnanceur.Algorithms
                     // We arrive at the end of the day and the stage is not postponable, we change day and we cancel the reservation of the OF
                     if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && !step.NextStepReportable)
                     {
+                        currentPlanning.PlanningOperator.Clear();
+                        currentPlanning.PlanningMachine.Clear();
+                        currentPlanning.PlanningCons.Clear();
+                        currentPlanning.PlanningOF.Clear();
+                        currentPlanning.PlanningTank.Clear();
+                        currentPlanning.PlanningStep.Clear();
                         currentPlanning = new();
 
                         // We move to the next day at the start time of an employee
                         while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
+                        {
                             currentTime = currentTime.AddMinutes(5);
+                        }
 
                         resultRessources.Clear();
+                        //nbConstrainNotRespected -= countStep;
+                        lastStep = false;
 
                         goto restart;
                     }
 
                     // Si on respecte pas la contrainte de jour au plus tard, on incrémente nbCteMaxViole
                     if (timeNeeded.Day > oF.LatestDate.Day || timeNeeded.Month > oF.LatestDate.Month)
+                    {
                         nbConstrainNotRespected++;
+                    }
 
-                    // Panifier l'étape courante a t'
-                    currentPlanning = ScheduleStep(resultRessources, currentPlanning, currentTime, oF, step, lastStep, ofBefore);
+                    // Planification
+                    currentPlanning = ScheduleStep(resultRessources, new(currentPlanning), currentTime, oF, step, lastStep, ofBefore);
 
                     Machine machine = (Machine)resultRessources[4];
 
-
                     // We add the time spent
                     if (!lastStep)
-                        currentTime = currentTime.Add(step.Duration.DurationOp + step.Duration.DurationBeforeOp + step.Duration.DurationAfterOp + machine.CleaningDuration);
+                    {
+                        currentTime = timeNeeded;
+                    }
                     else
                     {
                         Tank tank = (Tank)resultRessources[7];
                         TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(ofBefore, oF, tank);
-                        currentTime = timeNeeded;
+                        currentTime = time;
+                        lastStep = false;
                     }
 
                     resultRessources.Clear();
@@ -419,8 +444,13 @@ namespace PRD_Ordonnanceur.Algorithms
                 countOF++;
 
                 // Addition of the OF in the planning
-                Plannings.Add(currentPlanning);
-                currentPlanning = new();
+                Plannings.Add(new(currentPlanning));
+                currentPlanning.PlanningOperator.Clear();
+                currentPlanning.PlanningMachine.Clear();
+                currentPlanning.PlanningCons.Clear();
+                currentPlanning.PlanningOF.Clear();
+                currentPlanning.PlanningTank.Clear();
+                currentPlanning.PlanningStep.Clear();
             }
 
             return nbConstrainNotRespected;

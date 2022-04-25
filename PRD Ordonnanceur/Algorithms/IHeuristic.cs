@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace PRD_Ordonnanceur.Algorithms
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     internal interface IHeuristic
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="choice"></param>
         /// <param name="Ofs"></param>

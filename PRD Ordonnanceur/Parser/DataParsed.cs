@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace PRD_Ordonnanceur.Parser
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class DataParsed
     {
@@ -16,7 +16,7 @@ namespace PRD_Ordonnanceur.Parser
         private MatrixCleaning matrix_Cleaning;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public DataParsed()
         {
@@ -24,7 +24,7 @@ namespace PRD_Ordonnanceur.Parser
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="oFs"></param>
         /// <param name="consummables"></param>
@@ -43,32 +43,32 @@ namespace PRD_Ordonnanceur.Parser
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<OF> OFs { get => oFs; set => oFs = value; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<Consumable> Consummables { get => consummables; set => consummables = value; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<Machine> Machine { get => machine; set => machine = value; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<Tank> Tanks { get => tanks; set => tanks = value; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public List<Operator> Operators { get => operators; set => operators = value; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public MatrixCleaning Matrix_Cleaning { get => matrix_Cleaning; set => matrix_Cleaning = value; }
     }
