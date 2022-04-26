@@ -413,7 +413,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         goto restart;
                     }
 
-                    // Si on respecte pas la contrainte de jour au plus tard, on incrémente nbCteMaxViole
+                    // If the day constraint is not respected at the latest, nbCteMaxViole is incremented
                     if (timeNeeded.Day > oF.LatestDate.Day || timeNeeded.Month > oF.LatestDate.Month)
                     {
                         nbConstrainNotRespected++;
