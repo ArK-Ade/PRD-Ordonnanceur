@@ -125,6 +125,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             planningDay1.Add(jobtoDoEnd);
             planningDay1.Add(idOF1);
             planningDay1.Add(idOperator1);
+            planningDay1.Add(idOperator1);
             planningDay1.Add(idMachine1);
 
             plannings.PlanningMachine.Add(planningDay1);

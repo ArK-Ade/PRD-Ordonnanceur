@@ -322,6 +322,8 @@ namespace PRD_Ordonnanceur.Algorithms
 
             foreach (OF oF in DataParsed.OFs)
             {
+                bool rescheduling = true;
+
                 if (countOF >= 0)
                 {
                     ofBefore = DataParsed.OFs[countOF];
@@ -344,107 +346,119 @@ namespace PRD_Ordonnanceur.Algorithms
                     currentTime = currentTime.AddMinutes(5);
                 }
 
-            // TODO Supprimer le restart apporte trop de bug
-            restart:
-                foreach (Step step in oF.StepSequence)
+                if (oF.Uid == 1021615)
                 {
-                    // if OF already begun
-                    if (oF.NextStep >= 1 && oF.StepSequence[countStep] == oF.StepSequence[oF.NextStep])
-                    {
-                        OFinProgress = false;
-                    }
+                    int hello = 123;
+                }
 
-                    // Etape déja faite, on passe à l'étape suivante
-                    if (OFinProgress)
-                    {
-                        continue;
-                    }
+                while (rescheduling)
+                {
+                    // reset
+                    currentPlanning = new();
+                    rescheduling = false;
 
-                    // On regarde s'il s'agit de la derniere etape
-                    if (countStep + 1 == oF.StepSequence.Count)
+                    foreach (Step step in oF.StepSequence)
                     {
-                        lastStep = true;
-                    }
-                    else
-                    {
-                        lastStep = false;
-                    }
-
-                    // Looking if the ressources are available
-                    while (resultRessources.Count == 0)
-                    {
-                        resultRessources = new(SearchRessources(currentTime, step, lastStep));
-
-                        if (resultRessources.Count == 0)
+                        // if OF already begun
+                        if (oF.NextStep >= 1 && oF.StepSequence[countStep] == oF.StepSequence[oF.NextStep])
                         {
-                            currentTime = currentTime.AddMinutes(5);
-                        }
-                    }
-
-                    DateTime timeNeeded = (DateTime)resultRessources[0];
-
-                    // We arrive at the end of the day and the stage is postable
-                    if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && step.NextStepReportable)
-                    {
-                        while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
-                        {
-                            currentTime = currentTime.AddMinutes(5);
+                            OFinProgress = false;
                         }
 
-                        resultRessources = SearchRessources(currentTime, step, lastStep);
-                    }
-
-                    // We arrive at the end of the day and the stage is not postponable, we change day and we cancel the reservation of the OF
-                    if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && !step.NextStepReportable)
-                    {
-                        currentPlanning.PlanningOperator.Clear();
-                        currentPlanning.PlanningMachine.Clear();
-                        currentPlanning.PlanningCons.Clear();
-                        currentPlanning.PlanningOF.Clear();
-                        currentPlanning.PlanningTank.Clear();
-                        currentPlanning.PlanningStep.Clear();
-                        currentPlanning = new();
-
-                        // We move to the next day at the start time of an employee
-                        while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
+                        // Etape déja faite, on passe à l'étape suivante
+                        if (OFinProgress)
                         {
-                            currentTime = currentTime.AddMinutes(5);
+                            continue;
+                        }
+
+                        // On regarde s'il s'agit de la derniere etape
+                        if (countStep + 1 == oF.StepSequence.Count)
+                        {
+                            lastStep = true;
+                        }
+                        else
+                        {
+                            lastStep = false;
+                        }
+
+                        // Looking if the ressources are available
+                        while (resultRessources.Count == 0)
+                        {
+                            resultRessources = new(SearchRessources(currentTime, step, lastStep));
+
+                            if (resultRessources.Count == 0)
+                            {
+                                currentTime = currentTime.AddMinutes(5);
+                            }
+                        }
+
+                        DateTime timeNeeded = (DateTime)resultRessources[0];
+
+                        // We arrive at the end of the day and the stage is postable
+                        if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && step.NextStepReportable)
+                        {
+                            while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
+                            {
+                                currentTime = currentTime.AddMinutes(5);
+                            }
+
+                            resultRessources = SearchRessources(currentTime, step, lastStep);
+                        }
+
+                        // We arrive at the end of the day and the stage is not postponable, we change day and we cancel the reservation of the OF
+                        if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && !step.NextStepReportable)
+                        {
+                            currentPlanning.PlanningOperator.Clear();
+                            currentPlanning.PlanningMachine.Clear();
+                            currentPlanning.PlanningCons.Clear();
+                            currentPlanning.PlanningOF.Clear();
+                            currentPlanning.PlanningTank.Clear();
+                            currentPlanning.PlanningStep.Clear();
+                            currentPlanning = new();
+
+                            // We move to the next day at the start time of an employee
+                            while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
+                            {
+                                currentTime = currentTime.AddMinutes(5);
+                            }
+
+                            resultRessources.Clear();
+                            //nbConstrainNotRespected -= countStep;
+                            lastStep = false;
+                            rescheduling = true;
+                            countStep = 0;
+                            break;
+                        }
+
+                        // If the day constraint is not respected at the latest, nbCteMaxViole is incremented
+                        if (timeNeeded.Day > oF.LatestDate.Day || timeNeeded.Month > oF.LatestDate.Month)
+                        {
+                            nbConstrainNotRespected++;
+                        }
+
+                        // Planification
+                        currentPlanning = ScheduleStep(resultRessources, new(currentPlanning), currentTime, oF, step, lastStep, ofBefore);
+
+                        Machine machine = (Machine)resultRessources[4];
+
+                        // We add the time spent
+                        if (!lastStep)
+                        {
+                            currentTime = timeNeeded;
+                        }
+                        else
+                        {
+                            Tank tank = (Tank)resultRessources[7];
+                            TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(ofBefore, oF, tank);
+                            currentTime = time;
+                            lastStep = false;
                         }
 
                         resultRessources.Clear();
-                        //nbConstrainNotRespected -= countStep;
-                        lastStep = false;
-
-                        goto restart;
+                        countStep++;
                     }
-
-                    // If the day constraint is not respected at the latest, nbCteMaxViole is incremented
-                    if (timeNeeded.Day > oF.LatestDate.Day || timeNeeded.Month > oF.LatestDate.Month)
-                    {
-                        nbConstrainNotRespected++;
-                    }
-
-                    // Planification
-                    currentPlanning = ScheduleStep(resultRessources, new(currentPlanning), currentTime, oF, step, lastStep, ofBefore);
-
-                    Machine machine = (Machine)resultRessources[4];
-
-                    // We add the time spent
-                    if (!lastStep)
-                    {
-                        currentTime = timeNeeded;
-                    }
-                    else
-                    {
-                        Tank tank = (Tank)resultRessources[7];
-                        TimeSpan timeSpan = RessourceAvailable.FindTimeCleaningTank(ofBefore, oF, tank);
-                        currentTime = time;
-                        lastStep = false;
-                    }
-
-                    resultRessources.Clear();
-                    countStep++;
                 }
+
                 countStep = 0;
                 countOF++;
 
