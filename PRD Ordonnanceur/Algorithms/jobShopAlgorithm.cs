@@ -344,6 +344,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     currentTime = currentTime.AddMinutes(5);
                 }
 
+            // TODO Supprimer le restart apporte trop de bug
             restart:
                 foreach (Step step in oF.StepSequence)
                 {
@@ -363,6 +364,10 @@ namespace PRD_Ordonnanceur.Algorithms
                     if (countStep + 1 == oF.StepSequence.Count)
                     {
                         lastStep = true;
+                    }
+                    else
+                    {
+                        lastStep = false;
                     }
 
                     // Looking if the ressources are available

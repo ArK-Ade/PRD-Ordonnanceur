@@ -20,28 +20,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <returns></returns>
         public static List<Operator> FindOperatorForTank(List<SolutionPlanning> plannings, List<Operator> listOperator, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
         {
-            if (plannings.Count == 0)
-                return listOperator;
-            else if (listOperator.Count == 0)
-                return new();
-
-            int count = 0;
-
-            foreach (SolutionPlanning planning in plannings)
-            {
-                foreach (List<Object> list in planning.PlanningOperator)
-                {
-                    count += list.Count;
-                }
-            }
-
-            if (count == 0)
-                return listOperator;
-            else if (listOperator.Count == 0)
-                return new();
-
             List<Operator> listOperatorAvailable = listOperator;
-
             return RessourceHasTime<Operator>(plannings, listOperatorAvailable, beginningTimeOfOperation, endTimeOfOperation);
         }
 
@@ -87,26 +66,6 @@ namespace PRD_Ordonnanceur.Algorithms
 
             listOperatorAvailable = new(tempList);
 
-            int count = 0;
-
-            // verification si plannings null
-            foreach (SolutionPlanning planning in plannings)
-            {
-                foreach (List<Object> list in planning.PlanningOperator)
-                {
-                    count += list.Count;
-                }
-            }
-
-            if (listOperatorAvailable.Count == 0)
-                return new();
-
-            if (count == 0)
-                return listOperatorAvailable;
-
-            if (listOperator.Count == 0)
-                throw new("Liste Operateur Vide");
-
             return RessourceHasTime<Operator>(plannings, listOperatorAvailable, beginningTimeOfOperation, endTimeOfOperation);
         }
 
@@ -121,16 +80,6 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <returns></returns>
         public static List<Machine> FindMachineForStep(List<SolutionPlanning> plannings, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
         {
-            int count = 0;
-
-            foreach (SolutionPlanning planning in plannings)
-            {
-                foreach (List<Object> list in planning.PlanningMachine)
-                {
-                    count += list.Count;
-                }
-            }
-
             List<Machine> listMachineAvailable = new(listMachine);
 
             List<Machine> tempList = new(listMachine);
@@ -146,11 +95,6 @@ namespace PRD_Ordonnanceur.Algorithms
 
             listMachineAvailable = new(tempList);
 
-            if (count == 0)
-                return listMachine;
-            else if (listMachine.Count == 0)
-                return new();
-
             return RessourceHasTime<Machine>(plannings, listMachineAvailable, beginningTimeOfOperation, endTimeOfOperation);
         }
 
@@ -164,21 +108,6 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <returns></returns>
         public static List<Tank> FindTankForStep(List<SolutionPlanning> plannings, List<Tank> listTank, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation)
         {
-            int count = 0;
-
-            foreach (SolutionPlanning planning in plannings)
-            {
-                foreach (List<Object> list in planning.PlanningTank)
-                {
-                    count += list.Count;
-                }
-            }
-
-            if (count == 0)
-                return listTank;
-            else if (plannings.Count == 0)
-                return new();
-
             List<Tank> listTankAvailable = new(listTank);
 
             listTankAvailable = RessourceHasTime<Tank>(plannings, listTankAvailable, beginningTimeOfOperation, endTimeOfOperation);
@@ -299,20 +228,23 @@ namespace PRD_Ordonnanceur.Algorithms
                         {
                             Operator operatorgrrg = (Operator)(object)currentOperator;
                             uidObject = (int)operatorgrrg.Uid;
+                            if ((int)list[5] != uidObject)
+                                continue;
                         }
                         else if (typeof(T) == typeof(Machine))
                         {
                             Machine machine = (Machine)(object)currentOperator;
                             uidObject = machine.Id;
+                            if ((int)list[6] != uidObject)
+                                continue;
                         }
                         else if (typeof(T) == typeof(Tank))
                         {
                             Tank tank = (Tank)(object)currentOperator;
                             uidObject = tank.IdTank;
+                            if ((int)list[6] != uidObject)
+                                continue;
                         }
-
-                        if ((int)list[5] != uidObject)
-                            continue;
 
                         bool hasTime = false;
 
@@ -331,7 +263,7 @@ namespace PRD_Ordonnanceur.Algorithms
                     }
                 }
             }
-            return tempList;
+            return new(tempList);
         }
     }
 }
