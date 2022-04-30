@@ -66,7 +66,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        ///
+        /// Methods that sort a list of OF
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>
@@ -76,7 +76,7 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        ///
+        /// Methods that sort a list of OF
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>

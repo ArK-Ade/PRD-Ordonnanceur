@@ -26,8 +26,7 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            // Lecture des données Consommables
-
+            // Reading of data Consumables
             string path = rootPath + "/Stocks.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
@@ -65,8 +64,7 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            // Lecture des données Consommables
-
+            // Reading of data Operator
             string path = rootPath + "/Operateurs.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
@@ -115,7 +113,7 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            // Data reading Consumables
+            // Reading of data Machine
             string path = rootPath + "/Machines.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
@@ -160,7 +158,7 @@ namespace PRD_Ordonnanceur.Parser
                 rootPath = defaultPath;
             }
 
-            // Reading the data
+            // Reading of data OF
             string path = rootPath + "/OFS.csv";
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);

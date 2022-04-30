@@ -346,11 +346,6 @@ namespace PRD_Ordonnanceur.Algorithms
                     currentTime = currentTime.AddMinutes(5);
                 }
 
-                if (oF.Uid == 1021615)
-                {
-                    int hello = 123;
-                }
-
                 while (rescheduling)
                 {
                     // reset

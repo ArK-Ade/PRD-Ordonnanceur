@@ -217,7 +217,7 @@ namespace PRD_Ordonnanceur.Checker
         }
 
         /// <summary>
-        ///
+        /// Method that verify the constraint link to the OF
         /// </summary>
         /// <param name="planning"></param>
         /// <returns></returns>
