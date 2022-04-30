@@ -70,14 +70,14 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        ///
+        /// It searchs weither the ressource machine is available
         /// </summary>
-        /// <param name="planningMachine"></param>
+        /// <param name="plannings"></param>
         /// <param name="listMachine"></param>
         /// <param name="beginningTimeOfOperation"></param>
         /// <param name="endTimeOfOperation"></param>
         /// <param name="typeMachine"></param>
-        /// <returns></returns>
+        /// <returns>List that contain the available ressources</returns>
         public static List<Machine> FindMachineForStep(List<SolutionPlanning> plannings, List<Machine> listMachine, DateTime beginningTimeOfOperation, DateTime endTimeOfOperation, TypeMachine typeMachine)
         {
             List<Machine> listMachineAvailable = new(listMachine);
@@ -99,9 +99,9 @@ namespace PRD_Ordonnanceur.Algorithms
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        /// <param name="planningTank"></param>
+        /// <param name="plannings"></param>
         /// <param name="listTank"></param>
         /// <param name="beginningTimeOfOperation"></param>
         /// <param name="endTimeOfOperation"></param>

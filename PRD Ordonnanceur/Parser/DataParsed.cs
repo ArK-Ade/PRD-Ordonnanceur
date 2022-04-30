@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace PRD_Ordonnanceur.Parser
 {
     /// <summary>
-    ///
+    /// Class that contain the data for the algorithm
     /// </summary>
     public class DataParsed
     {
@@ -16,15 +16,14 @@ namespace PRD_Ordonnanceur.Parser
         private MatrixCleaning matrix_Cleaning;
 
         /// <summary>
-        ///
+        /// Default constructor
         /// </summary>
         public DataParsed()
         {
-            // Initialisation des données parsées
         }
 
         /// <summary>
-        ///
+        /// Confortable constructor
         /// </summary>
         /// <param name="oFs"></param>
         /// <param name="consummables"></param>
