@@ -1,10 +1,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/ArK-Ade/PRD-Ordonnanceur">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
 <h3 align="center">PRD Ordonnanceur</h3>
 
   <p align="center">
@@ -51,11 +47,19 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<div id="about-the-project"></div>
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
+GO SYSTEMES is specialized in external training in IT and IT engineering and in particular in
+the field of SAP/painting production.
+Paint production requires advance planning of production orders (OFs). These POs represent
+customer orders.
+Generally, the scheduling is done by hand on a planning horizon of one month, by a person who
+will reconcile all the parameters and constraints to be taken into account.
+The realization of this scheduling takes time and the arrival of an unforeseen element (breakdown
+of a machine, strike...) causes a replanning of the horizon. It is in this context that the need for
+a planning aid tool was raised.
+The software, at its conclusion, will schedule the OFs on a horizon, provide in output various
+schedules for the entities and allow the user to choose the optimization criteria of the scheduler.
 
 ### Built With
 
@@ -66,52 +70,40 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* git
 
 ### Installation
 
 1. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-2. Install Git
-   ```sh
-   npm install
-   ```
+2. Verify the Nuget Package with Visual Studio
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
 Before the programme is launched you will need a set of data with the following names :
 
-<img src="images/data.png" alt="Data" width="150" height="150">
+<img src="images/data.png" alt="Data" width="621" height="197">
 
 Once you have the data set, you can launch the program with the exec file.
 
 you should have the menu open
 
-<img src="images/menu.png" alt="Menu" width="150" height="150">
+<img src="images/menu.png" alt="Menu" width="802" height="482">
 
 go to "Lancer la simulation"
 
-<img src="images/nextMenu.png" alt="other menu" width="150" height="150">
+<img src="images/menu2.png" alt="other menu" width="613" height="378">
 
 you need to give the folder where you the data is and the location where you want the csv files will be
 
-<img src="images/selection.png" alt="selection" width="150" height="150">
+<img src="images/selection.png" alt="selection" width="807" height="491">
 
 Finally, you can launch the algorithme by push the 'Lancer l'algorithme' button
 
