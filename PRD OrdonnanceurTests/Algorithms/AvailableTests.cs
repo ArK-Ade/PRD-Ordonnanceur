@@ -26,6 +26,10 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         private readonly TypeMachine typeMachine1 = TypeMachine.blender;
         private TimeSpan durationCleaning1;
         private readonly int idOF1 = 1;
+        private readonly Tank tank1 = new();
+        private readonly int idTank1 = 1;
+        private readonly int typeTank1 = 1;
+        private readonly List<Tank> tanks = new();
 
         [SetUp]
         public void SetupBeforeEachTest()
@@ -137,12 +141,42 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         }
 
         [Test()]
-        public void FindZeroTank()
+        public void FindZeroTankIfNoMachineGiven()
         {
-            Assert.True(true);
+            List<Tank> tanks = new();
+            List<Tank> listTankResult = RessourceAvailable.FindTankForStep(solutionPlannings, tanks, jobBeginningTime1, jobEndTime1);
+            Assert.IsEmpty(listTankResult);
         }
 
         [Test()]
+        public void FindZeroTankIfItIsNotAvailable()
+        {
+            tank1.IdTank = idTank1;
+            tank1.TypeTank = typeTank1;
+
+            List<Object> planningDay1 = new();
+
+            DateTime jobtoDoBeginning = new(2020, 01, 01, 07, 05, 0); // JobTODO 1
+            DateTime jobtoDoEnd = new(2020, 01, 01, 7, 10, 0);
+            DateTime dateTime = new(2020, 01, 01);
+
+            planningDay1.Add(dateTime);
+            planningDay1.Add(jobtoDoBeginning);
+            planningDay1.Add(jobtoDoEnd);
+            planningDay1.Add(idOF1);
+            planningDay1.Add(idOperator1);
+            planningDay1.Add(idOperator1);
+            planningDay1.Add(idTank1);
+
+            plannings.PlanningTank.Add(planningDay1);
+            solutionPlannings.Add(plannings);
+            tanks.Add(tank1);
+
+            List<Tank> listTankResult = RessourceAvailable.FindTankForStep(solutionPlannings, tanks, jobtoDoBeginning, jobtoDoEnd);
+            Assert.IsEmpty(listTankResult);
+        }
+
+            [Test()]
         public void FindOneTankWithoutSchedule()
         {
             Assert.True(true);
