@@ -43,6 +43,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             operators.Clear();
             listSkillOperator1.Clear();
             machines.Clear();
+            tanks.Clear();
         }
 
         [Test()]
@@ -177,7 +178,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         }
 
         [Test()]
-        public void FindOneTankIfIsAvailable()
+        public void FindOneTankIfIsAvailableWithoutSchedule()
         {
             tank1.IdTank = idTank1;
             tank1.TypeTank = typeTank1;
@@ -191,9 +192,37 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         }
 
             [Test()]
-        public void FindOneTankWithoutSchedule()
+        public void FindOneTankIfIsAvailableWithSchedule()
         {
-            Assert.True(true);
+            tank1.IdTank = idTank1;
+            tank1.TypeTank = typeTank1;
+
+            List<Object> planningDay1 = new();
+
+            DateTime jobtoDoBeginningFreeTime = new(2020, 01, 01, 07, 00, 0); // JobTODO 1
+            DateTime jobtoDoEndFreeTime = new(2020, 01, 01, 7, 05, 0);
+
+            DateTime jobtoDoBeginning = new(2020, 01, 01, 07, 05, 0); // JobTODO 1
+            DateTime jobtoDoEnd = new(2020, 01, 01, 7, 10, 0);
+            DateTime dateTime = new(2020, 01, 01);
+
+            planningDay1.Add(dateTime);
+            planningDay1.Add(jobtoDoBeginning);
+            planningDay1.Add(jobtoDoEnd);
+            planningDay1.Add(idOF1);
+            planningDay1.Add("");
+            planningDay1.Add(idTank1);
+
+            plannings.PlanningTank.Add(planningDay1);
+            solutionPlannings.Add(plannings);
+            tanks.Add(tank1);
+
+            List<Tank> listTankResult = RessourceAvailable.FindTankForStep(solutionPlannings, tanks, jobtoDoBeginningFreeTime, jobtoDoEndFreeTime);
+            List<Tank> listTankExpected = new()
+            {
+                tank1
+            };
+            Assert.AreEqual(listTankExpected, listTankResult);
         }
 
         [Test()]

@@ -242,7 +242,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         {
                             Tank tank = (Tank)(object)currentOperator;
                             uidObject = tank.IdTank;
-                            if ((int)list[6] != uidObject)
+                            if ((int)list[5] != uidObject)
                                 continue;
                         }
 
