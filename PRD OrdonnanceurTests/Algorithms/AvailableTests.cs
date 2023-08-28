@@ -176,6 +176,20 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             Assert.IsEmpty(listTankResult);
         }
 
+        [Test()]
+        public void FindOneTankIfIsAvailable()
+        {
+            tank1.IdTank = idTank1;
+            tank1.TypeTank = typeTank1;
+            tanks.Add(tank1);
+            List<Tank> listTankResult = RessourceAvailable.FindTankForStep(solutionPlannings, tanks, jobBeginningTime1, jobEndTime1);
+            List<Tank> listTankExpected = new()
+            {
+                tank1
+            };
+            Assert.AreEqual(listTankExpected,listTankResult);
+        }
+
             [Test()]
         public void FindOneTankWithoutSchedule()
         {
