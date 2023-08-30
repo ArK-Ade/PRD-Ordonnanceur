@@ -30,10 +30,14 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         private readonly int idTank1 = 1;
         private readonly int typeTank1 = 1;
         private readonly List<Tank> tanks = new();
+        private Consumable consumable1 = new();
+        private readonly List<Consumable> consumables = new();
 
         [SetUp]
         public void SetupBeforeEachTest()
         {
+            consumable1.QuantityAvailable = 10.0;
+            consumable1.Id = 1;
         }
 
         [TearDown]
@@ -44,6 +48,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             listSkillOperator1.Clear();
             machines.Clear();
             tanks.Clear();
+            consumables.Clear();
         }
 
         [Test()]
@@ -226,51 +231,49 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         }
 
         [Test()]
-        public void FindOneTankWithSchedule()
+        public void FindZeroConsoIfTheQuantityRequiredIsTooHigh()
         {
-            Assert.True(true);
+            List<Object> planningDay1 = new();
+            List<double> listQuantityUsed = new()
+            {
+                12.0
+            };
+
+            DateTime dateTime = new(2020, 01, 01);
+
+            planningDay1.Add(dateTime);
+            planningDay1.Add(consumable1.Id);
+            planningDay1.Add(11.0);
+
+            plannings.PlanningCons.Add(planningDay1);
+            solutionPlannings.Add(plannings);
+            consumables.Add(consumable1);
+
+            bool consoIsAvailable = RessourceAvailable.FindConsoForStep(plannings.PlanningCons, consumables, jobBeginningTime1 , consumables, listQuantityUsed);
+            Assert.False(consoIsAvailable);
         }
 
         [Test()]
-        public void FindTwoTankWithoutSchedule()
+        public void FindConsoIfThereIsEnough()
         {
-            Assert.True(true);
-        }
+            List<Object> planningDay1 = new();
+            List<double> listQuantityUsed = new()
+            {
+                12.0
+            };
 
-        [Test()]
-        public void FindTwoTankWithSchedule()
-        {
-            Assert.True(true);
-        }
+            DateTime dateTime = new(2020, 01, 01);
 
-        [Test()]
-        public void FindZeroConso()
-        {
-            Assert.True(true);
-        }
+            planningDay1.Add(dateTime);
+            planningDay1.Add(consumable1.Id);
+            planningDay1.Add(10.0);
 
-        [Test()]
-        public void FindAllConso()
-        {
-            Assert.True(true);
-        }
+            plannings.PlanningCons.Add(planningDay1);
+            solutionPlannings.Add(plannings);
+            consumables.Add(consumable1);
 
-        [Test()]
-        public void FindAllConsoWithDelay()
-        {
-            Assert.True(true);
-        }
-
-        [Test()]
-        public void FindConsoForStepTest()
-        {
-            Assert.True(true);
-        }
-
-        [Test()]
-        public void FindTimeCleaningTankTest()
-        {
-            Assert.True(true);
+            bool consoIsAvailable = RessourceAvailable.FindConsoForStep(plannings.PlanningCons, consumables, jobBeginningTime1, consumables, listQuantityUsed);
+            Assert.True(consoIsAvailable);
         }
     }
 }

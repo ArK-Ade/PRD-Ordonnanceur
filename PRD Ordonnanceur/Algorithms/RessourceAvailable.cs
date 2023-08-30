@@ -152,8 +152,8 @@ namespace PRD_Ordonnanceur.Algorithms
             // Pour chaque jour du planning on enleve les consommables utilisés
             foreach (List<Object> list in planningConso)
             {
-                double quantityUsed = (double)list[1];
-                int idConsumable = (int)list[2];
+                int idConsumable = (int)list[1];
+                double quantityUsed = (double)list[2];
 
                 foreach (Consumable consumable in listConsumableNeeded)
                 {
