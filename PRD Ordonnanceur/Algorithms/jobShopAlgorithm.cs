@@ -390,9 +390,9 @@ namespace PRD_Ordonnanceur.Algorithms
                         DateTime timeNeeded = (DateTime)resultRessources[0];
 
                         // We arrive at the end of the day and the stage is postable
-                        if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && step.NextStepReportable)
+                        if ((timeNeeded.Hour > DataParsed.Operators[0].EndOfShiftSchedule.Hour || (timeNeeded.Minute > DataParsed.Operators[0].EndOfShiftSchedule.Minute && timeNeeded.Hour == DataParsed.Operators[0].EndOfShiftSchedule.Hour)) && step.NextStepReportable)
                         {
-                            while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
+                            while (currentTime.Hour != DataParsed.Operators[0].StartOfShiftSchedule.Hour)
                             {
                                 currentTime = currentTime.AddMinutes(5);
                             }
@@ -401,7 +401,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         }
 
                         // We arrive at the end of the day and the stage is not postponable, we change day and we cancel the reservation of the OF
-                        if ((timeNeeded.Hour > DataParsed.Operators[0].End.Hour || (timeNeeded.Minute > DataParsed.Operators[0].End.Minute && timeNeeded.Hour == DataParsed.Operators[0].End.Hour)) && !step.NextStepReportable)
+                        if ((timeNeeded.Hour > DataParsed.Operators[0].EndOfShiftSchedule.Hour || (timeNeeded.Minute > DataParsed.Operators[0].EndOfShiftSchedule.Minute && timeNeeded.Hour == DataParsed.Operators[0].EndOfShiftSchedule.Hour)) && !step.NextStepReportable)
                         {
                             currentPlanning.PlanningOperator.Clear();
                             currentPlanning.PlanningMachine.Clear();
@@ -412,7 +412,7 @@ namespace PRD_Ordonnanceur.Algorithms
                             currentPlanning = new();
 
                             // We move to the next day at the start time of an employee
-                            while (currentTime.Hour != DataParsed.Operators[0].StartWorkSchedule.Hour)
+                            while (currentTime.Hour != DataParsed.Operators[0].StartOfShiftSchedule.Hour)
                             {
                                 currentTime = currentTime.AddMinutes(5);
                             }

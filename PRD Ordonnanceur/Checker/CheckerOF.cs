@@ -44,10 +44,10 @@ namespace PRD_Ordonnanceur.Checker
                 }
 
                 // Checking if the job is within the work schedule
-                if (jobBeginning1.Hour < currentOperator.StartWorkSchedule.Hour || (jobBeginning1.Hour == currentOperator.StartWorkSchedule.Hour && jobBeginning1.Minute < currentOperator.StartWorkSchedule.Minute))
+                if (jobBeginning1.Hour < currentOperator.StartOfShiftSchedule.Hour || (jobBeginning1.Hour == currentOperator.StartOfShiftSchedule.Hour && jobBeginning1.Minute < currentOperator.StartOfShiftSchedule.Minute))
                     return false;
 
-                if (jobEnd1.Hour > currentOperator.End.Hour || (jobEnd1.Hour == currentOperator.End.Hour && jobEnd1.Minute > currentOperator.End.Minute))
+                if (jobEnd1.Hour > currentOperator.EndOfShiftSchedule.Hour || (jobEnd1.Hour == currentOperator.EndOfShiftSchedule.Hour && jobEnd1.Minute > currentOperator.EndOfShiftSchedule.Minute))
                     return false;
 
                 int count = 0;

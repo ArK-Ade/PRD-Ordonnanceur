@@ -14,8 +14,6 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         [Test()]
         public void Smallest_index_DTITest()
         {
-            List<Step> stepSequence = new();
-
             DateTime earliestDate1 = DateTime.MinValue;
             DateTime earliestDate2 = DateTime.Now;
             DateTime earliestDate3 = DateTime.MaxValue;
@@ -28,38 +26,42 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             DateTime starting_hour = DateTime.Now;
             int next_step = 2;
 
-            OF OF1 = new(1, starting_hour, next_step, stepSequence, earliestDate1, latestDate, numberProduct1);
-            OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, numberProduct2);
-            OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, numberProduct1);
+            OF OF1 = new(1, starting_hour, next_step, new(), earliestDate1, latestDate, numberProduct1);
+            OF OF2 = new(2, starting_hour, next_step, new(), earliestDate2, latestDate, numberProduct2);
+            OF OF3 = new(3, starting_hour, next_step, new(), earliestDate3, latestDate, numberProduct1);
 
-            List<OF> OFs1 = new();
-            OFs1.Add(OF1);
-            OFs1.Add(OF2);
-            OFs1.Add(OF3);
+            List<OF> OFs1 = new()
+            {
+                OF1,
+                OF2,
+                OF3
+            };
 
-            List<OF> OFs2 = new();
-            OFs2.Add(OF2);
-            OFs2.Add(OF1);
-            OFs2.Add(OF3);
+            List<OF> OFs2 = new()
+            {
+                OF2,
+                OF1,
+                OF3
+            };
 
-            List<OF> OFs3 = new();
-            OFs3.Add(OF2);
-            OFs3.Add(OF3);
-            OFs3.Add(OF1);
+            List<OF> OFs3 = new()
+            {
+                OF2,
+                OF3,
+                OF1
+            };
 
-            Heuristic heuristic = new();
-
-            int resultIndex = heuristic.Smallest_index_DTI(OFs1);
+            int resultIndex = Heuristic.Smallest_index_DTI(OFs1);
             int expectedIndex = 0;
 
             Assert.AreEqual(expectedIndex, resultIndex);
 
-            resultIndex = heuristic.Smallest_index_DTI(OFs2);
+            resultIndex = Heuristic.Smallest_index_DTI(OFs2);
             expectedIndex = 1;
 
             Assert.AreEqual(expectedIndex, resultIndex);
 
-            resultIndex = heuristic.Smallest_index_DTI(OFs3);
+            resultIndex = Heuristic.Smallest_index_DTI(OFs3);
             expectedIndex = 2;
 
             Assert.AreEqual(expectedIndex, resultIndex);
@@ -86,36 +88,42 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             OF OF2 = new(2, starting_hour, next_step, stepSequence, earliestDate2, latestDate, numberProduct2);
             OF OF3 = new(3, starting_hour, next_step, stepSequence, earliestDate3, latestDate, numberProduct1);
 
-            List<OF> OFs1 = new();
-            OFs1.Add(OF1);
-            OFs1.Add(OF2);
-            OFs1.Add(OF3);
+            List<OF> OFs1 = new()
+            {
+                OF1,
+                OF2,
+                OF3
+            };
 
-            List<OF> OFs2 = new();
-            OFs2.Add(OF2);
-            OFs2.Add(OF1);
-            OFs2.Add(OF3);
+            List<OF> OFs2 = new()
+            {
+                OF2,
+                OF1,
+                OF3
+            };
 
-            List<OF> OFs3 = new();
-            OFs3.Add(OF2);
-            OFs3.Add(OF3);
-            OFs3.Add(OF1);
+            List<OF> OFs3 = new()
+            {
+                OF2,
+                OF3,
+                OF1
+            };
 
             Heuristic heuristic = new();
 
-            OFs1 = heuristic.SortCrescentDtiCrescentDli(OFs1);
+            OFs1 = Heuristic.SortCrescentDtiCrescentDli(OFs1);
 
             Assert.AreEqual(OFs1[0].EarliestDate, OF1.EarliestDate);
             Assert.AreEqual(OFs1[1].EarliestDate, OF2.EarliestDate);
             Assert.AreEqual(OFs1[2].EarliestDate, OF3.EarliestDate);
 
-            OFs2 = heuristic.SortCrescentDtiCrescentDli(OFs2);
+            OFs2 = Heuristic.SortCrescentDtiCrescentDli(OFs2);
 
             Assert.AreEqual(OFs2[0].EarliestDate, OF1.EarliestDate);
             Assert.AreEqual(OFs2[1].EarliestDate, OF2.EarliestDate);
             Assert.AreEqual(OFs2[2].EarliestDate, OF3.EarliestDate);
 
-            OFs3 = heuristic.SortCrescentDtiCrescentDli(OFs3);
+            OFs3 = Heuristic.SortCrescentDtiCrescentDli(OFs3);
 
             Assert.AreEqual(OFs3[0].EarliestDate, OF1.EarliestDate);
             Assert.AreEqual(OFs3[1].EarliestDate, OF2.EarliestDate);

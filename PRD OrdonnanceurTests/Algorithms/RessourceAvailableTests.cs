@@ -10,17 +10,17 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
     /// class that allows to test the methods that check if the resources are available
     /// </summary>
     [TestFixture()]
-    public class AvailableTests
+    public class RessourceAvailableTests
     {
         private readonly List<SolutionPlanning> solutionPlannings = new();
         private readonly SolutionPlanning plannings = new();
-        private Operator operator1;
+        private Operator operatorA = new();
         private readonly List<Operator> operators = new();
         private readonly int idOperator1 = 1;
         private readonly List<TypeMachine> listSkillOperator1 = new();
         private readonly DateTime jobBeginningTime1 = new(2020, 01, 01, 07, 00, 00);
         private readonly DateTime jobEndTime1 = new(2020, 01, 01, 18, 00, 00);
-        private Machine machine1;
+        private Machine machine1 = new();
         private readonly List<Machine> machines = new();
         private readonly int idMachine1 = 1;
         private readonly TypeMachine typeMachine1 = TypeMachine.blender;
@@ -36,6 +36,9 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         [SetUp]
         public void SetupBeforeEachTest()
         {
+            operatorA.StartOfShiftSchedule = jobBeginningTime1;
+            operatorA.EndOfShiftSchedule = jobEndTime1;
+
             consumable1.QuantityAvailable = 10.0;
             consumable1.Id = 1;
         }
@@ -52,20 +55,51 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
         }
 
         [Test()]
-        public void FindOperator()
+        public void FindOneOperatorReturnOneOperator()
         {
             List<Operator> operatorsExpected = new();
             DateTime startJob = new(2022, 03, 30, 07, 00, 00);
             TypeMachine competence = TypeMachine.blender;
             listSkillOperator1.Add(competence);
-            operator1 = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
-            operators.Add(operator1);
+            operatorA = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
+            operators.Add(operatorA);
             List<Operator> operatorsResult = RessourceAvailable.FindOperator(solutionPlannings, operators, startJob, startJob.AddMinutes(10.0), competence);
-            operatorsExpected.Add(operator1);
+            operatorsExpected.Add(operatorA);
             Assert.AreEqual(operatorsExpected, operatorsResult);
             Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count);
 
             operators.Clear();
+        }
+
+        [Test()]
+        public void FindOperator_ReturnsCorrectOperator()
+        {
+            // Arrange
+            List<Operator> operatorsExpected = new List<Operator>();
+            DateTime startJob = new DateTime(2022, 03, 30, 07, 00, 00);
+            TypeMachine competence = TypeMachine.cleaning; // Assuming TypeMachine is an enum
+
+            // Create a list to store the skills of operator1
+            List<TypeMachine> listSkillOperator1 = new()
+            {
+                competence
+            };
+
+            // Create operatorA
+            Operator operatorA = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
+
+            // Create a list of operators and add operatorA to it
+            List<Operator> operators = new()
+            {
+                operatorA
+            };
+
+            // Act
+            List<Operator> operatorsResult = RessourceAvailable.FindOperator(solutionPlannings, operators, startJob, startJob.AddMinutes(10.0), competence);
+
+            // Assert
+            operatorsExpected.Add(operatorA);
+            Assert.AreEqual(operatorsExpected.Count, operatorsResult.Count);
         }
 
         [Test()]
@@ -74,8 +108,8 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             List<Operator> operatorsExpected = new();
             TypeMachine competence = TypeMachine.blender;
             listSkillOperator1.Add(competence);
-            operator1 = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
-            operators.Add(operator1);
+            operatorA = new Operator(jobBeginningTime1, jobEndTime1, null, idOperator1, listSkillOperator1);
+            operators.Add(operatorA);
 
             DateTime jobDoneBeginning = new(2020, 01, 01, 07, 00, 00), jobDoneEnd = new(2020, 01, 01, 07, 05, 00);
 
@@ -249,7 +283,7 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             solutionPlannings.Add(plannings);
             consumables.Add(consumable1);
 
-            bool consoIsAvailable = RessourceAvailable.FindConsoForStep(plannings.PlanningCons, consumables, jobBeginningTime1 , consumables, listQuantityUsed);
+            bool consoIsAvailable = RessourceAvailable.FindConsoForStep(plannings.PlanningCons, consumables, jobBeginningTime1, consumables, listQuantityUsed);
             Assert.False(consoIsAvailable);
         }
 
@@ -276,4 +310,5 @@ namespace PRD_Ordonnanceur.Algorithms.Tests
             Assert.True(consoIsAvailable);
         }
     }
+
 }

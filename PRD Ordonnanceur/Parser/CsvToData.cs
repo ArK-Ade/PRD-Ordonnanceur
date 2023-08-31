@@ -91,8 +91,8 @@ namespace PRD_Ordonnanceur.Parser
                 {
                     Uid = csv.GetField<int>("Id"),
                     SkillSet = new(typeMachines),
-                    StartWorkSchedule = csv.GetField<DateTime>("Debut"),
-                    End = csv.GetField<DateTime>("Fin"),
+                    StartOfShiftSchedule = csv.GetField<DateTime>("Debut"),
+                    EndOfShiftSchedule = csv.GetField<DateTime>("Fin"),
                 };
 
                 records.Add(record);

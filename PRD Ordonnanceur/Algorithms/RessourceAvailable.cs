@@ -49,7 +49,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 bool hasSkill = false;
                 bool hasTime = false;
 
-                if ((currentOperator.StartWorkSchedule.Minute <= beginningTimeOfOperation.Minute && currentOperator.StartWorkSchedule.Hour <= beginningTimeOfOperation.Hour) || (currentOperator.End.Minute <= endTimeOfOperation.Minute && currentOperator.End.Hour <= endTimeOfOperation.Hour))
+                if ((currentOperator.StartOfShiftSchedule.Minute <= beginningTimeOfOperation.Minute && currentOperator.StartOfShiftSchedule.Hour <= beginningTimeOfOperation.Hour) || (currentOperator.EndOfShiftSchedule.Minute <= endTimeOfOperation.Minute && currentOperator.EndOfShiftSchedule.Hour <= endTimeOfOperation.Hour))
                     hasTime = true;
 
                 foreach (TypeMachine skill in currentOperator.SkillSet)
