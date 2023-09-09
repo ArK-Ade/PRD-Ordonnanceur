@@ -21,7 +21,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns>index of the OF</returns>
-        public int Smallest_index_DTI(List<OF> OFs)
+        public static int Smallest_index_DTI(List<OF> OFs)
         {
             int index = 0;
             DateTime date = DateTime.MaxValue;
@@ -46,7 +46,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>
-        public List<OF> SortCrescentDtiCrescentDli(List<OF> OFs)
+        public static List<OF> SortCrescentDtiCrescentDli(List<OF> OFs)
         {
             List<OF> tmp = new(OFs);
             List<OF> tableau = new(OFs);
@@ -70,7 +70,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>
-        public List<OF> Sort_crescent_dti_decendant_dli(List<OF> OFs)
+        public static List<OF> Sort_crescent_dti_decendant_dli(List<OF> OFs)
         {
             return OFs;
         }
@@ -80,7 +80,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// </summary>
         /// <param name="OFs"></param>
         /// <returns></returns>
-        public List<OF> Sort_random_5_crescent(List<OF> OFs)
+        public static List<OF> Sort_random_5_crescent(List<OF> OFs)
         {
             return OFs;
         }
@@ -91,7 +91,7 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <param name="choice"></param>
         /// <param name="Ofs"></param>
         /// <returns></returns>
-        List<OF> IHeuristic.SortingAlgorithm(int choice, List<OF> Ofs)
+        public List<OF> SortingAlgorithm(int choice, List<OF> Ofs)
         {
             List<OF> newListOfs;
 

@@ -24,8 +24,8 @@ namespace PRD_Ordonnanceur.Data
         /// <param name="machineSkill"></param>
         public Operator(DateTime beginning, DateTime end, List<Calendar> calendar, int id, List<TypeMachine> machineSkill)
         {
-            this.StartWorkSchedule = beginning;
-            this.End = end;
+            this.StartOfShiftSchedule = beginning;
+            this.EndOfShiftSchedule = end;
             this.Calendar = calendar;
             this.Uid = id;
             this.SkillSet = machineSkill;
@@ -34,12 +34,12 @@ namespace PRD_Ordonnanceur.Data
         /// <summary>
         /// Indicate the beginning of his daily schedule
         /// </summary>
-        public DateTime StartWorkSchedule { get; set; }
+        public DateTime StartOfShiftSchedule { get; set; }
 
         /// <summary>
         /// Indicate the end of his daily schedule
         /// </summary>
-        public DateTime End { get; set; }
+        public DateTime EndOfShiftSchedule { get; set; }
 
         /// <summary>
         ///

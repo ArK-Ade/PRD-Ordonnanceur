@@ -49,7 +49,7 @@ namespace PRD_Ordonnanceur.Algorithms
                 bool hasSkill = false;
                 bool hasTime = false;
 
-                if ((currentOperator.StartWorkSchedule.Minute <= beginningTimeOfOperation.Minute && currentOperator.StartWorkSchedule.Hour <= beginningTimeOfOperation.Hour) || (currentOperator.End.Minute <= endTimeOfOperation.Minute && currentOperator.End.Hour <= endTimeOfOperation.Hour))
+                if ((currentOperator.StartOfShiftSchedule.Minute <= beginningTimeOfOperation.Minute && currentOperator.StartOfShiftSchedule.Hour <= beginningTimeOfOperation.Hour) || (currentOperator.EndOfShiftSchedule.Minute <= endTimeOfOperation.Minute && currentOperator.EndOfShiftSchedule.Hour <= endTimeOfOperation.Hour))
                     hasTime = true;
 
                 foreach (TypeMachine skill in currentOperator.SkillSet)
@@ -152,8 +152,8 @@ namespace PRD_Ordonnanceur.Algorithms
             // Pour chaque jour du planning on enleve les consommables utilisés
             foreach (List<Object> list in planningConso)
             {
-                double quantityUsed = (double)list[1];
-                int idConsumable = (int)list[2];
+                int idConsumable = (int)list[1];
+                double quantityUsed = (double)list[2];
 
                 foreach (Consumable consumable in listConsumableNeeded)
                 {
@@ -242,7 +242,7 @@ namespace PRD_Ordonnanceur.Algorithms
                         {
                             Tank tank = (Tank)(object)currentOperator;
                             uidObject = tank.IdTank;
-                            if ((int)list[6] != uidObject)
+                            if ((int)list[5] != uidObject)
                                 continue;
                         }
 
