@@ -49,7 +49,6 @@ namespace PRD_Ordonnanceur.Algorithms
         /// <returns></returns>
         public List<OF> Launch(int choice, List<OF> oFs)
         {
-            Console.WriteLine("Context: Sorting data using the strategy");
             var result = this._strategy.SortingAlgorithm(choice, oFs);
             return result;
         }
